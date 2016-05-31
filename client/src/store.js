@@ -3,7 +3,7 @@ import { syncHistory, routeReducer } from 'react-router-redux'
 import thunk from 'redux-thunk';
 import { applyMiddleware, createStore, combineReducers  } from 'redux'
 import { reducer as formReducer } from 'redux-form';
-import createHistory from 'history/lib/createBrowserHistory'
+import createHistory from 'history/lib/createHashHistory'
 
 // Opt-out of persistent state, not recommended.
 // http://rackt.org/history/stable/HashHistoryCaveats.html
