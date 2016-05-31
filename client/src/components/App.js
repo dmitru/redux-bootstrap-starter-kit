@@ -2,13 +2,14 @@ import React from 'react'
 import { Link } from 'react-router'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
+import { Button } from 'react-bootstrap'
 
 class App extends React.Component {
 
     render() {
         return (
             <div>
-                <Link to="/about">About</Link>
+                <Link to="/about"><Button bsStyle="primary">Primary</Button></Link>
             {this.props.children}
             </div>
         )
