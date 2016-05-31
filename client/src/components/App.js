@@ -8,6 +8,7 @@ class App extends React.Component {
     render() {
         return (
             <div>
+                <Link to="/about">About</Link>
             {this.props.children}
             </div>
         )
