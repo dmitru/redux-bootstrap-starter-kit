@@ -1,55 +1,24 @@
 import React from 'react'
-import { IndexLink } from 'react-router'
 import { connect } from 'react-redux'
-import { Nav, Navbar, NavItem, Grid, Col, Row } from 'react-bootstrap'
-import { LinkContainer, IndexLinkContainer } from 'react-router-bootstrap'
+import { bindActionCreators } from 'redux'
 
-class App extends React.Component {
+import Layout from './Layout'
 
-  componentDidMount() {
-
-  }
-
-  render() {
-    return (
-      <div>
-        <Navbar fluid staticTop>
-          <Navbar.Header>
-            <Navbar.Brand>
-              <IndexLink to="/">Expense Tracker</IndexLink>
-            </Navbar.Brand>
-          </Navbar.Header>
-          <Nav navbar>
-            <IndexLinkContainer to="/">
-              <NavItem eventKey={1} index>Entries</NavItem>
-            </IndexLinkContainer >
-            <LinkContainer to="/categories">
-              <NavItem eventKey={2}>Categories</NavItem>
-            </LinkContainer >
-            <LinkContainer to="/about">
-              <NavItem eventKey={3}>About</NavItem>
-            </LinkContainer >
-          </Nav>
-        </Navbar>
-
-        <Grid>
-          <Row>
-            <Col xs={12}>
-              <div> {this.props.children} </div>
-            </Col>
-          </Row>
-        </Grid>
-      </div>
-    )
-  }
-}
+const App = ({ children }) => (
+  <div>
+    <Layout>
+      <div> {children} </div>
+    </Layout>
+  </div>
+)
 
 App.propTypes = {
-  children: React.PropTypes.Array,
+  children: React.PropTypes.element,
 }
 
 const mapStateToProps = () => ({})
 
-const mapDispatchToProps = () => ({})
+const mapDispatchToProps = (dispatch) => bindActionCreators({
+}, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)
