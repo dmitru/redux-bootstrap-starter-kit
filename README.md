@@ -15,10 +15,9 @@ The purpose of the project is to provide a **simple** example of a Redux applica
 
 Install dependencies:
 ``npm i`` 
-Build frontend:
-``npm run build``
-Run Express.js server:
-``npm run start``
+
+Run the server:
+``npm start``
 
 
 ## Roadmap
@@ -26,5 +25,3 @@ Run Express.js server:
 Here're some things I'd like to add to this project:
 
 - tests
-- hot reloading
-- support for Bootstrap CSS
