@@ -1,6 +1,7 @@
 import { syncHistoryWithStore, routerReducer, routerActions } from 'react-router-redux'
 
 import thunk from 'redux-thunk'
+import R from 'ramda'
 import { applyMiddleware, createStore, combineReducers } from 'redux'
 import { reducer as formReducer } from 'redux-form'
 import { browserHistory } from 'react-router'
@@ -20,8 +21,9 @@ export const logStateMiddleware = ({ getState }) => next => action => {
   next(action)
 }
 
-export const store = createStore(reducer, applyMiddleware(
-  logStateMiddleware, thunk
+export const store = createStore(reducer, R.compose(
+  applyMiddleware(logStateMiddleware, thunk),
+  window.devToolsExtension ? window.devToolsExtension() : f => f
 ))
 
 export const UserIsAuthenticated = UserAuthWrapper({
