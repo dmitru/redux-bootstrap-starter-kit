@@ -10,6 +10,8 @@ import { history } from './store'
 
 import App from './components/App';
 
+
+
 const About = () => {
     return (
         <div>
