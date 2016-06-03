@@ -1,15 +1,13 @@
-
+import { syncHistoryWithStore, routerReducer, routerActions } from 'react-router-redux'
 
 import thunk from 'redux-thunk'
 import { applyMiddleware, createStore, combineReducers  } from 'redux'
 import { reducer as formReducer } from 'redux-form'
-import { Router, Route, browserHistory } from 'react-router'
-import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
+import { browserHistory } from 'react-router'
+import { UserAuthWrapper } from 'redux-auth-wrapper'
 
+import reducers from './reducers'
 
-const reducers = {
-
-}
 
 const reducer = combineReducers({
     ...reducers,
@@ -22,11 +20,15 @@ export const logStateMiddleware = ({dispatch, getState}) => next => action => {
     next(action)
 }
 
-const store = createStore(reducer,
-    applyMiddleware(
-        logStateMiddleware, thunk
-    )
-)
+export const store = createStore(reducer, applyMiddleware(
+    logStateMiddleware, thunk
+));
+
+export const UserIsAuthenticated = UserAuthWrapper({
+    authSelector: state => state.user,
+    redirectAction: routerActions.replace,
+    wrapperDisplayName: 'UserIsAuthenticated'
+})
 
 export const history = syncHistoryWithStore(browserHistory, store)
 

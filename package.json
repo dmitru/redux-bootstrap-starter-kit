@@ -17,8 +17,7 @@
     "test": "",
     "start": "node server/server.js",
     "build": "rimraf dist && cross-env NODE_ENV=production webpack --config ./webpack.production.config.js --progress --profile --colors",
-    "eslint": "eslint .",
-    "jscs": "jscs ."
+    "eslint": "eslint ."
   },
   "devDependencies": {
     "autoprefixer": "^6.0.3",
@@ -41,7 +40,6 @@
     "html-webpack-plugin": "^2.19.0",
     "jade": "^1.11.0",
     "jade-loader": "^0.8.0",
-    "jscs": "^2.1.1",
     "jsdom": "^6.5.1",
     "json-loader": "^0.5.3",
     "mocha": "^2.3.3",
@@ -74,8 +72,10 @@
     "react-dom": "^0.14.3",
     "react-redux": "^4.4.5",
     "react-router": "^2.4.1",
+    "react-router-bootstrap": "^0.23.0",
     "react-router-redux": "^4.0.4",
     "redux": "^3.5.2",
+    "redux-auth-wrapper": "^0.5.0",
     "redux-form": "^5.2.5",
     "redux-thunk": "^2.1.0",
     "serve-favicon": "~2.3.0"
