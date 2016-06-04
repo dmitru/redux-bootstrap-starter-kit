@@ -41,7 +41,8 @@ class LoginContainer extends Component {
   onClick = (e) => {
     e.preventDefault()
     this.props.login({
-      name: this.state.email,
+      email: this.state.email,
+      password: this.state.password,
     })
   }
 
@@ -112,7 +113,7 @@ class LoginContainer extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  const isAuthenticated = state.user.name || false
+  const isAuthenticated = state.user.tokenId != null
   const redirect = ownProps.location.query.redirect || '/'
   return {
     isAuthenticated,

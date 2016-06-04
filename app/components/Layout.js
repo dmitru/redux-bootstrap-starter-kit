@@ -72,8 +72,8 @@ Layout.propTypes = {
 }
 
 const mapStateToProps = (state) => ({
-  isAuthenticated: state.user.name || false,
-  username: state.user.name,
+  isAuthenticated: state.user.tokenId != null,
+  username: state.user.email,
 })
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({

@@ -16,6 +16,7 @@
   "scripts": {
     "test": "",
     "start": "node server/server.js",
+    "start:watch": "nodemon server/server.js",
     "build": "rimraf dist && cross-env NODE_ENV=production webpack --config ./webpack.production.config.js --progress --profile --colors",
     "eslint": "eslint ."
   },
@@ -70,6 +71,7 @@
     "express": "^4.13.4",
     "history": "^3.0.0",
     "jquery": "^2.2.4",
+    "lodash": "^4.13.1",
     "morgan": "^1.7.0",
     "pug": "^2.0.0-alpha8",
     "react": "^0.14.3",
@@ -83,6 +85,8 @@
     "redux-auth-wrapper": "^0.5.0",
     "redux-form": "^5.2.5",
     "redux-thunk": "^2.1.0",
-    "serve-favicon": "~2.3.0"
+    "serve-favicon": "~2.3.0",
+    "superagent": "^2.0.0",
+    "superagent-promise-plugin": "^3.2.0"
   }
 }
