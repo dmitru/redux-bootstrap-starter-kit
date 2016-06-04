@@ -13,14 +13,14 @@ import { logout } from '../actions/user'
 
 const Layout = ({ onLogout, children, isAuthenticated, username }) => {
   const navbarLinks = isAuthenticated ? [
-    <LinkContainer to="/about" key={3}>
-      <NavItem eventKey={3}>About</NavItem>
-    </LinkContainer >,
     <IndexLinkContainer to="/" key={1}>
       <NavItem eventKey={1} index>Entries</NavItem>
     </IndexLinkContainer >,
     <LinkContainer to="/categories" key={2}>
       <NavItem eventKey={2}>Categories</NavItem>
+    </LinkContainer >,
+    <LinkContainer to="/about" key={3}>
+      <NavItem eventKey={3}>About</NavItem>
     </LinkContainer >,
   ] : [
     <LinkContainer to="/about" key={3}>
