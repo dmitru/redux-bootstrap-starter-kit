@@ -2,13 +2,13 @@ import * as constants from '../constants'
 import api from '../api'
 
 export function login({ email, password }) {
-  const data = { email, password }
   return (dispatch) => {
-    api.user.login(data)
+    api.user.login({ email, password })
       .then((res) => {
+        const data = res.data
         dispatch({
           type: constants.USER_LOGGED_IN,
-          payload: res.body,
+          payload: data,
         })
       })
       .catch((err) => {

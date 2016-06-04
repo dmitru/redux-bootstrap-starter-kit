@@ -1,9 +1,6 @@
-import superagent from 'superagent'
-import superagentPromisePlugin from 'superagent-promise-plugin'
-const request = superagentPromisePlugin.patch(superagent)
+
+import ajax from 'axios'
 
 export const login = ({ email, password }) => (
-  request
-    .post('/api/login')
-    .send({ email, password })
+  ajax.post('/api/login', { email, password })
 )
