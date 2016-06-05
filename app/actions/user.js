@@ -22,22 +22,22 @@ export function login({ email, password, saveToken = true }, callback = null) {
         if (saveToken) {
           saveAuthToken(data.tokenId)
         }
+        if (callback) {
+          callback(data, null)
+        }
         dispatch({
           type: constants.USER_LOGGED_IN,
           payload: data,
         })
-        if (callback) {
-          callback(data, null)
-        }
       })
       .catch((err) => {
+        if (callback) {
+          callback(null, err)
+        }
         dispatch({
           type: constants.USER_LOGIN_ERROR,
           payload: err.data.error,
         })
-        if (callback) {
-          callback(null, err)
-        }
       })
   }
 }
