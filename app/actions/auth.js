@@ -26,7 +26,7 @@ export function login({ email, password, saveToken = true }, callback = null) {
           callback(data, null)
         }
         dispatch({
-          type: constants.USER_LOGGED_IN,
+          type: constants.AUTH_LOGGED_IN,
           payload: data,
         })
       })
@@ -35,7 +35,7 @@ export function login({ email, password, saveToken = true }, callback = null) {
           callback(null, err)
         }
         dispatch({
-          type: constants.USER_LOGIN_ERROR,
+          type: constants.AUTH_LOGIN_ERROR,
           payload: err.data.error,
         })
       })
@@ -45,6 +45,6 @@ export function login({ email, password, saveToken = true }, callback = null) {
 export function logout() {
   cookie.unset('token')
   return {
-    type: constants.USER_LOGGED_OUT,
+    type: constants.AUTH_LOGGED_OUT,
   }
 }

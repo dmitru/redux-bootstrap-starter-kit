@@ -8,7 +8,7 @@ import { connect } from 'react-redux'
 import { Nav, Navbar, NavItem, Grid, Col, Row } from 'react-bootstrap'
 import { LinkContainer, IndexLinkContainer } from 'react-router-bootstrap'
 
-import { logout } from '../actions/user'
+import { logout } from '../../actions/auth'
 
 class Layout extends Component {
 
@@ -89,8 +89,8 @@ class Layout extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  isAuthenticated: state.user.tokenId != null,
-  username: state.user.email,
+  isAuthenticated: state.auth.tokenId != null,
+  username: state.auth.email,
 })
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({

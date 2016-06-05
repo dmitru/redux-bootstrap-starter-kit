@@ -37,13 +37,13 @@ const storeEnhancer = compose(
 const initialState = {}
 const authToken = cookie.get('token')
 if (authToken) {
-  initialState.user = { tokenId: authToken }
+  initialState.auth = { tokenId: authToken }
 }
 
 export const store = createStore(reducer, initialState, storeEnhancer)
 
 export const UserIsAuthenticated = UserAuthWrapper({
-  authSelector: state => state.user,
+  authSelector: state => state.auth,
   redirectAction: routerActions.replace,
   wrapperDisplayName: 'UserIsAuthenticated',
 })

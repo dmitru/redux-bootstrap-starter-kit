@@ -2,10 +2,10 @@
  * Created by dmitru on 6/4/16.
  */
 
-import * as user from './user'
+import * as auth from './auth'
 
 const api = {
-  user,
+  auth,
 }
 
 export default api

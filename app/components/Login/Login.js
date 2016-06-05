@@ -16,7 +16,7 @@ import {
   Col,
   Alert } from 'react-bootstrap'
 
-import { login } from '../../actions/user'
+import { login } from '../../actions/auth'
 import styles from './Login.css'
 
 class LoginContainer extends Component {
@@ -138,12 +138,12 @@ class LoginContainer extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  const isAuthenticated = state.user.tokenId != null
+  const isAuthenticated = state.auth.tokenId != null
   const redirect = ownProps.location.query.redirect || '/'
   return {
     isAuthenticated,
     redirect,
-    error: state.user.error,
+    error: state.auth.error,
   }
 }
 

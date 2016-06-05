@@ -3,13 +3,11 @@ import { render } from 'react-dom'
 import { Router, Route, IndexRoute, Link } from 'react-router'
 import { Provider } from 'react-redux'
 import { Button } from 'react-bootstrap'
-import { routerActions } from 'react-router-redux'
-import { UserAuthWrapper } from 'redux-auth-wrapper'
 
-import { store, history } from './store'
+import { store, history, UserIsAuthenticated } from './store'
 import App from './components/App'
 import Login from './components/Login'
-import { logout } from './actions/user'
+import { logout } from './actions/auth'
 
 const About = () => (
   <div>
@@ -35,12 +33,6 @@ const NoMatch = () => (
     <Link to="/"><Button bsStyle="primary">Home</Button></Link>
   </div>
 )
-
-const UserIsAuthenticated = UserAuthWrapper({
-  authSelector: state => state.user,
-  redirectAction: routerActions.replace,
-  wrapperDisplayName: 'UserIsAuthenticated',
-})
 
 render(
   <Provider store={store}>

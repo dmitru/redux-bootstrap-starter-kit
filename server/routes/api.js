@@ -1,15 +1,31 @@
 const express = require('express')
 const router = express.Router()
 
-router.post('/login', (req, res, next) => {
-  // TODO: this is a stub for implementing user authentication
+const TOKEN_ID = 'a-secret-token-string'
+const USER = {
+  email: 'test@user.com',
+}
+
+router.get('/user', (req, res) => {
   setTimeout(() => {
-    if (req.body.email !== 'test@user.com') {
+    // TODO: refactor this check of credentials
+    if (req.body.token !== TOKEN_ID) {
+      res.status(401).json({ error: 'WRONG_CREDENTIALS' })
+    } else {
+      res.json(USER)
+    }
+  }, 800)
+})
+
+// TODO: this is a stub for implementing user authentication
+router.post('/login', (req, res) => {
+  setTimeout(() => {
+    if (req.body.email !== USER.email) {
       res.status(401).json({ error: 'WRONG_CREDENTIALS' })
     } else {
       res.json({
         email: req.body.email,
-        tokenId: 'a-secret-token-string',
+        tokenId: TOKEN_ID,
       })
     }
   }, 800)
