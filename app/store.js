@@ -5,13 +5,12 @@ import {
   routerActions,
 } from 'react-router-redux'
 
+import _ from 'lodash'
 import thunk from 'redux-thunk'
 import { applyMiddleware, createStore, combineReducers, compose } from 'redux'
 import { reducer as formReducer } from 'redux-form'
 import { browserHistory } from 'react-router'
 import { UserAuthWrapper } from 'redux-auth-wrapper'
-
-import cookie from './utils/cookie'
 
 import reducers from './reducers'
 
@@ -34,16 +33,11 @@ const storeEnhancer = compose(
   window.devToolsExtension ? window.devToolsExtension() : f => f
 )
 
-const initialState = {}
-const authToken = cookie.get('token')
-if (authToken) {
-  initialState.auth = { tokenId: authToken }
-}
-
-export const store = createStore(reducer, initialState, storeEnhancer)
+export const store = createStore(reducer, storeEnhancer)
 
 export const UserIsAuthenticated = UserAuthWrapper({
-  authSelector: state => state.auth,
+  authSelector: (state) => state.auth,
+  predicate: (authState) => !_.isUndefined(authState.token),
   redirectAction: routerActions.replace,
   wrapperDisplayName: 'UserIsAuthenticated',
 })

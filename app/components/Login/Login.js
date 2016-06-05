@@ -2,11 +2,10 @@
  * Taken from https://github.com/mjrussell/redux-auth-wrapper/blob/master/examples/basic/components/Login.js
  * */
 
-import React, { Component, PropTypes } from 'react'
-import { bindActionCreators } from 'redux'
+import _ from 'lodash'
+import React, { Component } from 'react'
 import { routerActions } from 'react-router-redux'
 import { connect } from 'react-redux'
-import { ThreeBounce } from 'better-react-spinkit'
 import {
   ControlLabel,
   Form,
@@ -16,17 +15,14 @@ import {
   Col,
   Alert } from 'react-bootstrap'
 
+import Loader from '../Loader'
 import { login } from '../../actions/auth'
 import styles from './Login.css'
 
 class LoginContainer extends Component {
-
   static propTypes = {
-    login: PropTypes.func.isRequired,
-    replace: PropTypes.func.isRequired,
-    isAuthenticated: PropTypes.bool.isRequired,
-    error: PropTypes.string,
-    redirect: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
+    auth: React.PropTypes.object.isRequired,
+    redirect: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.func]),
   }
 
   constructor(props) {
@@ -36,7 +32,6 @@ class LoginContainer extends Component {
     this.state = {
       email: '',
       password: '',
-      isLoading: false,
     }
   }
 
@@ -50,15 +45,11 @@ class LoginContainer extends Component {
 
   onClick = (e) => {
     e.preventDefault()
-    this.setState({
-      isLoading: true,
-    })
-    this.props.login({
+    const { dispatch } = this.props
+    dispatch(login({
       email: this.state.email,
       password: this.state.password,
-    }, () => {
-      this.setState({ isLoading: false })
-    })
+    }))
   }
 
   handleEmailChange(e) {
@@ -70,19 +61,22 @@ class LoginContainer extends Component {
   }
 
   ensureNotLoggedIn = (props) => {
-    const { isAuthenticated, replace, redirect } = props
+    const { dispatch, auth: { token }, redirect } = props
+    const isAuthenticated = !_.isUndefined(token)
+    console.log(props, isAuthenticated)
 
     if (isAuthenticated) {
-      replace(redirect)
+      dispatch(routerActions.replace(redirect))
     }
   }
 
   render() {
-    const errorMessage = this.props.error ?
+    const { auth: { error, isAuthenticating } } = this.props
+    const errorMessage = error ?
       (<Alert bsStyle="danger">
-        <strong>Can't login</strong>: {this.props.error}
+        <strong>Can't login</strong>: {error}
       </Alert>) : null
-    const spinner = this.state.isLoading ? <ThreeBounce fadeIn={false} /> : null
+    const spinner = isAuthenticating ? <Loader /> : null
 
     return (
       <div>
@@ -138,18 +132,11 @@ class LoginContainer extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  const isAuthenticated = state.auth.tokenId != null
   const redirect = ownProps.location.query.redirect || '/'
   return {
-    isAuthenticated,
     redirect,
-    error: state.auth.error,
+    auth: state.auth,
   }
 }
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({
-  login,
-  replace: routerActions.replace,
-}, dispatch)
-
-export default connect(mapStateToProps, mapDispatchToProps)(LoginContainer)
+export default connect(mapStateToProps)(LoginContainer)

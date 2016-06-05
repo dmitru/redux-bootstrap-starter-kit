@@ -1,12 +1,13 @@
 import React from 'react'
 import { render } from 'react-dom'
-import { Router, Route, IndexRoute, Link } from 'react-router'
+import { Router, Route, IndexRoute } from 'react-router'
 import { Provider } from 'react-redux'
-import { Button } from 'react-bootstrap'
 
 import { store, history, UserIsAuthenticated } from './store'
 import App from './components/App'
 import Login from './components/Login'
+import Entries from './components/Entries'
+import Categories from './components/Categories'
 import { logout } from './actions/auth'
 
 const About = () => (
@@ -15,22 +16,9 @@ const About = () => (
   </div>
 )
 
-const Entries = () => (
-  <div>
-    <h2>Entries</h2>
-  </div>
-)
-
-const Categories = () => (
-  <div>
-    <h2>Categories</h2>
-  </div>
-)
-
 const NoMatch = () => (
   <div>
     <h2>No match</h2>
-    <Link to="/"><Button bsStyle="primary">Home</Button></Link>
   </div>
 )
 

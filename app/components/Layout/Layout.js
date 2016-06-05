@@ -55,7 +55,7 @@ class Layout extends Component {
     ]
 
     const navbarLinksRight = isAuthenticated ? [
-      <Navbar.Text eventKey={10} key={10}>Logged in as {username}</Navbar.Text>,
+      username ? (<Navbar.Text eventKey={10} key={10}>Logged in as {username}</Navbar.Text>) : null,
       <NavItem eventKey={11} onClick={onLogout} key={11}>Logout</NavItem>,
     ] : [
     ]
@@ -89,8 +89,8 @@ class Layout extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  isAuthenticated: state.auth.tokenId != null,
-  username: state.auth.email,
+  isAuthenticated: state.auth.token != null,
+  username: state.profile.user && state.profile.user.email,
 })
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({

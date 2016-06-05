@@ -6,10 +6,39 @@ const USER = {
   email: 'test@user.com',
 }
 
-router.get('/user', (req, res) => {
+router.get('/categories', (req, res) => {
   setTimeout(() => {
     // TODO: refactor this check of credentials
-    if (req.body.token !== TOKEN_ID) {
+    if (req.param('token', '') !== TOKEN_ID) {
+      res.status(401).json({ error: 'WRONG_CREDENTIALS' })
+    } else {
+      res.json([
+        { name: 'Food' },
+        { name: 'Entertainment' },
+      ])
+    }
+  }, 800)
+})
+
+router.get('/entries', (req, res) => {
+  setTimeout(() => {
+    // TODO: refactor this check of credentials
+    if (req.param('token', '') !== TOKEN_ID) {
+      res.status(401).json({ error: 'WRONG_CREDENTIALS' })
+    } else {
+      res.json([
+        { amount: 10 },
+        { amount: 20 },
+        { amount: 30 },
+      ])
+    }
+  }, 800)
+})
+
+router.get('/profile', (req, res) => {
+  setTimeout(() => {
+    // TODO: refactor this check of credentials
+    if (req.param('token', '') !== TOKEN_ID) {
       res.status(401).json({ error: 'WRONG_CREDENTIALS' })
     } else {
       res.json(USER)
@@ -17,15 +46,14 @@ router.get('/user', (req, res) => {
   }, 800)
 })
 
-// TODO: this is a stub for implementing user authentication
+// TODO: this is a stub for implementing profile authentication
 router.post('/login', (req, res) => {
   setTimeout(() => {
     if (req.body.email !== USER.email) {
       res.status(401).json({ error: 'WRONG_CREDENTIALS' })
     } else {
       res.json({
-        email: req.body.email,
-        tokenId: TOKEN_ID,
+        token: TOKEN_ID,
       })
     }
   }, 800)

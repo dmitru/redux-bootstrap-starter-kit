@@ -14,16 +14,16 @@ const saveAuthToken = (token) => {
   })
 }
 
-export function login({ email, password, saveToken = true }, callback = null) {
+export function login({ email, password, saveToken = true }) {
   return (dispatch) => {
-    api.user.login({ email, password })
+    dispatch({
+      type: constants.AUTH_REQUEST,
+    })
+    api.auth.login({ email, password })
       .then((res) => {
         const data = res.data
         if (saveToken) {
-          saveAuthToken(data.tokenId)
-        }
-        if (callback) {
-          callback(data, null)
+          saveAuthToken(data.token)
         }
         dispatch({
           type: constants.AUTH_LOGGED_IN,
@@ -31,9 +31,6 @@ export function login({ email, password, saveToken = true }, callback = null) {
         })
       })
       .catch((err) => {
-        if (callback) {
-          callback(null, err)
-        }
         dispatch({
           type: constants.AUTH_LOGIN_ERROR,
           payload: err.data.error,
