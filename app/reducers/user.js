@@ -1,10 +1,14 @@
 import * as constants from '../constants'
 
 export default function userUpdate(state = {}, { type, payload }) {
-  if (type === constants.USER_LOGGED_IN) {
-    return payload
-  } else if (type === constants.USER_LOGGED_OUT) {
-    return {}
+  switch (type) {
+    case constants.USER_LOGGED_IN:
+      return payload
+    case constants.USER_LOGGED_OUT:
+      return {}
+    case constants.USER_LOGIN_ERROR:
+      return { error: payload }
+    default:
+      return state
   }
-  return state
 }

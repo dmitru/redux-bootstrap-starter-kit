@@ -1,2 +1,3 @@
-export const USER_LOGGED_IN = 'USER_LOGGED_IN'
-export const USER_LOGGED_OUT = 'USER_LOGGED_OUT'
+export const USER_LOGIN_ERROR = 'USER/LOGIN_ERROR'
+export const USER_LOGGED_IN = 'USER/LOGGED_IN'
+export const USER_LOGGED_OUT = 'USER/LOGGED_OUT'

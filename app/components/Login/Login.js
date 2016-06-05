@@ -16,6 +16,7 @@ class LoginContainer extends Component {
     login: PropTypes.func.isRequired,
     replace: PropTypes.func.isRequired,
     isAuthenticated: PropTypes.bool.isRequired,
+    error: PropTypes.string,
     redirect: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
   }
 
@@ -97,6 +98,8 @@ class LoginContainer extends Component {
             <Button onClick={this.onClick} type="submit">
               Login
             </Button>
+
+            <div>{this.props.error}</div>
           </Form>
         </Col>
       </div>
@@ -110,6 +113,7 @@ const mapStateToProps = (state, ownProps) => {
   return {
     isAuthenticated,
     redirect,
+    error: state.user.error,
   }
 }
 

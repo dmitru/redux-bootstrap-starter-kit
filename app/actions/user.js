@@ -29,6 +29,10 @@ export function login({ email, password, saveToken = true }) {
       })
       .catch((err) => {
         console.log(['catch', err])
+        dispatch({
+          type: constants.USER_LOGIN_ERROR,
+          payload: err.data.error,
+        })
       })
   }
 }
