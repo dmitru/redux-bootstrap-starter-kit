@@ -6,9 +6,18 @@ import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { routerActions } from 'react-router-redux'
 import { connect } from 'react-redux'
-import { ControlLabel, Form, FormGroup, FormControl, Button, Col } from 'react-bootstrap'
+import { ThreeBounce } from 'better-react-spinkit'
+import {
+  ControlLabel,
+  Form,
+  FormGroup,
+  FormControl,
+  Button,
+  Col,
+  Alert } from 'react-bootstrap'
 
-import { login } from '../actions/user'
+import { login } from '../../actions/user'
+import styles from './Login.css'
 
 class LoginContainer extends Component {
 
@@ -27,6 +36,7 @@ class LoginContainer extends Component {
     this.state = {
       email: '',
       password: '',
+      isLoading: false,
     }
   }
 
@@ -40,9 +50,14 @@ class LoginContainer extends Component {
 
   onClick = (e) => {
     e.preventDefault()
+    this.setState({
+      isLoading: true,
+    })
     this.props.login({
       email: this.state.email,
       password: this.state.password,
+    }, () => {
+      this.setState({ isLoading: false })
     })
   }
 
@@ -63,12 +78,24 @@ class LoginContainer extends Component {
   }
 
   render() {
+    const errorMessage = this.props.error ?
+      (<Alert bsStyle="danger">
+        <strong>Can't login</strong>: {this.props.error}
+      </Alert>) : null
+    const spinner = this.state.isLoading ? <ThreeBounce fadeIn={false} /> : null
+
     return (
       <div>
         <Col xs={6} xsOffset={3} style={{ textAlign: 'center' }}>
           <h2>Log in to the app</h2>
 
-          <Form horizontal>
+          <Form horizontal className={styles.loginForm}>
+            {errorMessage}
+
+            <Alert bsStyle="info">
+              <strong>Hint</strong>: use the following email: <code>"test@user.com"</code>
+            </Alert>
+
             <FormGroup controlId="formHorizontalEmail">
               <Col componentClass={ControlLabel} sm={4}>
                 Email
@@ -95,12 +122,15 @@ class LoginContainer extends Component {
               </Col>
             </FormGroup>
 
-            <Button onClick={this.onClick} type="submit">
-              Login
-            </Button>
+            <div>
+              <Button onClick={this.onClick} type="submit">
+                Login
+              </Button>
 
-            <div>{this.props.error}</div>
+            </div>
           </Form>
+
+          {spinner}
         </Col>
       </div>
     )

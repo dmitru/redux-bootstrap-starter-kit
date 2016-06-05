@@ -2,6 +2,8 @@ var path = require('path')
 var webpack = require('webpack')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
 const validate = require('webpack-validator')
+const precss = require('precss')
+const autoprefixer = require('autoprefixer')
 
 const config = {
   devtool: 'eval-source-map',
@@ -50,11 +52,14 @@ const config = {
       loader: 'json',
     }, {
       test: /\.css$/,
-      loader: 'style!css?modules&localIdentName=[name]---[local]---[hash:base64:5]',
+      loader: 'style-loader!css-loader?modules&importLoaders=1!postcss-loader',
     }, {
       test: /\.jade$/,
       loader: 'jade',
     }],
+  },
+  postcss: function () {
+    return [precss, autoprefixer]
   },
 }
 
