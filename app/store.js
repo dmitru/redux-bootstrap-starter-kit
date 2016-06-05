@@ -11,6 +11,8 @@ import { reducer as formReducer } from 'redux-form'
 import { browserHistory } from 'react-router'
 import { UserAuthWrapper } from 'redux-auth-wrapper'
 
+import cookie from './utils/cookie'
+
 import reducers from './reducers'
 
 
@@ -32,7 +34,13 @@ const storeEnhancer = compose(
   window.devToolsExtension ? window.devToolsExtension() : f => f
 )
 
-export const store = createStore(reducer, storeEnhancer)
+const initialState = {}
+const authToken = cookie.get('token')
+if (authToken) {
+  initialState.user = { tokenId: authToken }
+}
+
+export const store = createStore(reducer, initialState, storeEnhancer)
 
 export const UserIsAuthenticated = UserAuthWrapper({
   authSelector: state => state.user,

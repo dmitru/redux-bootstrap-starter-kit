@@ -5,7 +5,6 @@
 import React from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { IndexLink } from 'react-router'
 import { Nav, Navbar, NavItem, Grid, Col, Row } from 'react-bootstrap'
 import { LinkContainer, IndexLinkContainer } from 'react-router-bootstrap'
 
@@ -42,7 +41,7 @@ const Layout = ({ onLogout, children, isAuthenticated, username }) => {
       <Navbar fluid staticTop>
         <Navbar.Header>
           <Navbar.Brand>
-            <IndexLink to="/">Expense Tracker</IndexLink>
+            Expense Tracker
           </Navbar.Brand>
         </Navbar.Header>
         <Nav navbar>

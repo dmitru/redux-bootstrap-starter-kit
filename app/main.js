@@ -9,13 +9,12 @@ import { UserAuthWrapper } from 'redux-auth-wrapper'
 import { store, history } from './store'
 import App from './components/App'
 import Login from './components/Login'
-import Layout from './components/Layout'
 import { logout } from './actions/user'
 
 const About = () => (
-  <Layout>
+  <div>
     <h2>About</h2>
-  </Layout>
+  </div>
 )
 
 const Entries = () => (
@@ -46,12 +45,12 @@ const UserIsAuthenticated = UserAuthWrapper({
 render(
   <Provider store={store}>
     <Router history={history}>
-      <Route path="/login" component={Login} />
-      <Route path="/about" component={About} />
-      <Route path="/" component={UserIsAuthenticated(App)}>
-        <IndexRoute component={Entries} />
-        <Route path="" component={Entries} />
-        <Route path="categories" component={Categories} />
+      <Route path="/" component={App}>
+        <IndexRoute component={UserIsAuthenticated(Entries)} />
+        <Route path="login" component={Login} />
+        <Route path="about" component={About} />
+        <Route path="" component={UserIsAuthenticated(Entries)} />
+        <Route path="categories" component={UserIsAuthenticated(Categories)} />
         <Route path="*" component={NoMatch} />
       </Route>
       <button onClick={() => logout()}>Logout</button>

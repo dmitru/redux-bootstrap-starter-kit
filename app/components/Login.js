@@ -6,9 +6,8 @@ import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { routerActions } from 'react-router-redux'
 import { connect } from 'react-redux'
-import { ControlLabel, Form, FormGroup, FormControl, Button, Col, Checkbox } from 'react-bootstrap'
+import { ControlLabel, Form, FormGroup, FormControl, Button, Col } from 'react-bootstrap'
 
-import Layout from './Layout'
 import { login } from '../actions/user'
 
 class LoginContainer extends Component {
@@ -65,48 +64,41 @@ class LoginContainer extends Component {
   render() {
     return (
       <div>
-        <Layout>
-          <Col xs={6} xsOffset={3} style={{ textAlign: 'center' }}>
-            <h2>Log in to the app</h2>
+        <Col xs={6} xsOffset={3} style={{ textAlign: 'center' }}>
+          <h2>Log in to the app</h2>
 
-            <Form horizontal>
-              <FormGroup controlId="formHorizontalEmail">
-                <Col componentClass={ControlLabel} sm={4}>
-                  Email
-                </Col>
-                <Col sm={8}>
-                  <FormControl
-                    type="email" placeholder="Email"
-                    value={this.state.email}
-                    onChange={this.handleEmailChange}
-                  />
-                </Col>
-              </FormGroup>
+          <Form horizontal>
+            <FormGroup controlId="formHorizontalEmail">
+              <Col componentClass={ControlLabel} sm={4}>
+                Email
+              </Col>
+              <Col sm={8}>
+                <FormControl
+                  type="email" placeholder="Email"
+                  value={this.state.email}
+                  onChange={this.handleEmailChange}
+                />
+              </Col>
+            </FormGroup>
 
-              <FormGroup controlId="formHorizontalPassword">
-                <Col componentClass={ControlLabel} sm={4}>
-                  Password
-                </Col>
-                <Col sm={8}>
-                  <FormControl
-                    type="password" placeholder="Password"
-                    value={this.state.password}
-                    onChange={this.handlePasswordChange}
-                  />
-                </Col>
-              </FormGroup>
+            <FormGroup controlId="formHorizontalPassword">
+              <Col componentClass={ControlLabel} sm={4}>
+                Password
+              </Col>
+              <Col sm={8}>
+                <FormControl
+                  type="password" placeholder="Password"
+                  value={this.state.password}
+                  onChange={this.handlePasswordChange}
+                />
+              </Col>
+            </FormGroup>
 
-              <FormGroup>
-                <Col smOffset={4} sm={4}>
-                  <Checkbox>Remember me</Checkbox>
-                </Col>
-              </FormGroup>
-              <Button onClick={this.onClick} type="submit">
-                Login
-              </Button>
-            </Form>
-          </Col>
-        </Layout>
+            <Button onClick={this.onClick} type="submit">
+              Login
+            </Button>
+          </Form>
+        </Col>
       </div>
     )
   }
