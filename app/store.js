@@ -5,6 +5,7 @@ import {
   routerActions,
 } from 'react-router-redux'
 
+import _ from 'lodash'
 import thunk from 'redux-thunk'
 import { applyMiddleware, createStore, combineReducers, compose } from 'redux'
 import { reducer as formReducer } from 'redux-form'
@@ -35,7 +36,8 @@ const storeEnhancer = compose(
 export const store = createStore(reducer, storeEnhancer)
 
 export const UserIsAuthenticated = UserAuthWrapper({
-  authSelector: state => state.user,
+  authSelector: (state) => state.auth,
+  predicate: (authState) => !_.isUndefined(authState.token),
   redirectAction: routerActions.replace,
   wrapperDisplayName: 'UserIsAuthenticated',
 })
