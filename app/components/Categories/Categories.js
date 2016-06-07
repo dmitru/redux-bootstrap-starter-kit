@@ -35,7 +35,7 @@ class Categories extends Component {
     }
     return (
       <div>
-        <h2>Entries</h2>
+        <h2>Categories</h2>
         Number of categories: {categories.items.length}
         <div> {children} </div>
       </div>

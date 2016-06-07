@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import _ from 'lodash'
 
+import { getIsAuthenticated } from '../selectors/auth'
 import { fetchUserProfile } from '../actions/profile'
 import { fetchEntries } from '../actions/entries'
 import { fetchCategories } from '../actions/categories'
@@ -58,7 +59,7 @@ class App extends Component {
 
 const mapStateToProps = (state) => ({
   auth: state.auth,
-  isAuthenticated: !_.isNull(state.auth.token),
+  isAuthenticated: getIsAuthenticated(state),
   profile: state.profile,
   entries: state.entries,
   categories: state.categories,
