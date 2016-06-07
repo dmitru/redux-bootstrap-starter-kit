@@ -2,7 +2,6 @@
  * Taken from https://github.com/mjrussell/redux-auth-wrapper/blob/master/examples/basic/components/Login.js
  * */
 
-import _ from 'lodash'
 import React, { Component } from 'react'
 import { routerActions } from 'react-router-redux'
 import { connect } from 'react-redux'
@@ -18,10 +17,13 @@ import {
 import Loader from '../Loader'
 import { login } from '../../actions/auth'
 import styles from './Login.css'
+import { getIsAuthenticated } from '../../selectors/auth'
 
 class LoginContainer extends Component {
   static propTypes = {
-    auth: React.PropTypes.object.isRequired,
+    isAuthenticating: React.PropTypes.bool.isRequired,
+    isAuthenticated: React.PropTypes.bool.isRequired,
+    authError: React.PropTypes.string.isRequired,
     redirect: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.func]),
   }
 
@@ -61,20 +63,17 @@ class LoginContainer extends Component {
   }
 
   ensureNotLoggedIn = (props) => {
-    const { dispatch, auth: { token }, redirect } = props
-    const isAuthenticated = !_.isUndefined(token)
-    console.log(props, isAuthenticated)
-
+    const { dispatch, redirect, isAuthenticated } = props
     if (isAuthenticated) {
       dispatch(routerActions.replace(redirect))
     }
   }
 
   render() {
-    const { auth: { error, isAuthenticating } } = this.props
-    const errorMessage = error ?
+    const { authError, isAuthenticating } = this.props
+    const errorMessage = authError ?
       (<Alert bsStyle="danger">
-        <strong>Can't login</strong>: {error}
+        <strong>Can't login</strong>: {authError}
       </Alert>) : null
     const spinner = isAuthenticating ? <Loader /> : null
 
@@ -135,7 +134,9 @@ const mapStateToProps = (state, ownProps) => {
   const redirect = ownProps.location.query.redirect || '/'
   return {
     redirect,
-    auth: state.auth,
+    authError: state.auth.error,
+    isAuthenticating: state.auth.isAuthenticating,
+    isAuthenticated: getIsAuthenticated(state),
   }
 }
 
