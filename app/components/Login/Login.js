@@ -62,7 +62,7 @@ class LoginContainer extends Component {
 
   ensureNotLoggedIn = (props) => {
     const { dispatch, auth: { token }, redirect } = props
-    const isAuthenticated = !_.isUndefined(token)
+    const isAuthenticated = !_.isNull(token)
     console.log(props, isAuthenticated)
 
     if (isAuthenticated) {

@@ -58,7 +58,7 @@ class App extends Component {
 
 const mapStateToProps = (state) => ({
   auth: state.auth,
-  isAuthenticated: !_.isUndefined(state.auth.token),
+  isAuthenticated: !_.isNull(state.auth.token),
   profile: state.profile,
   entries: state.entries,
   categories: state.categories,

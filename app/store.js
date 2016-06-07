@@ -37,7 +37,7 @@ export const store = createStore(reducer, storeEnhancer)
 
 export const UserIsAuthenticated = UserAuthWrapper({
   authSelector: (state) => state.auth,
-  predicate: (authState) => !_.isUndefined(authState.token),
+  predicate: (authState) => !_.isNull(authState.token),
   redirectAction: routerActions.replace,
   wrapperDisplayName: 'UserIsAuthenticated',
 })
