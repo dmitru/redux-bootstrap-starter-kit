@@ -10,7 +10,7 @@ router.get('/categories', (req, res) => {
   setTimeout(() => {
     // TODO: refactor this check of credentials
     if (req.param('token', '') !== TOKEN_ID) {
-      res.status(401).json({ error: 'WRONG_CREDENTIALS' })
+      res.status(401).json({ errorCode: 'WRONG_CREDENTIALS', message: 'Wrong username or password.' })
     } else {
       res.json([
         { name: 'Food' },
@@ -24,7 +24,7 @@ router.get('/entries', (req, res) => {
   setTimeout(() => {
     // TODO: refactor this check of credentials
     if (req.param('token', '') !== TOKEN_ID) {
-      res.status(401).json({ error: 'WRONG_CREDENTIALS' })
+      res.status(401).json({ errorCode: 'WRONG_CREDENTIALS', message: 'Wrong username or password.' })
     } else {
       res.json([
         { amount: 10 },
@@ -39,7 +39,7 @@ router.get('/profile', (req, res) => {
   setTimeout(() => {
     // TODO: refactor this check of credentials
     if (req.param('token', '') !== TOKEN_ID) {
-      res.status(401).json({ error: 'WRONG_CREDENTIALS' })
+      res.status(401).json({ errorCode: 'WRONG_CREDENTIALS', message: 'Wrong username or password.' })
     } else {
       res.json(USER)
     }
@@ -50,7 +50,7 @@ router.get('/profile', (req, res) => {
 router.post('/login', (req, res) => {
   setTimeout(() => {
     if (req.body.email !== USER.email) {
-      res.status(401).json({ error: 'WRONG_CREDENTIALS' })
+      res.status(401).json({ errorCode: 'WRONG_CREDENTIALS', message: 'Wrong username or password.' })
     } else {
       res.json({
         token: TOKEN_ID,

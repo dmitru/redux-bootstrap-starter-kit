@@ -17,7 +17,7 @@ import {
 import Loader from '../Loader'
 import { login } from '../../actions/auth'
 import styles from './Login.css'
-import { getIsAuthenticated } from '../../selectors/auth'
+import { getIsAuthenticated, getAuthErrorMessage } from '../../selectors/auth'
 
 class LoginContainer extends Component {
   static propTypes = {
@@ -134,7 +134,7 @@ const mapStateToProps = (state, ownProps) => {
   const redirect = ownProps.location.query.redirect || '/'
   return {
     redirect,
-    authError: state.auth.error,
+    authError: getAuthErrorMessage(state),
     isAuthenticating: state.auth.isAuthenticating,
     isAuthenticated: getIsAuthenticated(state),
   }

@@ -61,6 +61,7 @@ const config = {
   postcss: function () {
     return [precss, autoprefixer]
   },
+  stats: 'errors-only',
 }
 
 module.exports = validate(config)

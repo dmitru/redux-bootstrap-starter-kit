@@ -19,7 +19,7 @@ export function login({ email, password, saveToken = true }) {
     dispatch({
       type: constants.AUTH_REQUEST,
     })
-    api.auth.login({ email, password })
+    return api.auth.login({ email, password })
       .then((res) => {
         const data = res.data
         if (saveToken) {
@@ -31,9 +31,22 @@ export function login({ email, password, saveToken = true }) {
         })
       })
       .catch((err) => {
+        let errorData = undefined
+        if (err instanceof Error) {
+          errorData = {
+            errorCode: constants.ERROR_CLIENT,
+            message: 'Error while making request to the server',
+          }
+        } else {
+          errorData = {
+            errorCode: err.data && err.data.errorCode ? err.data.errorCode : constants.ERROR_SERVER,
+            status: err.status ? err.status : 500,
+            message: err.data && err.data.message ? err.data.message : 'Server error',
+          }
+        }
         dispatch({
           type: constants.AUTH_LOGIN_ERROR,
-          payload: err.data.error,
+          payload: errorData,
         })
       })
   }
