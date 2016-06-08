@@ -5,6 +5,7 @@ import _ from 'lodash'
 import { fetchEntries } from '../../actions/entries'
 import { fetchCategories } from '../../actions/categories'
 import Loader from '../../components/Loader'
+import EntryList from '../../components/EntryList'
 
 class Entries extends Component {
   static propTypes = {
@@ -42,7 +43,8 @@ class Entries extends Component {
     return (
       <div>
         <h2>Entries</h2>
-        Number of entries: {entries.items.length}
+        <EntryList entries={entries.items} />
+          Number of entries: {entries.items.length}
         <div> {children} </div>
       </div>
     )

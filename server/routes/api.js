@@ -31,9 +31,9 @@ router.get('/entries', (req, res) => {
       res.status(401).json({ errorCode: 'WRONG_CREDENTIALS', message: 'Wrong username or password.' })
     } else {
       res.json([
-        { amount: 10 },
-        { amount: 20 },
-        { amount: 30 },
+        { amount: 10, id: 1 },
+        { amount: 20, id: 2 },
+        { amount: 30, id: 3 },
       ])
     }
   }, 800)
