@@ -1,0 +1,6 @@
+{
+  "status": 200,
+  "body": {
+    "token": "a-token-string"
+  }
+}

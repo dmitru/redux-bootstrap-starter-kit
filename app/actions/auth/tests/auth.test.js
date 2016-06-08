@@ -1,17 +1,13 @@
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import _ from 'lodash'
-import { login } from '../auth'
-import chai from 'chai'
-import axios from 'axios'
-import MockAdapter from 'axios-mock-adapter'
+import { login, logout } from '../auth'
+import { expect, mockApi } from '../../../utils/testUtils'
 
-import * as constants from '../../constants'
+import authLoggedInStub from './stubs/authLoggedIn.stub.json'
+import authErrorWrongCredentialsStub from './stubs/authErrorWrongCredentials.stub.json'
 
-chai.config.truncateThreshold = 0
-const expect = chai.expect
-
-const mockApi = new MockAdapter(axios)
+import * as constants from '../../../constants'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
@@ -21,9 +17,9 @@ describe('async actions', () => {
     mockApi.reset()
   })
 
-  it('creates AUTH_LOGGED_IN when successfully signed in', () => {
+  it('creates AUTH_LOGGED_IN when successfully signed in', (done) => {
     mockApi.onPost('/api/login')
-      .replyOnce(200, { token: 'a-token-string' })
+      .replyOnce(authLoggedInStub.status, authLoggedInStub.body)
 
     const expectedActions = [
       { type: constants.AUTH_REQUEST },
@@ -34,10 +30,11 @@ describe('async actions', () => {
     return store.dispatch(login({ email: 'test@user.com', password: 'email' }))
       .then(() => {
         expect(store.getActions()).to.deep.equal(expectedActions)
+        done()
       })
   })
 
-  it('creates AUTH_LOGIN_ERROR when cannot sign in (server error)', () => {
+  it('creates AUTH_LOGIN_ERROR when cannot sign in (server error)', (done) => {
     mockApi.onPost('/api/login')
       .replyOnce(500)
 
@@ -56,19 +53,20 @@ describe('async actions', () => {
     return store.dispatch(login({ email: 'test@user.com', password: 'email' }))
       .then(() => {
         expect(store.getActions()).to.deep.equal(expectedActions)
+        done()
       })
   })
 
   it('creates AUTH_LOGIN_ERROR when cannot sign in (wrong credentials)', (done) => {
     mockApi.onPost('/api/login')
-      .replyOnce(402, { errorCode: 'WRONG_CREDENTIALS' })
+      .replyOnce(authErrorWrongCredentialsStub.status, authErrorWrongCredentialsStub.body)
 
     const expectedActions = [
       { type: constants.AUTH_REQUEST },
       { type: constants.AUTH_LOGIN_ERROR,
         payload: {
           errorCode: 'WRONG_CREDENTIALS',
-          status: 402,
+          status: authErrorWrongCredentialsStub.status,
         },
       },
     ]
@@ -82,5 +80,10 @@ describe('async actions', () => {
         expect(actions).to.deep.equal(expectedActions)
         done()
       })
+  })
+
+  it('creates AUTH_LOGGED_OUT when logged out', () => {
+    const expectedAction = { type: constants.AUTH_LOGGED_OUT }
+    expect(logout()).to.deep.equal(expectedAction)
   })
 })

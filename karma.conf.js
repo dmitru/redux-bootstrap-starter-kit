@@ -13,6 +13,7 @@ module.exports = function (config) {
         bail: true,
       },
     },
+    logLevel: config.LOG_DEBUG,
     files: [
       './webpack.tests.js',
     ],

@@ -15,7 +15,7 @@
   "version": "0.0.0",
   "scripts": {
     "test": "karma start",
-    "test:ci": "TEST_WATCH=true karma start",
+    "test:watch": "TEST_WATCH=true karma start",
     "dev": "node server/server.js",
     "dev:watch": "nodemon server/server.js",
     "build": "rimraf dist && cross-env NODE_ENV=production webpack --config ./webpack.production.config.js --progress --profile --colors",

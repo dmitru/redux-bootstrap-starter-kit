@@ -15,7 +15,7 @@ import {
   Alert } from 'react-bootstrap'
 
 import Loader from '../Loader'
-import { login } from '../../actions/auth'
+import { login } from '../../actions/auth/auth'
 import styles from './Login.css'
 import { getIsAuthenticated, getAuthErrorMessage } from '../../selectors/auth'
 

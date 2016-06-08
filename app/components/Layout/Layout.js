@@ -8,7 +8,7 @@ import { connect } from 'react-redux'
 import { Nav, Navbar, NavItem, Grid, Col, Row } from 'react-bootstrap'
 import { LinkContainer, IndexLinkContainer } from 'react-router-bootstrap'
 
-import { logout } from '../../actions/auth'
+import { logout } from '../../actions/auth/auth'
 
 class Layout extends Component {
 

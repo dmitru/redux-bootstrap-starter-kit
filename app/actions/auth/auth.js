@@ -1,7 +1,7 @@
-import * as constants from '../constants'
-import api from '../api'
+import * as constants from '../../constants'
+import api from '../../api'
 
-import cookie from '../utils/cookie'
+import cookie from '../../utils/cookie'
 
 
 const saveAuthToken = (token) => {
@@ -33,6 +33,7 @@ export function login({ email, password, saveToken = true }) {
       .catch((err) => {
         let errorData = undefined
         if (err instanceof Error) {
+          console.log(err)
           errorData = {
             errorCode: constants.ERROR_CLIENT,
             message: 'Error while making request to the server',

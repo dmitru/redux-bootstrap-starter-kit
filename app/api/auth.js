@@ -1,6 +1,6 @@
 
-import ajax from 'axios'
+import client from '../utils/apiClient'
 
 export const login = ({ email, password }) => (
-  ajax.post('/api/login', { email, password })
+  client.post('/api/login', { email, password })
 )

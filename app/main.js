@@ -8,7 +8,7 @@ import App from './components/App'
 import Login from './components/Login'
 import Entries from './components/Entries'
 import Categories from './components/Categories'
-import { logout } from './actions/auth'
+import { logout } from './actions/auth/auth'
 
 const About = () => (
   <div>
