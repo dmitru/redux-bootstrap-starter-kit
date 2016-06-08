@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import _ from 'lodash'
 
 import { fetchCategories } from '../../actions/categories'
-import Loader from '../Loader'
+import Loader from '../../components/Loader'
 
 class Categories extends Component {
   static propTypes = {

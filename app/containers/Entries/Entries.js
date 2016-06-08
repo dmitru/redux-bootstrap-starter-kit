@@ -4,7 +4,7 @@ import _ from 'lodash'
 
 import { fetchEntries } from '../../actions/entries'
 import { fetchCategories } from '../../actions/categories'
-import Loader from '../Loader'
+import Loader from '../../components/Loader'
 
 class Entries extends Component {
   static propTypes = {

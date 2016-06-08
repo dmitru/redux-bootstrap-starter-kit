@@ -6,6 +6,10 @@ const USER = {
   email: 'test@user.com',
 }
 
+/*
+ * This is an API stub meant only for testing the frontend app
+ */
+
 router.get('/categories', (req, res) => {
   setTimeout(() => {
     // TODO: refactor this check of credentials

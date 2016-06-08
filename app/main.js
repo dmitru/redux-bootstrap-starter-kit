@@ -4,10 +4,10 @@ import { Router, Route, IndexRoute } from 'react-router'
 import { Provider } from 'react-redux'
 
 import { store, history, UserIsAuthenticated } from './store'
-import App from './components/App'
-import Login from './components/Login'
-import Entries from './components/Entries'
-import Categories from './components/Categories'
+import App from './containers/App'
+import Login from './containers/Login'
+import Entries from './containers/Entries'
+import Categories from './containers/Categories'
 import { logout } from './actions/auth/auth'
 
 const About = () => (

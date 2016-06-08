@@ -7,7 +7,7 @@ import { fetchUserProfile } from '../actions/profile'
 import { fetchEntries } from '../actions/entries'
 import { fetchCategories } from '../actions/categories'
 import Layout from './Layout'
-import Loader from './Loader'
+import Loader from '../components/Loader'
 
 class App extends Component {
   static propTypes = {
