@@ -1,14 +1,13 @@
-var express = require('express')
-var path = require('path')
-var favicon = require('serve-favicon')
-var logger = require('morgan')
-var cookieParser = require('cookie-parser')
-var bodyParser = require('body-parser')
+const express = require('express')
+const path = require('path')
+const favicon = require('serve-favicon')
+const logger = require('morgan')
+const cookieParser = require('cookie-parser')
+const bodyParser = require('body-parser')
 const webpack = require('webpack')
 const webpackMiddleware = require('webpack-dev-middleware')
 const webpackHotMiddleware = require('webpack-hot-middleware')
 const config = require('../webpack.config.js')
-const _ = require('lodash')
 
 const routes = require('./routes')
 
@@ -37,8 +36,8 @@ if (isDeveloping) {
       timings: true,
       chunks: false,
       chunkModules: false,
-      modules: false
-    }
+      modules: false,
+    },
   })
 
   app.use(middleware)
@@ -69,7 +68,7 @@ if (isDeveloping) {
     res.status(err.status || 500)
     res.render('error', {
       message: err.message,
-      error: err
+      error: err,
     })
   })
 } else {
@@ -77,7 +76,7 @@ if (isDeveloping) {
     res.status(err.status || 500)
     res.render('error', {
       message: err.message,
-      error: {}
+      error: {},
     })
   })
 }
