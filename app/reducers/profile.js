@@ -18,3 +18,5 @@ export default function profileUpdate(state = initialState, { type, payload }) {
       return state
   }
 }
+
+export const getUserProfile = (state) => state.user

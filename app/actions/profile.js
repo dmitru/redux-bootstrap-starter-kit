@@ -1,10 +1,13 @@
-import * as constants from '../constants'
 
+import _ from 'lodash'
+
+import * as constants from '../constants'
 import api from '../api'
 
 
-export function fetchUserProfile({ token }) {
-  return (dispatch) => {
+export function fetchUserProfile() {
+  return (dispatch, getState) => {
+    const { auth: { token } } = getState()
     dispatch({
       type: constants.PROFILE_FETCH_REQUEST,
     })
@@ -25,3 +28,11 @@ export function fetchUserProfile({ token }) {
   }
 }
 
+export function fetchUserProfileIfNeeded() {
+  return (dispatch, getState) => {
+    const { profile } = getState()
+    if (_.isEmpty(profile.user) && !profile.isLoading) {
+      dispatch(fetchUserProfile())
+    }
+  }
+}

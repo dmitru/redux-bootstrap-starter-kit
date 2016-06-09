@@ -1,5 +1,6 @@
-import * as constants from '../constants'
+import _ from 'lodash'
 
+import * as constants from '../constants'
 import api from '../api'
 
 
@@ -23,6 +24,16 @@ export function fetchEntries() {
           payload: err.data,
         })
       })
+  }
+}
+
+
+export function fetchEntriesIfNeeded() {
+  return (dispatch, getState) => {
+    const { entries } = getState()
+    if (_.isNull(entries.items) && !entries.isLoading) {
+      dispatch(fetchEntries())
+    }
   }
 }
 

@@ -54,6 +54,9 @@ const config = {
       test: /\.css$/,
       loader: 'style-loader!css-loader?modules&importLoaders=1!postcss-loader',
     }, {
+      test: /\.scss$/,
+      loader: 'style-loader!css-loader?modules&importLoaders=1!postcss-loader?parser=postcss-scss',
+    }, {
       test: /\.jade$/,
       loader: 'jade',
     }],

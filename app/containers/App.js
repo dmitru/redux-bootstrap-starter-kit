@@ -2,53 +2,37 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import _ from 'lodash'
 
-import { getIsAuthenticated } from '../selectors/auth'
-import { fetchUserProfile } from '../actions/profile'
-import { fetchEntries } from '../actions/entries'
-import { fetchCategories } from '../actions/categories'
+import { getIsAuthenticated } from '../reducers/auth'
+import { getUserProfile } from '../reducers/profile'
+import { fetchUserProfileIfNeeded } from '../actions/profile'
+import { fetchEntriesIfNeeded } from '../actions/entries'
+import { fetchCategoriesIfNeeded } from '../actions/categories'
 import Layout from './Layout'
 import Loader from '../components/Loader'
 
 class App extends Component {
   static propTypes = {
     children: React.PropTypes.element,
-    auth: React.PropTypes.object.isRequired,
+    readyToShowUi: React.PropTypes.bool.isRequired,
     isAuthenticated: React.PropTypes.bool.isRequired,
-    profile: React.PropTypes.object.isRequired,
-    entries: React.PropTypes.object.isRequired,
-    categories: React.PropTypes.object.isRequired,
   }
 
   componentWillMount() {
-    this.fetchInitialDataIfNeeded(this.props)
+    this.fetchInitialDataIfNeeded()
   }
 
-  componentWillReceiveProps(nextProps) {
-    this.fetchInitialDataIfNeeded(nextProps)
-  }
-
-  fetchInitialDataIfNeeded(props) {
-    const { isAuthenticated, auth, profile, entries, categories, dispatch } = props
+  fetchInitialDataIfNeeded() {
+    const { isAuthenticated, dispatch } = this.props
     if (!isAuthenticated) {
       return
     }
-
-    if (_.isEmpty(profile.user) && !profile.isLoading) {
-      dispatch(fetchUserProfile({ token: auth.token }))
-    }
-
-    if (_.isNull(entries.items) && !entries.isLoading) {
-      dispatch(fetchEntries())
-    }
-
-    if (_.isNull(categories.items) && !categories.isLoading) {
-      dispatch(fetchCategories())
-    }
+    dispatch(fetchUserProfileIfNeeded())
+    dispatch(fetchEntriesIfNeeded())
+    dispatch(fetchCategoriesIfNeeded())
   }
 
   render() {
-    const { profile: { user }, children, isAuthenticated } = this.props
-    const readyToShowUi = !isAuthenticated ? true : !_.isNull(user)
+    const { children, readyToShowUi } = this.props
     return (
       <Layout>
         <div> {readyToShowUi ? children : <Loader />} </div>
@@ -57,12 +41,12 @@ class App extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  auth: state.auth,
-  isAuthenticated: getIsAuthenticated(state),
-  profile: state.profile,
-  entries: state.entries,
-  categories: state.categories,
-})
+const mapStateToProps = (state) => {
+  const isAuthenticated = getIsAuthenticated(state)
+  return {
+    readyToShowUi: isAuthenticated ? !_.isNull(getUserProfile(state)) : true,
+    isAuthenticated,
+  }
+}
 
 export default connect(mapStateToProps)(App)

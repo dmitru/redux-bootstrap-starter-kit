@@ -1,3 +1,4 @@
+
 import * as constants from '../constants'
 
 const initialState = {
@@ -20,3 +21,5 @@ export default function categoriesUpdate(state = initialState, { type, payload }
       return state
   }
 }
+
+export const getCategories = (state) => state.categories.items

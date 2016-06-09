@@ -1,5 +1,6 @@
-import * as constants from '../constants'
+import _ from 'lodash'
 
+import * as constants from '../constants'
 import api from '../api'
 
 
@@ -26,3 +27,11 @@ export function fetchCategories() {
   }
 }
 
+export function fetchCategoriesIfNeeded() {
+  return (dispatch, getState) => {
+    const { categories } = getState()
+    if (_.isNull(categories.items) && !categories.isLoading) {
+      dispatch(fetchCategories())
+    }
+  }
+}

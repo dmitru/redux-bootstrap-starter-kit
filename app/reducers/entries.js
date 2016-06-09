@@ -1,3 +1,4 @@
+
 import * as constants from '../constants'
 
 const initialState = {
@@ -20,3 +21,5 @@ export default function entriesUpdate(state = initialState, { type, payload }) {
       return state
   }
 }
+
+export const getEntries = (state) => state.entries.items

@@ -17,7 +17,7 @@ import {
 import Loader from '../../components/Loader'
 import { login } from '../../actions/auth/auth'
 import styles from './Login.css'
-import { getIsAuthenticated, getAuthErrorMessage } from '../../selectors/auth'
+import { getIsAuthenticated, getAuthErrorMessage } from '../../reducers/auth'
 
 class LoginContainer extends Component {
   static propTypes = {

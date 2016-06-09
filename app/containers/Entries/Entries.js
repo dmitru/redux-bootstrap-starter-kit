@@ -1,59 +1,67 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { createSelector } from 'reselect'
 import _ from 'lodash'
 
-import { fetchEntries } from '../../actions/entries'
-import { fetchCategories } from '../../actions/categories'
+import { getEntries } from '../../reducers/entries'
+import { getCategories } from '../../reducers/categories'
+import { fetchEntriesIfNeeded } from '../../actions/entries'
+import { fetchCategoriesIfNeeded } from '../../actions/categories'
 import Loader from '../../components/Loader'
 import EntryList from '../../components/EntryList'
 
 class Entries extends Component {
   static propTypes = {
     children: React.PropTypes.element,
-    entries: React.PropTypes.object.isRequired,
-    categories: React.PropTypes.object.isRequired,
+    readyToShowUi: React.PropTypes.bool.isRequired,
+    entries: React.PropTypes.array,
   }
 
   componentWillMount() {
-    this.fetchInitialDataIfNeeded(this.props)
+    this.fetchInitialDataIfNeeded()
   }
 
-  componentWillReceiveProps(nextProps) {
-    this.fetchInitialDataIfNeeded(nextProps)
-  }
-
-  fetchInitialDataIfNeeded(props) {
-    const { dispatch, entries, categories } = props
-
-    if (_.isNull(entries.items) && !entries.isLoading) {
-      dispatch(fetchEntries())
-    }
-
-    if (_.isNull(categories.items) && !categories.isLoading) {
-      dispatch(fetchCategories())
-    }
+  fetchInitialDataIfNeeded() {
+    const { dispatch } = this.props
+    dispatch(fetchEntriesIfNeeded())
+    dispatch(fetchCategoriesIfNeeded())
   }
 
   render() {
-    const { entries, categories, children } = this.props
-    const readyToShowUi = !_.isNull(entries.items) && !_.isNull(categories.items)
+    const { children, readyToShowUi, entries } = this.props
     if (!readyToShowUi) {
       return <Loader />
     }
     return (
       <div>
         <h2>Entries</h2>
-        <EntryList entries={entries.items} />
-          Number of entries: {entries.items.length}
+        <EntryList entries={entries} />
+          Number of entries: {entries.length}
         <div> {children} </div>
       </div>
     )
   }
 }
 
+const entriesViewSelector = createSelector(
+  [getEntries, getCategories],
+  (entries, categories) => {
+    if (_.isNull(entries) || _.isNull(categories)) {
+      return []
+    }
+    return entries.map(e => {
+      const category = categories.find(c => c.id === e.categoryId)
+      if (_.isUndefined(category)) {
+        return { ...e }
+      }
+      return { ...e, category: category.name }
+    })
+  }
+)
+
 const mapStateToProps = (state) => ({
-  entries: state.entries,
-  categories: state.categories,
+  readyToShowUi: !_.isNull(getCategories(state)) && !_.isNull(getEntries(state)),
+  entries: entriesViewSelector(state),
 })
 
 export default connect(mapStateToProps)(Entries)

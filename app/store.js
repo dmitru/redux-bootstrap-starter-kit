@@ -11,7 +11,7 @@ import { reducer as formReducer } from 'redux-form'
 import { browserHistory } from 'react-router'
 import { UserAuthWrapper } from 'redux-auth-wrapper'
 
-import { getIsAuthenticated } from './selectors/auth'
+import { getIsAuthenticated } from './reducers/auth'
 import reducers from './reducers'
 
 

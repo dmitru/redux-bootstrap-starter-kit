@@ -1,0 +1,22 @@
+
+.entryContainer {
+    margin: 5px;
+}
+
+.amount {
+
+}
+
+.category {
+    margin-left: 10px;
+}
+
+.amountExpense {
+    @extend .amount;
+    color: red;
+}
+
+.amountIncome {
+    @extend .amount;
+    color: green;
+}

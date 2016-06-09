@@ -2,41 +2,35 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import _ from 'lodash'
 
-import { fetchCategories } from '../../actions/categories'
+import { fetchCategoriesIfNeeded } from '../../actions/categories'
+import { getCategories } from '../../reducers/categories'
 import Loader from '../../components/Loader'
 
 class Categories extends Component {
   static propTypes = {
     children: React.PropTypes.element,
-    categories: React.PropTypes.object.isRequired,
+    readyToShowUi: React.PropTypes.bool.isRequired,
+    categories: React.PropTypes.array,
   }
 
   componentWillMount() {
-    this.fetchInitialDataIfNeeded(this.props)
+    this.fetchInitialDataIfNeeded()
   }
 
-  componentWillReceiveProps(nextProps) {
-    this.fetchInitialDataIfNeeded(nextProps)
-  }
-
-  fetchInitialDataIfNeeded(props) {
-    const { dispatch, categories } = props
-
-    if (_.isNull(categories.items) && !categories.isLoading) {
-      dispatch(fetchCategories())
-    }
+  fetchInitialDataIfNeeded() {
+    const { dispatch } = this.props
+    dispatch(fetchCategoriesIfNeeded())
   }
 
   render() {
-    const { categories, children } = this.props
-    const readyToShowUi = !_.isNull(categories.items)
+    const { children, readyToShowUi, categories } = this.props
     if (!readyToShowUi) {
       return <Loader />
     }
     return (
       <div>
         <h2>Categories</h2>
-        Number of categories: {categories.items.length}
+        Number of categories: {categories.length}
         <div> {children} </div>
       </div>
     )
@@ -44,7 +38,8 @@ class Categories extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  categories: state.categories,
+  readyToShowUi: !_.isNull(getCategories(state)),
+  categories: getCategories(state),
 })
 
 export default connect(mapStateToProps)(Categories)
