@@ -16,8 +16,8 @@ The purpose of the project is to provide a **simple** example of a Redux applica
 Install dependencies:
 ``npm i`` 
 
-Run the server:
-``npm start``
+Run the dev server:
+``npm dev``
 
 
 ## Roadmap

@@ -59,6 +59,9 @@ const config = {
     }, {
       test: /\.jade$/,
       loader: 'jade',
+    }, {
+      test: /\.md$/,
+      loader: 'html!markdown',
     }],
   },
   postcss: function () {

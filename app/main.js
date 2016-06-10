@@ -8,13 +8,8 @@ import App from './containers/App'
 import Login from './containers/Login'
 import Entries from './containers/Entries'
 import Categories from './containers/Categories'
+import About from './components/About'
 import { logout } from './actions/auth/auth'
-
-const About = () => (
-  <div>
-    <h2>About</h2>
-  </div>
-)
 
 const NoMatch = () => (
   <div>
