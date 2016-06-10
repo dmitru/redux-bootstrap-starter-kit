@@ -5,6 +5,7 @@ import _ from 'lodash'
 import { fetchCategoriesIfNeeded } from '../../actions/categories'
 import { getCategories } from '../../reducers/categories'
 import Loader from '../../components/Loader'
+import CategoryList from '../../components/CategoryList'
 
 class Categories extends Component {
   static propTypes = {
@@ -30,6 +31,7 @@ class Categories extends Component {
     return (
       <div>
         <h2>Categories</h2>
+        <CategoryList categories={categories} />
         Number of categories: {categories.length}
         <div> {children} </div>
       </div>
