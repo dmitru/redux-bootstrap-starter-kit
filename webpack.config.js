@@ -52,6 +52,11 @@ const config = {
       loader: 'json',
     }, {
       test: /\.css$/,
+      include: [path.join(__dirname, 'node_modules', 'react-virtualized')],
+      loader: 'style!css',
+    }, {
+      test: /\.css$/,
+      include: [path.join(__dirname, 'app')],
       loader: 'style-loader!css-loader?modules&importLoaders=1!postcss-loader',
     }, {
       test: /\.scss$/,

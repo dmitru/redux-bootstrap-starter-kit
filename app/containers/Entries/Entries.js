@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { createSelector } from 'reselect'
+import { Col } from 'react-bootstrap'
 import _ from 'lodash'
 
 import { getEntries } from '../../reducers/entries'
@@ -34,10 +35,15 @@ class Entries extends Component {
     }
     return (
       <div>
-        <h2>Entries</h2>
-        <EntryList entries={entries} />
-          Number of entries: {entries.length}
-        <div> {children} </div>
+        <Col xs={12} sm={8} smOffset={2} lg={6} lgOffset={3}>
+          <h2>Entries</h2>
+          <div style={{ height: '100px' }}>
+            TODO: New entry form
+          </div>
+          <EntryList entries={entries} style={{ marginTop: '20px' }} />
+          <div style={{ marginTop: '15px' }}>Number of entries: {entries.length}</div>
+          <div> {children} </div>
+        </Col>
       </div>
     )
   }

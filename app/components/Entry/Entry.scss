@@ -1,22 +1,18 @@
-
-.entryContainer {
-
-}
-
-.amount {
-
-}
-
-.category {
-    margin-left: 10px;
-}
+$expenseColor: #C14642;
+$incomeColor: #249C3E;
 
 .amountExpense {
-    @extend .amount;
-    color: red;
+    color: $expenseColor;
 }
 
 .amountIncome {
-    @extend .amount;
-    color: green;
+    color: $incomeColor;
+}
+
+.expenseLabel {
+    background-color: $expenseColor;
+}
+
+.incomeLabel {
+    background-color: $incomeColor;
 }

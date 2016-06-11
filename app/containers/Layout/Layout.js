@@ -5,7 +5,7 @@
 import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { Nav, Navbar, NavItem, Grid, Col, Row } from 'react-bootstrap'
+import { Nav, Navbar, NavItem, Grid, Col, Row, Glyphicon } from 'react-bootstrap'
 import { LinkContainer, IndexLinkContainer } from 'react-router-bootstrap'
 
 import { logout } from '../../actions/auth/auth'
@@ -50,33 +50,53 @@ class Layout extends Component {
         <NavItem eventKey={1}>About</NavItem>
       </LinkContainer >,
       <LinkContainer to="/login" key={2}>
-        <NavItem eventKey={2}>Login</NavItem>
+        <NavItem eventKey={2}><Glyphicon glyph="log-in" /> Login</NavItem>
       </LinkContainer >,
       <LinkContainer to="/signup" key={3}>
-        <NavItem eventKey={3}>Sign Up</NavItem>
+        <NavItem eventKey={3}><Glyphicon glyph="user" /> Sign Up</NavItem>
       </LinkContainer >,
     ]
 
     const navbarLinksRight = isAuthenticated ? [
-      username ? (<Navbar.Text eventKey={10} key={10}>Logged in as {username}</Navbar.Text>) : null,
-      <NavItem eventKey={11} onClick={onLogout} key={11}>Logout</NavItem>,
+      username ? (
+        <Navbar.Text eventKey={10} key={10}>
+          <span style={{ padding: '10px 15px' }} role="presentation">Logged in as {username}</span>
+        </Navbar.Text>) : null,
+      <NavItem eventKey={11} onClick={onLogout} key={11}>
+        <Glyphicon glyph="log-out" /> Logout
+      </NavItem>,
     ] : [
     ]
 
     return (
       <div>
-        <Navbar fluid staticTop>
+        <Navbar fluid>
           <Navbar.Header>
             <Navbar.Brand>
               Expense Tracker
             </Navbar.Brand>
+            <button
+              type="button"
+              className="navbar-toggle collapsed"
+              data-toggle="collapse"
+              data-target="#header-navbar"
+              aria-expanded="false"
+              aria-controls="navbar"
+            >
+              <span className="sr-only">Toggle navigation</span>
+              <span className="icon-bar"></span>
+              <span className="icon-bar"></span>
+              <span className="icon-bar"></span>
+            </button>
           </Navbar.Header>
-          <Nav navbar>
-            {navbarLinks.map((e) => e)}
-          </Nav>
-          <Nav pullRight>
-            {navbarLinksRight.map((e) => e)}
-          </Nav>
+          <div id="header-navbar" className="navbar-collapse collapse">
+            <Nav navbar>
+              {navbarLinks.map((e) => e)}
+            </Nav>
+            <Nav pullRight>
+              {navbarLinksRight.map((e) => e)}
+            </Nav>
+          </div>
         </Navbar>
 
         <Grid>

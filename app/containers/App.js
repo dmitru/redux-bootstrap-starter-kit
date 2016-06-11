@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import _ from 'lodash'
+import 'react-virtualized/styles.css'
 
 import { getIsAuthenticated } from '../reducers/auth'
 import { getUserProfile } from '../reducers/profile'

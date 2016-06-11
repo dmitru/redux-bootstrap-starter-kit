@@ -48,14 +48,25 @@ module.exports = {
       }
     }, {
       test: /\.json?$/,
-      loader: 'json'
+      loader: 'json',
     }, {
       test: /\.css$/,
-      loader: ExtractTextPlugin.extract('style', 'css?modules&localIdentName=[name]---[local]---[hash:base64:5]!postcss')
+      include: [path.join(__dirname, 'node_modules', 'react-virtualized')],
+      loader: 'style!css',
+    }, {
+      test: /\.css$/,
+      include: [path.join(__dirname, 'app')],
+      loader: 'style-loader!css-loader?modules&importLoaders=1!postcss-loader',
+    }, {
+      test: /\.scss$/,
+      loader: 'style-loader!css-loader?modules&importLoaders=1!postcss-loader?parser=postcss-scss',
     }, {
       test: /\.jade$/,
-      loader: 'jade'
-    }]
+      loader: 'jade',
+    }, {
+      test: /\.md$/,
+      loader: 'html!markdown',
+    }],
   },
   postcss: [
     require('autoprefixer')
