@@ -77,7 +77,6 @@ class LoginContainer extends Component {
   render() {
     const { fields: { email, password }, authError, isAuthenticating } = this.props
     const spinner = isAuthenticating ? <Loader /> : null
-    const errorMessage = authError ? `Can't login: ${authError}` : null
 
     return (
       <div>
@@ -124,7 +123,10 @@ class LoginContainer extends Component {
             </Row>
 
             <Row style={{ marginTop: '15px' }}>
-              {errorMessage ? <Alert bsStyle="danger">{errorMessage}</Alert> : null}
+              {authError ? (
+                <Alert bsStyle="danger">
+                  <strong>Can't login: </strong>{authError}
+                </Alert>) : null}
             </Row>
 
             <Row>

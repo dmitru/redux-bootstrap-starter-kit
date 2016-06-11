@@ -55,12 +55,12 @@ export function login({ email, password, saveToken = true }) {
   }
 }
 
-export function signup({ email, password, saveToken = true }) {
+export function signup({ email, password, captchaResponse, saveToken = true }) {
   return (dispatch) => {
     dispatch({
       type: constants.AUTH_SIGNUP_REQUEST,
     })
-    return api.auth.signup({ email, password })
+    return api.auth.signup({ email, password, captchaResponse })
       .then((res) => {
         const data = res.data
         if (saveToken) {

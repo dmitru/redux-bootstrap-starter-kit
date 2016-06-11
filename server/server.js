@@ -65,16 +65,18 @@ app.use(function (req, res, next) {
 // error handlers
 if (isDeveloping) {
   app.use( (err, req, res, next) => {
+    console.error(err)
     res.status(err.status || 500)
-    res.render('error', {
+    res.json({
       message: err.message,
       error: err,
     })
   })
 } else {
   app.use((err, req, res, next) => {
+    console.error(err)
     res.status(err.status || 500)
-    res.render('error', {
+    res.json('error', {
       message: err.message,
       error: {},
     })

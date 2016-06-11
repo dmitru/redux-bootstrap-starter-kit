@@ -13,6 +13,8 @@ import {
   Button,
 } from 'react-bootstrap'
 import { reduxForm } from 'redux-form'
+import Recaptcha from 'react-recaptcha'
+import _ from 'lodash'
 
 import Loader from '../../components/Loader'
 import {
@@ -51,6 +53,14 @@ class SignupContainer extends Component {
     redirect: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.func]),
   }
 
+  constructor(props) {
+    super(props)
+    this.handleCaptchaResponse = this.handleCaptchaResponse.bind(this)
+    this.state = {
+      captchaResponse: null,
+    }
+  }
+
   componentWillMount() {
     this.ensureNotLoggedIn(this.props)
   }
@@ -61,9 +71,11 @@ class SignupContainer extends Component {
 
   handleSubmit = (values) => {
     const { dispatch } = this.props
+    const { captchaResponse } = this.state
     dispatch(signup({
       email: values.email,
       password: values.password,
+      captchaResponse,
     }))
   }
 
@@ -74,10 +86,14 @@ class SignupContainer extends Component {
     }
   }
 
+  handleCaptchaResponse = (response) => {
+    console.log(response)
+    this.setState({ captchaResponse: response })
+  }
+
   render() {
     const { fields: { email, password }, authError, isSigningUp } = this.props
     const spinner = isSigningUp ? <Loader /> : null
-    const errorMessage = authError ? `Can't login: ${authError}` : null
 
     return (
       <div>
@@ -111,13 +127,27 @@ class SignupContainer extends Component {
             </Row>
 
             <Row>
-              <Button type="submit" disabled={isSigningUp}>
+              <div className="pull-right" style={{ marginBottom: '15px' }}>
+                <Recaptcha
+                  sitekey="6LegTyITAAAAALkNMIBSAuTqq81PLCcESBHWz0yM"
+                  render="explicit"
+                  onloadCallback={(arg) => console.log(arg)}
+                  verifyCallback={this.handleCaptchaResponse}
+                />
+              </div>
+            </Row>
+
+            <Row>
+              <Button type="submit" disabled={isSigningUp || _.isNull(this.captchaResponse)}>
                 Sign up
               </Button>
             </Row>
 
             <Row style={{ marginTop: '15px' }}>
-              {errorMessage ? <Alert bsStyle="danger">{errorMessage}</Alert> : null}
+              {authError ? (
+                <Alert bsStyle="danger">
+                  <strong>Can't sign up:</strong> {authError}
+                </Alert>) : null}
             </Row>
 
             <Row>
