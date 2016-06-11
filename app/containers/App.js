@@ -18,11 +18,15 @@ class App extends Component {
   }
 
   componentWillMount() {
-    this.fetchInitialDataIfNeeded()
+    this.fetchInitialDataIfNeeded(this.props)
   }
 
-  fetchInitialDataIfNeeded() {
-    const { isAuthenticated, dispatch } = this.props
+  componentWillReceiveProps(props) {
+    this.fetchInitialDataIfNeeded(props)
+  }
+
+  fetchInitialDataIfNeeded(props) {
+    const { isAuthenticated, dispatch } = props
     if (!isAuthenticated) {
       return
     }

@@ -19,4 +19,4 @@ export default function profileUpdate(state = initialState, { type, payload }) {
   }
 }
 
-export const getUserProfile = (state) => state.user
+export const getUserProfile = (state) => state.profile.user

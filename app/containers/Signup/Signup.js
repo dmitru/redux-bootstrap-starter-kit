@@ -19,10 +19,10 @@ import {
   TextInput,
   PasswordInput,
 } from '../../components/FormFields'
-import { login } from '../../actions/auth/auth'
-import { getIsAuthenticated, getIsAuthenticating, getAuthErrorMessage } from '../../reducers/auth'
+import { signup } from '../../actions/auth/auth'
+import { getIsSigningUp, getAuthErrorMessage, getIsAuthenticated } from '../../reducers/auth'
 
-import styles from './Login.css'
+import styles from './Signup.css'
 
 export const fields = ['email', 'password']
 
@@ -41,11 +41,11 @@ const validateForm = values => {
   return errors
 }
 
-class LoginContainer extends Component {
+class SignupContainer extends Component {
   static propTypes = {
     fields: React.PropTypes.object.isRequired,
     handleSubmit: React.PropTypes.func.isRequired,
-    isAuthenticating: React.PropTypes.bool.isRequired,
+    isSigningUp: React.PropTypes.bool.isRequired,
     isAuthenticated: React.PropTypes.bool.isRequired,
     authError: React.PropTypes.string,
     redirect: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.func]),
@@ -61,7 +61,7 @@ class LoginContainer extends Component {
 
   handleSubmit = (values) => {
     const { dispatch } = this.props
-    dispatch(login({
+    dispatch(signup({
       email: values.email,
       password: values.password,
     }))
@@ -75,14 +75,14 @@ class LoginContainer extends Component {
   }
 
   render() {
-    const { fields: { email, password }, authError, isAuthenticating } = this.props
-    const spinner = isAuthenticating ? <Loader /> : null
+    const { fields: { email, password }, authError, isSigningUp } = this.props
+    const spinner = isSigningUp ? <Loader /> : null
     const errorMessage = authError ? `Can't login: ${authError}` : null
 
     return (
       <div>
         <Col xs={6} xsOffset={3} style={{ textAlign: 'center' }}>
-          <h2>Log in to the app</h2>
+          <h2>Sign up</h2>
 
           <form
             className={classNames(styles.loginForm, 'form-horizontal')}
@@ -111,14 +111,7 @@ class LoginContainer extends Component {
             </Row>
 
             <Row>
-              <Button type="submit" disabled={isAuthenticating}>
-                Log in
-              </Button>
-              <Button
-                onClick={() => this.props.dispatch(routerActions.replace('/signup'))}
-                disabled={isAuthenticating}
-                style={{ marginLeft: '15px' }}
-              >
+              <Button type="submit" disabled={isSigningUp}>
                 Sign up
               </Button>
             </Row>
@@ -137,20 +130,20 @@ class LoginContainer extends Component {
   }
 }
 
-const LoginFormContainer = reduxForm({
-  form: 'login',
+const SignupFormContainer = reduxForm({
+  form: 'signup',
   fields,
   validateForm,
-})(LoginContainer)
+})(SignupContainer)
 
 const mapStateToProps = (state, ownProps) => {
   const redirect = ownProps.location.query.redirect || '/'
   return {
     redirect,
     authError: getAuthErrorMessage(state),
-    isAuthenticating: getIsAuthenticating(state),
     isAuthenticated: getIsAuthenticated(state),
+    isSigningUp: getIsSigningUp(state),
   }
 }
 
-export default connect(mapStateToProps)(LoginFormContainer)
+export default connect(mapStateToProps)(SignupFormContainer)

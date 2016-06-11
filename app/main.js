@@ -6,6 +6,7 @@ import { Provider } from 'react-redux'
 import { store, history, UserIsAuthenticated } from './store'
 import App from './containers/App'
 import Login from './containers/Login'
+import Signup from './containers/Signup'
 import Entries from './containers/Entries'
 import Categories from './containers/Categories'
 import About from './components/About'
@@ -23,6 +24,7 @@ render(
       <Route path="/" component={App}>
         <IndexRoute component={UserIsAuthenticated(Entries)} />
         <Route path="login" component={Login} />
+        <Route path="signup" component={Signup} />
         <Route path="about" component={About} />
         <Route path="" component={UserIsAuthenticated(Entries)} />
         <Route path="categories" component={UserIsAuthenticated(Categories)} />

@@ -22,7 +22,7 @@ describe('async actions', () => {
       .replyOnce(authLoggedInStub.status, authLoggedInStub.body)
 
     const expectedActions = [
-      { type: constants.AUTH_REQUEST },
+      { type: constants.AUTH_LOGIN_REQUEST },
       { type: constants.AUTH_LOGGED_IN, payload: { token: 'a-token-string' } },
     ]
     const store = mockStore({})
@@ -39,7 +39,7 @@ describe('async actions', () => {
       .replyOnce(500)
 
     const expectedActions = [
-      { type: constants.AUTH_REQUEST },
+      { type: constants.AUTH_LOGIN_REQUEST },
       { type: constants.AUTH_LOGIN_ERROR,
         payload: {
           errorCode: constants.ERROR_SERVER,
@@ -62,7 +62,7 @@ describe('async actions', () => {
       .replyOnce(authErrorWrongCredentialsStub.status, authErrorWrongCredentialsStub.body)
 
     const expectedActions = [
-      { type: constants.AUTH_REQUEST },
+      { type: constants.AUTH_LOGIN_REQUEST },
       { type: constants.AUTH_LOGIN_ERROR,
         payload: {
           errorCode: 'WRONG_CREDENTIALS',

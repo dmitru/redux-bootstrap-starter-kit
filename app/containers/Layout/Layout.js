@@ -46,11 +46,14 @@ class Layout extends Component {
         <NavItem eventKey={3}>About</NavItem>
       </LinkContainer >,
     ] : [
-      <LinkContainer to="/about" key={3}>
-        <NavItem eventKey={3}>About</NavItem>
+      <LinkContainer to="/about" key={1}>
+        <NavItem eventKey={1}>About</NavItem>
       </LinkContainer >,
       <LinkContainer to="/login" key={2}>
         <NavItem eventKey={2}>Login</NavItem>
+      </LinkContainer >,
+      <LinkContainer to="/signup" key={3}>
+        <NavItem eventKey={3}>Sign Up</NavItem>
       </LinkContainer >,
     ]
 
