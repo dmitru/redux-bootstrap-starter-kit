@@ -1,0 +1,43 @@
+.loading {
+    text-align: center;
+    color: #777;
+    padding: 2em 0;
+    transition: opacity .25s ease-in;
+}
+.loadingInline {
+    color: inherit;
+    display: inline;
+    padding: 0;
+}
+.loadingDelaying {
+    visibility: hidden;
+    width: 0;
+    height: 0;
+    opacity: 0.01;
+}
+.loadingDisplaying {
+    visibility: visible;
+    height: auto;
+    width: auto;
+    opacity: 1;
+}
+.loading .glyphicon {
+    font-size: 60px;
+    animation: loading-spin 2s infinite linear;
+}
+/* Avoid height changes when an inline loading indicator appears */
+.loadingInline .glyphicon {
+    font-size: .75em;
+}
+.loadingText {
+    margin-top: 12px;
+}
+
+@keyframes loadingSpin  {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(359deg);
+    }
+}

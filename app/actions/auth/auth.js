@@ -1,3 +1,5 @@
+import { routerActions } from 'react-router-redux'
+
 import * as constants from '../../constants'
 import api from '../../api'
 
@@ -54,8 +56,9 @@ export function login({ email, password, saveToken = true }) {
 }
 
 export function logout() {
-  cookie.unset('token')
-  return {
-    type: constants.AUTH_LOGGED_OUT,
+  return (dispatch) => {
+    cookie.unset('token')
+    dispatch({ type: constants.AUTH_LOGGED_OUT })
+    dispatch(routerActions.replace('/login'))
   }
 }

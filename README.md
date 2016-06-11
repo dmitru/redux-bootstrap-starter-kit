@@ -25,3 +25,8 @@ Run the dev server:
 Here're some things I'd like to add to this project:
 
 - tests
+
+## Credits
+
+- Example of react-bootstrap and redux-form integration:
+    https://gist.github.com/insin/bbf116e8ea10ef38447b

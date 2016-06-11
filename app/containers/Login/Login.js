@@ -2,64 +2,69 @@
  * Taken from https://github.com/mjrussell/redux-auth-wrapper/blob/master/examples/basic/components/Login.js
  * */
 
-import React, { Component } from 'react'
-import { routerActions } from 'react-router-redux'
 import { connect } from 'react-redux'
+import React, { Component } from 'react'
+import classNames from 'classnames'
+import { routerActions } from 'react-router-redux'
 import {
-  ControlLabel,
-  Form,
-  FormGroup,
-  FormControl,
-  Button,
   Col,
-  Alert } from 'react-bootstrap'
+  Row,
+  Alert,
+  Button,
+} from 'react-bootstrap'
+import { reduxForm } from 'redux-form'
 
 import Loader from '../../components/Loader'
+import {
+  TextInput,
+  PasswordInput,
+} from '../../components/FormFields'
 import { login } from '../../actions/auth/auth'
-import styles from './Login.css'
 import { getIsAuthenticated, getAuthErrorMessage } from '../../reducers/auth'
+
+import styles from './Login.css'
+
+export const fields = ['email', 'password']
+
+const validateForm = values => {
+  const errors = {}
+  if (!values.email) {
+    errors.email = 'Required'
+  } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+    errors.email = 'Invalid email address'
+  }
+  if (!values.password) {
+    errors.password = 'Required'
+  } else if (values.password.length < 6) {
+    errors.password = 'Should be longer than 6 characters'
+  }
+  return errors
+}
 
 class LoginContainer extends Component {
   static propTypes = {
+    fields: React.PropTypes.object.isRequired,
+    handleSubmit: React.PropTypes.func.isRequired,
     isAuthenticating: React.PropTypes.bool.isRequired,
     isAuthenticated: React.PropTypes.bool.isRequired,
-    authError: React.PropTypes.string.isRequired,
+    authError: React.PropTypes.string,
     redirect: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.func]),
-  }
-
-  constructor(props) {
-    super(props)
-    this.handlePasswordChange = this.handlePasswordChange.bind(this)
-    this.handleEmailChange = this.handleEmailChange.bind(this)
-    this.state = {
-      email: '',
-      password: '',
-    }
   }
 
   componentWillMount() {
     this.ensureNotLoggedIn(this.props)
   }
 
-  componentWillReceiveProps(nextProps) {
-    this.ensureNotLoggedIn(nextProps)
+  componentWillReceiveProps(props) {
+    this.ensureNotLoggedIn(props)
   }
 
-  onClick = (e) => {
-    e.preventDefault()
+  handleSubmit = (values) => {
     const { dispatch } = this.props
     dispatch(login({
-      email: this.state.email,
-      password: this.state.password,
+      email: values.email,
+      password: values.password,
     }))
-  }
-
-  handleEmailChange(e) {
-    this.setState({ email: e.target.value })
-  }
-
-  handlePasswordChange(e) {
-    this.setState({ password: e.target.value })
   }
 
   ensureNotLoggedIn = (props) => {
@@ -70,65 +75,66 @@ class LoginContainer extends Component {
   }
 
   render() {
-    const { authError, isAuthenticating } = this.props
-    const errorMessage = authError ?
-      (<Alert bsStyle="danger">
-        <strong>Can't login</strong>: {authError}
-      </Alert>) : null
+    const { fields: { email, password }, authError, isAuthenticating } = this.props
     const spinner = isAuthenticating ? <Loader /> : null
+    const errorMessage = authError ? `Can't login: ${authError}` : null
 
     return (
       <div>
         <Col xs={6} xsOffset={3} style={{ textAlign: 'center' }}>
           <h2>Log in to the app</h2>
 
-          <Form horizontal className={styles.loginForm}>
-            {errorMessage}
+          <form
+            className={classNames(styles.loginForm, 'form-horizontal')}
+            onSubmit={this.props.handleSubmit(this.handleSubmit)}
+          >
+            <Row>
+              <Alert bsStyle="info">
+                <strong>Hint</strong>: use the following email: <code>"test@user.com"</code>
+              </Alert>
+            </Row>
 
-            <Alert bsStyle="info">
-              <strong>Hint</strong>: use the following email: <code>"test@user.com"</code>
-            </Alert>
+            <Row>
+              <TextInput
+                field={email}
+                id="email"
+                label="Email:"
+              />
+            </Row>
 
-            <FormGroup controlId="formHorizontalEmail">
-              <Col componentClass={ControlLabel} sm={4}>
-                Email
-              </Col>
-              <Col sm={8}>
-                <FormControl
-                  type="email" placeholder="Email"
-                  value={this.state.email}
-                  onChange={this.handleEmailChange}
-                />
-              </Col>
-            </FormGroup>
+            <Row>
+              <PasswordInput
+                field={password}
+                id="password"
+                label="Password:"
+              />
+            </Row>
 
-            <FormGroup controlId="formHorizontalPassword">
-              <Col componentClass={ControlLabel} sm={4}>
-                Password
-              </Col>
-              <Col sm={8}>
-                <FormControl
-                  type="password" placeholder="Password"
-                  value={this.state.password}
-                  onChange={this.handlePasswordChange}
-                />
-              </Col>
-            </FormGroup>
-
-            <div>
-              <Button onClick={this.onClick} type="submit">
-                Login
+            <Row>
+              <Button type="submit" disabled={isAuthenticating}>
+                Log In
               </Button>
+            </Row>
 
-            </div>
-          </Form>
+            <Row style={{ marginTop: '15px' }}>
+              {errorMessage ? <Alert bsStyle="danger">{errorMessage}</Alert> : null}
+            </Row>
 
-          {spinner}
+            <Row>
+              {spinner}
+            </Row>
+          </form>
         </Col>
       </div>
     )
   }
 }
+
+const LoginFormContainer = reduxForm({
+  form: 'login',
+  fields,
+  validateForm,
+})(LoginContainer)
 
 const mapStateToProps = (state, ownProps) => {
   const redirect = ownProps.location.query.redirect || '/'
@@ -140,4 +146,4 @@ const mapStateToProps = (state, ownProps) => {
   }
 }
 
-export default connect(mapStateToProps)(LoginContainer)
+export default connect(mapStateToProps)(LoginFormContainer)
