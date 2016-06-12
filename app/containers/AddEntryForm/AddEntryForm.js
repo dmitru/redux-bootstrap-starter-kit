@@ -22,7 +22,6 @@ import {
 } from '../../components/FormFields'
 
 import { getCategories } from '../../reducers/categories'
-import styles from './AddEntryForm.scss'
 
 export const fields = ['amount', 'category', 'isIncome']
 
@@ -81,11 +80,8 @@ class AddEntry extends Component {
           />
           <Button
             type="submit"
-            style={{ width: '100px' }}
-            bsClass={classNames(
-              'btn', 'btn-sm',
-              isIncome.value ? 'btn-default' : 'btn-default',
-              styles.btnAddExpenseEntry)}
+            style={{ width: '120px', marginLeft: '15px' }}
+            bsStyle="default"
           >
             {isIncome.value ? 'Add Income' : 'Add Expense'}
           </Button>
