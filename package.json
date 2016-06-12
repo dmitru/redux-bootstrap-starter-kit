@@ -103,6 +103,8 @@
     "react": "^15.1.0",
     "react-addons-shallow-compare": "^15.1.0",
     "react-addons-test-utils": "^15.1.0",
+    "react-bootstrap-switch": "^3.4.5",
+    "react-bootstrap-typeahead": "^0.5.2",
     "react-dom": "^15.1.0",
     "react-recaptcha": "^2.1.1",
     "react-redux": "^4.4.5",

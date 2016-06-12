@@ -2,23 +2,21 @@
 // https://gist.github.com/insin/bbf116e8ea10ef38447b
 
 import React, { PropTypes } from 'react'
+import Typeahead from 'react-bootstrap-typeahead'
 
 import FormField from './FormField'
 
-export default class TextInput extends FormField {
+export default class Select extends FormField {
   static propTypes = {
     field: PropTypes.object.isRequired,
   }
 
   render() {
-    const { field, help, label, placeholder, ...inputProps } = this.props
+    const { field, help, label, ...inputProps } = this.props
     return (
       <FormField field={field} help={help} inputProps={inputProps} label={label}>
-        <input
+        <Typeahead
           {...inputProps}
-          placeholder={placeholder}
-          className="form-control"
-          name={field.name}
           onBlur={field.onBlur}
           onChange={field.onChange}
         />

@@ -88,8 +88,8 @@ export default class FormField extends React.Component {
   render() {
     const { field, help, inputClass, inputProps, label, loading } = this.props
     const error = field.touched && field.error
-    return (
-      <Col>
+    if (label) {
+      return (
         <Row className={classNames('form-group', { 'has-error': error })}>
           <Col sm={4} className="control-label">
             {loading && <Loading inline />} <label htmlFor={inputProps.id}>{label}</label>
@@ -100,7 +100,15 @@ export default class FormField extends React.Component {
             {error && <p className="help-block" style={{ marginBottom: 0 }}>{error}</p>}
           </Col>
         </Row>
-      </Col>
+      )
+    }
+    return (
+      <Row className={classNames('form-group', { 'has-error': error })}>
+        <Col xs={12}>
+          {this.props.children}
+          {error && <p className="help-block" style={{ marginBottom: 0 }}>{error}</p>}
+        </Col>
+      </Row>
     )
   }
 }

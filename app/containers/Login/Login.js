@@ -2,7 +2,6 @@
  * Taken from https://github.com/mjrussell/redux-auth-wrapper/blob/master/examples/basic/components/Login.js
  * */
 
-import { connect } from 'react-redux'
 import React, { Component } from 'react'
 import classNames from 'classnames'
 import { routerActions } from 'react-router-redux'
@@ -26,7 +25,7 @@ import styles from './Login.css'
 
 export const fields = ['email', 'password']
 
-const validateForm = values => {
+const validate = values => {
   const errors = {}
   if (!values.email) {
     errors.email = 'Required'
@@ -89,7 +88,8 @@ class LoginContainer extends Component {
           >
             <Row>
               <Alert bsStyle="info">
-                <strong>Hint</strong>: use the following email: <code>"test@user.com"</code>
+                <strong>Hint</strong>: use the following email: <code>"test@user.com"</code> and
+                <strong>any password</strong>
               </Alert>
             </Row>
 
@@ -139,11 +139,11 @@ class LoginContainer extends Component {
   }
 }
 
-const LoginFormContainer = reduxForm({
+const formConfig = {
   form: 'login',
   fields,
-  validateForm,
-})(LoginContainer)
+  validate,
+}
 
 const mapStateToProps = (state, ownProps) => {
   const redirect = ownProps.location.query.redirect || '/'
@@ -155,4 +155,4 @@ const mapStateToProps = (state, ownProps) => {
   }
 }
 
-export default connect(mapStateToProps)(LoginFormContainer)
+export default reduxForm(formConfig, mapStateToProps)(LoginContainer)

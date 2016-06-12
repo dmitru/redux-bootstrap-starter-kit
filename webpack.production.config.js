@@ -51,7 +51,7 @@ module.exports = {
       loader: 'json',
     }, {
       test: /\.css$/,
-      include: [path.join(__dirname, 'node_modules', 'react-virtualized')],
+      include: [path.join(__dirname, 'node_modules')],
       loader: 'style!css',
     }, {
       test: /\.css$/,

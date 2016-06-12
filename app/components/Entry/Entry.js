@@ -14,20 +14,13 @@ const Entry = ({ date, amount, type, category }) => {
   const amountStyle = isExpense ? styles.amountExpense : styles.amountIncome
   return (
     <Row>
-      <Col xs={5} xsOffset={1}>
-        <span>
-          {moment(date).format('DD.MM.YYYY, hh:mm:ss')}
-        </span>
-      </Col>
-
-      <Col xs={2} style={{ textAlign: 'right' }}>
+      <Col xs={2} style={{ textAlign: 'right', fontWeight: 'bold' }}>
         <span className={amountStyle}>
-          <span style={!isExpense ? { visibility: 'hidden' } : null}>&nbsp;&ndash;</span>
-          {amount}
+          {isExpense ? '-' : '+'}&nbsp;{amount}
         </span>
       </Col>
 
-      <Col xs={4}>
+      <Col xs={5} style={{ textAlign: 'right' }}>
         <span>
           {!_.isNull(category) && (
             <span>
@@ -38,6 +31,12 @@ const Entry = ({ date, amount, type, category }) => {
               </Label>
             </span>)
           }
+        </span>
+      </Col>
+
+      <Col xs={5} style={{ textAlign: 'right' }}>
+        <span title={moment(date).format('DD.MM.YYYY hh:mm:ss')}>
+          {moment(date).format('DD.MM.YYYY')}
         </span>
       </Col>
     </Row>

@@ -10,6 +10,7 @@ import { fetchEntriesIfNeeded } from '../../actions/entries'
 import { fetchCategoriesIfNeeded } from '../../actions/categories'
 import Loader from '../../components/Loader'
 import EntryList from '../../components/EntryList'
+import AddEntryForm from '../AddEntryForm'
 
 class Entries extends Component {
   static propTypes = {
@@ -18,8 +19,17 @@ class Entries extends Component {
     entries: React.PropTypes.array,
   }
 
+  constructor(props) {
+    super(props)
+    this.handleAddEntry = this.handleAddEntry.bind(this)
+  }
+
   componentWillMount() {
     this.fetchInitialDataIfNeeded()
+  }
+
+  handleAddEntry(data) {
+    console.log(data)
   }
 
   fetchInitialDataIfNeeded() {
@@ -35,12 +45,11 @@ class Entries extends Component {
     }
     return (
       <div>
-        <Col xs={12} sm={8} smOffset={2} lg={6} lgOffset={3}>
-          <h2>Entries</h2>
-          <div style={{ height: '100px' }}>
-            TODO: New entry form
+        <Col xs={12} sm={6} smOffset={3}>
+          <AddEntryForm onSubmit={this.handleAddEntry} />
+          <div style={{ marginTop: '30px' }}>
+            <EntryList entries={entries} />
           </div>
-          <EntryList entries={entries} style={{ marginTop: '20px' }} />
           <div style={{ marginTop: '15px' }}>Number of entries: {entries.length}</div>
           <div> {children} </div>
         </Col>

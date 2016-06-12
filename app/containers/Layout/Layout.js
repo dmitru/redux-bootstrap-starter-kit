@@ -99,7 +99,7 @@ class Layout extends Component {
           </div>
         </Navbar>
 
-        <Grid>
+        <Grid style={{ marginBottom: '25px' }}>
           <Row>
             <Col xs={12}>
               {children}

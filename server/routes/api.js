@@ -14,13 +14,14 @@ const USER = {
   email: 'test@user.com',
 }
 
+const utils = require('../utils.js')
+
 /*
  * This is an API stub meant only for testing the frontend app
  */
 
 router.get('/categories', (req, res) => {
   setTimeout(() => {
-    // TODO: refactor this check of credentials
     if (req.param('token', '') !== TOKEN_ID) {
       res.status(401).json({ errorCode: 'WRONG_CREDENTIALS', message: 'Wrong username or password.' })
     } else {
@@ -33,40 +34,28 @@ router.get('/categories', (req, res) => {
   }, 800)
 })
 
-const randomInRange = (from, to) => Math.floor(Math.random() * (to - from)) + from
-const randomDate = (start, end) => (
-  new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()))
-)
-
-randomDate(new Date(2012, 0, 1), new Date())
-
 router.get('/entries', (req, res) => {
   setTimeout(() => {
-    // TODO: refactor this check of credentials
     if (req.param('token', '') !== TOKEN_ID) {
-      res.status(401).json({ errorCode: 'WRONG_CREDENTIALS', message: 'Wrong username or password.' })
+      res.status(401)
+        .json({
+          errorCode: 'WRONG_CREDENTIALS',
+          message: 'Wrong username or password.',
+        })
     } else {
-      const data = []
-      let i = 0
-      while (i < 100) {
-        data.push({
-          id: i,
-          date: randomDate(new Date(2016, 1, 1), new Date()),
-          amount: randomInRange(10, 100),
-          type: ['e', 'i'][randomInRange(0, 2)],
-          categoryId: randomInRange(1, 3) })
-        i++
-      }
-      res.json(data)
+      res.json(utils.generateExampleEntries(200))
     }
   }, 800)
 })
 
 router.get('/profile', (req, res) => {
   setTimeout(() => {
-    // TODO: refactor this check of credentials
     if (req.param('token', '') !== TOKEN_ID) {
-      res.status(401).json({ errorCode: 'WRONG_CREDENTIALS', message: 'Wrong username or password.' })
+      res.status(401)
+        .json({
+          errorCode: 'WRONG_CREDENTIALS',
+          message: 'Wrong username or password.',
+        })
     } else {
       res.json(USER)
     }
@@ -77,7 +66,11 @@ router.get('/profile', (req, res) => {
 router.post('/login', (req, res) => {
   setTimeout(() => {
     if (req.body.email !== USER.email) {
-      res.status(401).json({ errorCode: 'WRONG_CREDENTIALS', message: 'Wrong username or password.' })
+      res.status(401).
+      json({
+        errorCode: 'WRONG_CREDENTIALS',
+        message: 'Wrong username or password.',
+      })
     } else {
       res.json({
         token: TOKEN_ID,
@@ -91,7 +84,11 @@ router.post('/signup', (req, res) => {
     .then(() => {
       setTimeout(() => {
         if (req.body.email !== USER.email) {
-          res.status(401).json({ errorCode: 'WRONG_CREDENTIALS', message: 'Wrong username or password.' })
+          res.status(401)
+            .json({
+              errorCode: 'WRONG_CREDENTIALS', 
+              message: 'Wrong username or password.',
+            })
         } else {
           res.json({
             token: TOKEN_ID,
@@ -99,7 +96,11 @@ router.post('/signup', (req, res) => {
         }
       }, 800)
     }).catch(() => {
-      res.status(403).json({ errorCode: 'ACCESS_DENIED', message: 'Captcha is not verified.' })
+      res.status(403)
+        .json({
+          errorCode: 'ACCESS_DENIED',
+          message: 'Captcha is not verified.',
+        })
     })
 })
 

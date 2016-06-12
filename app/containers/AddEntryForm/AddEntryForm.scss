@@ -1,0 +1,12 @@
+
+.btnAddEntry {
+  margin: 0px 10px;
+}
+
+.btnAddIncomeEntry {
+  @extend .btnAddEntry;
+}
+
+.btnAddExpenseEntry {
+  @extend .btnAddEntry;
+}

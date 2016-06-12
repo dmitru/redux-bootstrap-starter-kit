@@ -6,7 +6,7 @@ const precss = require('precss')
 const autoprefixer = require('autoprefixer')
 
 const config = {
-  devtool: 'eval-source-map',
+  devtool: 'eval',
   watchOptions: {
     aggregateTimeout: 100,
   },
@@ -52,7 +52,7 @@ const config = {
       loader: 'json',
     }, {
       test: /\.css$/,
-      include: [path.join(__dirname, 'node_modules', 'react-virtualized')],
+      include: [path.join(__dirname, 'node_modules')],
       loader: 'style!css',
     }, {
       test: /\.css$/,

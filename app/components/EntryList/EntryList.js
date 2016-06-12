@@ -2,6 +2,7 @@
  * Created by dmitru on 6/5/16.
  */
 
+import _ from 'lodash'
 import React from 'react'
 import { AutoSizer, VirtualScroll } from 'react-virtualized'
 
@@ -16,16 +17,24 @@ class EntryList extends React.Component {
   constructor(props) {
     super(props)
     this.rowRenderer = this.rowRenderer.bind(this)
+    this.state = {
+      data: this.prepareData(this.props.entries),
+    }
+  }
+
+  prepareData(entries) {
+    const result = _.sortBy(entries, (e) => -(new Date(e.date).getTime()))
+    return result
   }
 
   rowRenderer({ index }) {
-    const { entries } = this.props
-    return <Entry {...entries[index]} />
+    const { data } = this.state
+    return <Entry {...data[index]} />
   }
 
   render() {
-    const { entries } = this.props
-    const entriesNotEmpty = entries.length > 0
+    const { data } = this.state
+    const entriesNotEmpty = data.length > 0
 
     let content = []
     if (entriesNotEmpty) {
@@ -33,10 +42,11 @@ class EntryList extends React.Component {
         <AutoSizer disableHeight>
           {({ width }) => (
             <VirtualScroll
+              overscanRowCount={50}
               width={width}
               height={300}
               rowHeight={30}
-              rowCount={entries.length}
+              rowCount={data.length}
               rowRenderer={this.rowRenderer}
             />
           )}

@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import _ from 'lodash'
 import 'react-virtualized/styles.css'
+import 'react-bootstrap-switch/dist/css/bootstrap3/react-bootstrap-switch.css'
 
 import { getIsAuthenticated } from '../reducers/auth'
 import { getUserProfile } from '../reducers/profile'
