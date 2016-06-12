@@ -27,7 +27,10 @@ class EntryList extends React.Component {
     return result
   }
 
-  rowRenderer({ index }) {
+  rowRenderer({ index, isScrolling }) {
+    if (isScrolling) {
+      return <span>Scrolling...</span>
+    }
     const { data } = this.state
     return <Entry {...data[index]} />
   }
@@ -42,7 +45,7 @@ class EntryList extends React.Component {
         <AutoSizer disableHeight>
           {({ width }) => (
             <VirtualScroll
-              overscanRowCount={50}
+              overscanRowCount={10}
               width={width}
               height={300}
               rowHeight={30}

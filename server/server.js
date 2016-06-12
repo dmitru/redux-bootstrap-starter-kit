@@ -12,7 +12,7 @@ const config = require('../webpack.config.js')
 const routes = require('./routes')
 
 const isDeveloping = process.env.NODE_ENV !== 'production'
-const port = isDeveloping ? 3000 : process.env.PORT
+const port = isDeveloping ? 3000 : (process.env.PORT ? process.env.PORT : 3000)
 const app = express()
 
 // view engine setup
@@ -48,7 +48,7 @@ if (isDeveloping) {
     res.end()
   })
 } else {
-  app.use(express.static(__dirname + '/dist'))
+  app.use(express.static(path.join(__dirname, '/dist')))
   app.use('/api', routes.api)
   app.get('*', function response(req, res) {
     res.sendFile(path.join(__dirname, 'dist/index.html'))

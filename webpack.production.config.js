@@ -2,6 +2,8 @@
 
 var path = require('path');
 var webpack = require('webpack');
+var precss = require('precss');
+var autoprefixer = require('autoprefixer');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var StatsPlugin = require('stats-webpack-plugin');
@@ -14,7 +16,7 @@ module.exports = {
     path: path.join(__dirname, 'server', 'dist'),
     filename: '[name].[chunkhash].js',
     chunkFilename: '[chunkhash].js',
-    publicPath: '/dist'
+    publicPath: '/',
   },
   plugins: [
     new webpack.optimize.OccurenceOrderPlugin(),
@@ -44,8 +46,8 @@ module.exports = {
       exclude: /node_modules/,
       loader: 'babel',
       query: {
-        "presets": ["es2015", "stage-0", "react"]
-      }
+        presets: ['react', 'es2015', 'stage-0'],
+      },
     }, {
       test: /\.json?$/,
       loader: 'json',
@@ -68,7 +70,7 @@ module.exports = {
       loader: 'html!markdown',
     }],
   },
-  postcss: [
-    require('autoprefixer')
-  ]
-};
+  postcss: function () {
+    return [precss, autoprefixer]
+  },
+}
