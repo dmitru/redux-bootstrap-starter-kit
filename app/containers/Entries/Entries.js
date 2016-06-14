@@ -61,7 +61,7 @@ class Entries extends Component {
     }
     return (
       <Row>
-        <Col xs={12} sm={8} smOffset={2} lg={6} lgOffset={2}>
+        <Col xs={12} sm={8} smOffset={2} lg={6} lgOffset={3}>
           <AddEntryForm onSubmit={this.handleAddEntry} />
           <div style={{ marginTop: '30px' }}>
             <EntryList entries={entries} onEntryClick={this.handleEntryClick} />

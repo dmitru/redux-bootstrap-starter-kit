@@ -56,36 +56,41 @@ class AddEntry extends Component {
     return (
       <form className={classNames('form-horizontal')} onSubmit={handleSubmit}>
         <Row>
-          <Col xs={6}>
-            <TypeaheadInput
-              field={category}
-              placeholder="Category"
-              labelKey="name"
-              options={categories}
-            />
+          <Col sm={8} style={{ paddingRight: '5px' }}>
+            <Row>
+              <Col xs={6} sm={5} smOffset={2} xl={6} xlOffset={0} style={{ paddingRight: '5px' }}>
+                <TypeaheadInput
+                  field={category}
+                  placeholder="Category"
+                  labelKey="name"
+                  options={categories}
+                />
+              </Col>
+              <Col xs={6} sm={5} xl={6} style={{ paddingLeft: '5px' }}>
+                <TextInput
+                  placeholder="Amount"
+                  field={amount}
+                  id="amount"
+                />
+              </Col>
+            </Row>
           </Col>
-          <Col xs={6}>
-            <TextInput
-              placeholder="Amount"
-              field={amount}
-              id="amount"
-            />
+          <Col sm={4}>
+            <div style={{ textAlign: 'center' }}>
+              <Switch
+                field={isIncome} handleWidth={30} labelWidth={20} size="mini" onText=""
+                offText="" onColor="success" offColor="danger"
+              />
+              <Button
+                type="submit"
+                style={{ marginLeft: '15px' }}
+                bsStyle="default"
+              >
+                {isIncome.value ? 'Add' : 'Add'}
+              </Button>
+            </div>
           </Col>
         </Row>
-
-        <div style={{ textAlign: 'center' }}>
-          <Switch
-            field={isIncome} handleWidth={30} labelWidth={20} size="mini" onText=""
-            offText="" onColor="success" offColor="danger"
-          />
-          <Button
-            type="submit"
-            style={{ width: '120px', marginLeft: '15px' }}
-            bsStyle="default"
-          >
-            {isIncome.value ? 'Add Income' : 'Add Expense'}
-          </Button>
-        </div>
       </form>
     )
   }

@@ -43,6 +43,7 @@ class EntryList extends React.Component {
         <AutoSizer disableHeight>
           {({ width }) => (
             <VirtualScroll
+              style={{ outlineWidth: '0px' }}
               entries={entries}
               overscanRowCount={10}
               width={width}
