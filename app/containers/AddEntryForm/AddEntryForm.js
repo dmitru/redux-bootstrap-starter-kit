@@ -75,7 +75,7 @@ class AddEntry extends Component {
               </Col>
             </Row>
           </Col>
-          <Col sm={4}>
+          <Col sm={4} style={{ paddingLeft: '5px' }}>
             <div style={{ textAlign: 'center' }}>
               <Switch
                 field={isIncome} handleWidth={30} labelWidth={20} size="mini" onText=""
@@ -86,7 +86,7 @@ class AddEntry extends Component {
                 style={{ marginLeft: '15px' }}
                 bsStyle="default"
               >
-                {isIncome.value ? 'Add' : 'Add'}
+                ADD
               </Button>
             </div>
           </Col>

@@ -15,7 +15,7 @@ const Entry = ({ date, amount, type, category, isSaving, isSelected, onClick }) 
   return (
     <div onClick={onClick} className={styles.entryContainer}>
       <Row>
-        <Col xs={2} sm={1} style={{ textAlign: 'right', fontWeight: 'bold' }}>
+        <Col xs={2} sm={1} style={{ textAlign: 'left', fontWeight: 'bold' }}>
           <span className={isSelected ? styles.activeTickLabel : styles.inactiveTickLabel}>
             <Glyphicon glyph="ok" />
           </span>
@@ -34,7 +34,7 @@ const Entry = ({ date, amount, type, category, isSaving, isSelected, onClick }) 
                 {isSaving ? '(saving) ' : ''}
 
                 <Label
-                  className={isExpense ? styles.expenseLabel : styles.incomeLabel}
+                  bsStyle={'default'}
                 >
                   {category}
                 </Label>
@@ -46,7 +46,7 @@ const Entry = ({ date, amount, type, category, isSaving, isSelected, onClick }) 
         <Col sm={4} lg={5} style={{ textAlign: 'right' }} xsHidden>
           <span
             title={moment(date).format('DD.MM.YYYY hh:mm:ss')}
-            style={{ marginRight: '15px', fontSize: 'smaller' }}
+            style={{ marginRight: '15px', fontSize: 'small' }}
           >
             {moment(date).format('DD.MM.YYYY hh:mm:ss')}
           </span>
