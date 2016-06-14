@@ -6,6 +6,7 @@ const initialState = {
   isLoading: false,
   items: null,
   error: null,
+  selectedItems: [],
 }
 
 export default function entriesUpdate(state = initialState, { type, payload }) {
@@ -28,6 +29,13 @@ export default function entriesUpdate(state = initialState, { type, payload }) {
         })
       return { ...state, items: newEntries }
     }
+    case constants.ENTRIES_TOGGLE_SELECTION: {
+      const newSelectedItems =
+        (_.includes(state.selectedItems, payload.id)) ?
+          _.filter(state.selectedItems, (id) => id !== payload.id)
+          : [...state.selectedItems, payload.id]
+      return { ...state, selectedItems: newSelectedItems }
+    }
     case constants.AUTH_LOGGED_OUT:
       return { ...initialState }
     default:
@@ -36,3 +44,4 @@ export default function entriesUpdate(state = initialState, { type, payload }) {
 }
 
 export const getEntries = (state) => state.entries.items
+export const getSelectedEntries = (state) => state.entries.selectedItems

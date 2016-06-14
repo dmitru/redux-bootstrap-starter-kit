@@ -1,6 +1,20 @@
 $expenseColor: #C14642;
 $incomeColor: #249C3E;
 
+.entryContainer {
+    padding-top: 6px;
+    cursor: pointer;
+    height: 35px;
+}
+
+.inactiveTickLabel {
+    color: #ddd;
+}
+
+.activeTickLabel {
+    color: cornflowerblue;
+}
+
 .amountExpense {
     color: $expenseColor;
 }

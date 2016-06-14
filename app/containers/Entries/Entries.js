@@ -4,9 +4,9 @@ import { createSelector } from 'reselect'
 import { Row, Col } from 'react-bootstrap'
 import _ from 'lodash'
 
-import { getEntries } from '../../reducers/entries'
+import { getEntries, getSelectedEntries } from '../../reducers/entries'
 import { getCategories } from '../../reducers/categories'
-import { fetchEntriesIfNeeded, addEntry } from '../../actions/entries'
+import { fetchEntriesIfNeeded, addEntry, toggleSelection } from '../../actions/entries'
 import { fetchCategoriesIfNeeded } from '../../actions/categories'
 import Loader from '../../components/Loader'
 import EntryList from '../../components/EntryList'
@@ -22,6 +22,7 @@ class Entries extends Component {
   constructor(props) {
     super(props)
     this.handleAddEntry = this.handleAddEntry.bind(this)
+    this.handleEntryClick = this.handleEntryClick.bind(this)
   }
 
   componentWillMount() {
@@ -40,6 +41,13 @@ class Entries extends Component {
     }))
   }
 
+  handleEntryClick(data) {
+    console.log('CLICK')
+    console.log(data)
+    const { dispatch } = this.props
+    dispatch(toggleSelection({ entryId: data.id }))
+  }
+
   fetchInitialDataIfNeeded() {
     const { dispatch } = this.props
     dispatch(fetchEntriesIfNeeded())
@@ -53,10 +61,10 @@ class Entries extends Component {
     }
     return (
       <Row>
-        <Col xs={12} sm={6} smOffset={3}>
+        <Col xs={12} sm={8} smOffset={2} lg={6} lgOffset={2}>
           <AddEntryForm onSubmit={this.handleAddEntry} />
           <div style={{ marginTop: '30px' }}>
-            <EntryList entries={entries} />
+            <EntryList entries={entries} onEntryClick={this.handleEntryClick} />
           </div>
           <div style={{ marginTop: '15px' }}>Number of entries: {entries.length}</div>
           <div> {children} </div>
@@ -67,20 +75,21 @@ class Entries extends Component {
 }
 
 const entriesViewSelector = createSelector(
-  [getEntries, getCategories],
-  (entries, categories) => {
+  [getEntries, getCategories, getSelectedEntries],
+  (entries, categories, selectedEntriesIds) => {
     if (_.isNull(entries) || _.isNull(categories)) {
       return []
     }
     const entriesSorted = _.sortBy(entries, (e) => -(new Date(e.date).getTime()))
     return entriesSorted.map(e => {
+      const isSelected = _.includes(selectedEntriesIds, e.id)
       const category = categories.find(c => c.id === e.categoryId)
       if (_.isUndefined(category)) {
-        return { ...e }
+        return { ...e, isSelected }
       }
-      return { ...e, category: category.name }
+      return { ...e, isSelected, category: category.name }
     })
-  }
+  },
 )
 
 const mapStateToProps = (state) => ({

@@ -11,11 +11,13 @@ class EntryList extends React.Component {
 
   static propTypes = {
     entries: React.PropTypes.array,
+    onEntryClick: React.PropTypes.func.isRequired,
   }
 
   constructor(props) {
     super(props)
     this.rowRenderer = this.rowRenderer.bind(this)
+    this.onEntryClick = props.onEntryClick.bind(this)
   }
 
   rowRenderer({ index, isScrolling }) {
@@ -23,7 +25,12 @@ class EntryList extends React.Component {
       return <span>Scrolling...</span>
     }
     const { entries } = this.props
-    return <Entry {...entries[index]} />
+    return (
+      <Entry
+        {...entries[index]}
+        onClick={() => this.onEntryClick(entries[index])}
+      />
+    )
   }
 
   render() {
@@ -40,7 +47,7 @@ class EntryList extends React.Component {
               overscanRowCount={10}
               width={width}
               height={300}
-              rowHeight={40}
+              rowHeight={35}
               rowCount={entries.length}
               rowRenderer={this.rowRenderer}
             />

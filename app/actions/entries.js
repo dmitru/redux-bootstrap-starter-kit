@@ -68,3 +68,12 @@ export function addEntry({ entry }) {
     }, 1000)
   }
 }
+
+export function toggleSelection({ entryId }) {
+  return {
+    type: constants.ENTRIES_TOGGLE_SELECTION,
+    payload: {
+      id: entryId,
+    },
+  }
+}
