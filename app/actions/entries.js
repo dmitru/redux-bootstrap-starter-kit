@@ -7,9 +7,7 @@ import api from '../api'
 export function fetchEntries() {
   return (dispatch, getState) => {
     const { auth: { token } } = getState()
-    dispatch({
-      type: constants.ENTRIES_FETCH_REQUEST,
-    })
+    dispatch({ type: constants.ENTRIES_FETCH_REQUEST })
     api.entries.getAll({ token })
       .then((res) => {
         const data = res.data
@@ -34,5 +32,39 @@ export function fetchEntriesIfNeeded() {
     if (_.isNull(entries.items) && !entries.isLoading) {
       dispatch(fetchEntries())
     }
+  }
+}
+
+export function addEntry({ entry }) {
+  return (dispatch) => {
+    // Optimistically add the new entry to the list of entries
+    // Generate temporary id for the entry, which later will be replaced with real id
+    // when the server returns response
+    const temporaryId = `tmp_id_${(new Date).getTime()}_${Math.random() * 100000000}`
+    dispatch({
+      type: constants.ENTRIES_ADD_REQUEST,
+      payload: {
+        entry: {
+          ...entry,
+          id: temporaryId,
+          isSaving: true,
+        },
+      },
+    })
+
+    // Simulate server-side delay
+    setTimeout(() => {
+      const id = Math.random() * 100000000
+      dispatch({
+        type: constants.ENTRIES_ADD_SUCCESS,
+        payload: {
+          temporaryId,
+          entry: {
+            ...entry,
+            id,
+          },
+        },
+      })
+    }, 1000)
   }
 }

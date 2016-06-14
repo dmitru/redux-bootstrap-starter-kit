@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { createSelector } from 'reselect'
-import { Col } from 'react-bootstrap'
+import { Row, Col } from 'react-bootstrap'
 import _ from 'lodash'
 
 import { getEntries } from '../../reducers/entries'
 import { getCategories } from '../../reducers/categories'
-import { fetchEntriesIfNeeded } from '../../actions/entries'
+import { fetchEntriesIfNeeded, addEntry } from '../../actions/entries'
 import { fetchCategoriesIfNeeded } from '../../actions/categories'
 import Loader from '../../components/Loader'
 import EntryList from '../../components/EntryList'
@@ -29,7 +29,15 @@ class Entries extends Component {
   }
 
   handleAddEntry(data) {
-    console.log(data)
+    const { dispatch } = this.props
+    dispatch(addEntry({
+      entry: {
+        amount: parseFloat(data.amount),
+        type: data.isIncome ? 'i' : 'e',
+        categoryId: data.category[0].id,
+        date: new Date(),
+      },
+    }))
   }
 
   fetchInitialDataIfNeeded() {
@@ -44,7 +52,7 @@ class Entries extends Component {
       return <Loader />
     }
     return (
-      <div>
+      <Row>
         <Col xs={12} sm={6} smOffset={3}>
           <AddEntryForm onSubmit={this.handleAddEntry} />
           <div style={{ marginTop: '30px' }}>
@@ -53,7 +61,7 @@ class Entries extends Component {
           <div style={{ marginTop: '15px' }}>Number of entries: {entries.length}</div>
           <div> {children} </div>
         </Col>
-      </div>
+      </Row>
     )
   }
 }
@@ -64,7 +72,8 @@ const entriesViewSelector = createSelector(
     if (_.isNull(entries) || _.isNull(categories)) {
       return []
     }
-    return entries.map(e => {
+    const entriesSorted = _.sortBy(entries, (e) => -(new Date(e.date).getTime()))
+    return entriesSorted.map(e => {
       const category = categories.find(c => c.id === e.categoryId)
       if (_.isUndefined(category)) {
         return { ...e }

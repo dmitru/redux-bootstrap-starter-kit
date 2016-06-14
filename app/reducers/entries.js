@@ -1,4 +1,5 @@
 
+import _ from 'lodash'
 import * as constants from '../constants'
 
 const initialState = {
@@ -15,6 +16,18 @@ export default function entriesUpdate(state = initialState, { type, payload }) {
       return { ...state, isLoading: false, items: payload }
     case constants.ENTRIES_FETCH_FAILURE:
       return { ...state, error: payload }
+    case constants.ENTRIES_ADD_REQUEST:
+      return { ...state, items: [...state.items, payload.entry] }
+    case constants.ENTRIES_ADD_SUCCESS: {
+      const newEntries = _.map(state.items,
+        (item) => {
+          if (item.id === payload.temporaryId) {
+            return payload.entry
+          }
+          return item
+        })
+      return { ...state, items: newEntries }
+    }
     case constants.AUTH_LOGGED_OUT:
       return { ...initialState }
     default:
