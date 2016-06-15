@@ -12,6 +12,8 @@ import Loader from '../../components/Loader'
 import EntryList from '../../components/EntryList'
 import AddEntryForm from '../AddEntryForm'
 
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
+
 class Entries extends Component {
   static propTypes = {
     children: React.PropTypes.element,
@@ -63,28 +65,41 @@ class Entries extends Component {
     }
     const color = selectedEntriesIds.length > 0 ? '#337ab7' : '#ddd'
     const editButton = (
-      <a href="#" style={{ fontWeight: 'bold', color }}>
+      <a href="#" style={{ fontWeight: 'bold', color, transition: 'all 0.3s ease' }} key="1">
         <Glyphicon glyph="edit" />&nbsp;EDIT
       </a>
     )
     const deleteButton = (
-      <a href="#" style={{ marginLeft: '15px', fontWeight: 'bold', color }}>
+      <a
+        href="#"
+        style={{
+          marginLeft: '15px', fontWeight: 'bold',
+          color, transition: 'all 0.3s ease',
+        }}
+        key="2"
+      >
         <Glyphicon glyph="trash" />&nbsp;DELETE
       </a>
     )
     console.log(selectedEntriesIds.length)
     const toolbarButtons = (
       <div>
-        <div className="pull-right">
-          {editButton}{deleteButton}
-        </div>
+        <ReactCSSTransitionGroup
+          transitionName="entries"
+          transitionAppear transitionAppearTimeout={2000}
+          transitionEnterTimeout={2000} transitionLeaveTimeout={2000}
+        >
+          <div className="pull-right">
+            {editButton}{deleteButton}
+          </div>
+        </ReactCSSTransitionGroup>
       </div>
     )
     return (
       <Row>
         <Col xs={12} sm={8} smOffset={2} lg={6} lgOffset={3}>
           <AddEntryForm onSubmit={this.handleAddEntry} />
-          <div style={{ height: '35px' }}>
+          <div style={{ height: '40px', paddingTop: '15px' }}>
             {toolbarButtons}
           </div>
           <div>

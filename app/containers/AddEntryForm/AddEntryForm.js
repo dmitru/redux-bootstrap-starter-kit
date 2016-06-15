@@ -23,6 +23,8 @@ import {
 
 import { getCategories } from '../../reducers/categories'
 
+import styles from './AddEntryForm.scss'
+
 export const fields = ['amount', 'category', 'isIncome']
 
 const validate = (values) => {
@@ -56,39 +58,69 @@ class AddEntry extends Component {
     return (
       <form className={classNames('form-horizontal')} onSubmit={handleSubmit}>
         <Row>
-          <Col sm={8} style={{ paddingRight: '5px' }}>
-            <Row>
-              <Col xs={6} sm={5} smOffset={2} xl={6} xlOffset={0} style={{ paddingRight: '5px' }}>
-                <TypeaheadInput
-                  field={category}
-                  placeholder="Category"
-                  labelKey="name"
-                  options={categories}
-                />
-              </Col>
-              <Col xs={6} sm={5} xl={6} style={{ paddingLeft: '5px' }}>
-                <TextInput
-                  placeholder="Amount"
-                  field={amount}
-                  id="amount"
-                />
-              </Col>
-            </Row>
+          <Col
+            xs={6}
+            sm={4}
+            lg={4}
+            xl={6}
+            style={{ paddingRight: '5px' }}
+          >
+            <TypeaheadInput
+              field={category}
+              placeholder="Category"
+              labelKey="name"
+              options={categories}
+            />
           </Col>
-          <Col sm={4} style={{ paddingLeft: '5px' }}>
-            <div style={{ textAlign: 'center' }}>
-              <Switch
-                field={isIncome} handleWidth={30} labelWidth={20} size="mini" onText=""
-                offText="" onColor="success" offColor="danger"
-              />
+          <Col
+            xs={6}
+            sm={4}
+            lg={4}
+            xl={6}
+            style={{ paddingLeft: '5px' }}
+          >
+            <TextInput
+              placeholder="Amount"
+              field={amount}
+              id="amount"
+            />
+          </Col>
+          <Col
+            xs={12}
+            sm={4}
+            lg={4}
+          >
+            <Col
+              xs={6}
+              sm={4}
+              lg={4}
+              style={{ paddingRight: '5px', textAlign: 'right' }}
+            >
+              <div className="pull-right">
+                <Switch
+                  field={isIncome}
+                  labels={{
+                    on: 'INCOME',
+                    off: 'EXPENSE',
+                  }}
+                  switchStyles={{
+                    width: 50,
+                  }}
+                  circleStyles={{
+                    diameter: 15,
+                    onColor: styles.infoColor,
+                  }}
+                />
+              </div>
+            </Col>
+            <Col xs={6} style={{ paddingLeft: '5px', textAlign: 'left' }}>
               <Button
                 type="submit"
-                style={{ marginLeft: '15px' }}
                 bsStyle="default"
               >
                 ADD
               </Button>
-            </div>
+            </Col>
           </Col>
         </Row>
       </form>

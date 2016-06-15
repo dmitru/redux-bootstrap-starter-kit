@@ -2,8 +2,7 @@
 // https://gist.github.com/insin/bbf116e8ea10ef38447b
 
 import React, { PropTypes } from 'react'
-import Switch from 'react-bootstrap-switch'
-
+import SwitchElement from 'react-flexible-switch'
 import FormField from './FormField'
 
 export default class SwitchField extends FormField {
@@ -12,15 +11,33 @@ export default class SwitchField extends FormField {
   }
 
   render() {
-    const { field, ...inputProps } = this.props
+    const { field, style, labels: { on, off }, ...inputProps } = this.props
     return (
-      <Switch
-        {...inputProps}
-        state={field.value}
-        className="form-control"
-        name={field.name}
-        onChange={field.onChange}
-      />
+      <div
+        style={{
+          ...style,
+          float: 'left',
+          textAlign: 'center',
+        }}
+      >
+        <span style={{ cursor: 'pointer' }}>
+          <SwitchElement
+            {...inputProps}
+            className="form-control"
+            active={field.value}
+            name={field.name}
+            onActive={() => field.onChange(true)}
+            onInactive={() => field.onChange(false)}
+          />
+        </span>
+        <span
+          style={{
+            fontSize: '0.6em',
+          }}
+        >
+          {field.value ? on : off}
+        </span>
+      </div>
     )
   }
 }
