@@ -28,13 +28,10 @@ export default class Select extends FormField {
   }
 
   handleKeydown(e) {
-    console.log('Keydown')
     const keyCode = e.keyCode || e.which
     if (keyCode === 13) {
       e.preventDefault()
-      return false
     }
-    return true
   }
 
   render() {
