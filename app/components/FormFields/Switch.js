@@ -10,18 +10,41 @@ export default class SwitchField extends FormField {
     field: PropTypes.object.isRequired,
   }
 
+  constructor(props) {
+    super(props)
+    this.toggleSwitch = this.toggleSwitch.bind(this)
+    this.handleKeydown = this.handleKeydown.bind(this)
+  }
+
+  toggleSwitch() {
+    this.switch.setState({ active: !this.switch.state.active })
+  }
+
+  handleKeydown(e) {
+    const code = e.which
+    if (code === 13 || code === 32) {
+      e.preventDefault()
+      this.toggleSwitch()
+    }
+  }
+
   render() {
     const { field, style, labels: { on, off }, ...inputProps } = this.props
     return (
       <div
+        role="button"
+        tabIndex="0"
+        onClick={this.toggleSwitch}
+        onKeyDown={this.handleKeydown}
         style={{
           ...style,
           float: 'left',
           textAlign: 'center',
         }}
       >
-        <span style={{ cursor: 'pointer' }}>
+        <span style={{ cursor: 'pointer' }} >
           <SwitchElement
+            ref={(c) => { this.switch = c }}
             {...inputProps}
             className="form-control"
             active={field.value}
