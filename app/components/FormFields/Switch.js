@@ -34,7 +34,6 @@ export default class SwitchField extends FormField {
       <div
         role="button"
         tabIndex="0"
-        onClick={this.toggleSwitch}
         onKeyDown={this.handleKeydown}
         style={{
           ...style,
@@ -54,6 +53,7 @@ export default class SwitchField extends FormField {
           />
         </span>
         <span
+          onClick={this.toggleSwitch}
           style={{
             fontSize: '0.6em',
           }}
