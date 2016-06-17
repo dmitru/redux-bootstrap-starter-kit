@@ -3,12 +3,11 @@
  */
 
 import React from 'react'
-import { ThreeBounce } from 'better-react-spinkit'
 
-import styles from './Loader.css'
+import styles from './Loader.scss'
 
 export default () => (
   <div className={styles.loader}>
-    <ThreeBounce fadeIn={false} />
+    Loading...
   </div>
 )
