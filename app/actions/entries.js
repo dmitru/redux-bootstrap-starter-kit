@@ -77,3 +77,27 @@ export function toggleSelection({ id }) {
     },
   }
 }
+
+export function updateEntry({ entry }) {
+  return (dispatch) => {
+    dispatch({
+      type: constants.ENTRIES_UPDATE,
+      payload: {
+        entry: {
+          ...entry,
+          isSaving: true,
+        },
+      },
+    })
+
+    // Simulate server-side delay
+    setTimeout(() => {
+      dispatch({
+        type: constants.ENTRIES_UPDATE,
+        payload: {
+          entry,
+        },
+      })
+    }, 1000)
+  }
+}

@@ -1,31 +1,41 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { createSelector } from 'reselect'
-import { Row, Col, Glyphicon } from 'react-bootstrap'
+import { Row, Col, Glyphicon, Modal, Button } from 'react-bootstrap'
 import _ from 'lodash'
 
-import { getEntries, getSelectedEntries } from '../../reducers/entries'
+import { getEntries, getSelectedEntriesIds } from '../../reducers/entries'
 import { getCategories } from '../../reducers/categories'
-import { fetchEntriesIfNeeded, addEntry, toggleSelection } from '../../actions/entries'
+import { fetchEntriesIfNeeded, addEntry, updateEntry, toggleSelection } from '../../actions/entries'
 import { fetchCategoriesIfNeeded } from '../../actions/categories'
 import Loader from '../../components/Loader'
 import EntryList from '../../components/EntryList'
 import AddEntryForm from '../AddEntryForm'
-
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
+import EditEntryForm from '../EditEntryForm'
 
 class Entries extends Component {
   static propTypes = {
     children: React.PropTypes.element,
     readyToShowUi: React.PropTypes.bool.isRequired,
     entries: React.PropTypes.array,
-    selectedEntriesIds: React.PropTypes.array.isRequired,
+    selectedEntries: React.PropTypes.array.isRequired,
   }
 
   constructor(props) {
     super(props)
+
     this.handleAddEntry = this.handleAddEntry.bind(this)
     this.handleEntryClick = this.handleEntryClick.bind(this)
+    this.handleEditClick = this.handleEditClick.bind(this)
+    this.handleDeleteClick = this.handleDeleteClick.bind(this)
+    this.handleEditModalSubmit = this.handleEditModalSubmit.bind(this)
+    this.closeEditModal = this.closeEditModal.bind(this)
+    this.closeDeleteModal = this.closeDeleteModal.bind(this)
+
+    this.state = {
+      showEditModal: false,
+      showDeleteModal: false,
+    }
   }
 
   componentWillMount() {
@@ -52,6 +62,38 @@ class Entries extends Component {
     dispatch(toggleSelection({ id: entry.id }))
   }
 
+  handleEditClick(e) {
+    e.preventDefault()
+    this.showEditModal()
+  }
+
+  showEditModal() {
+    this.setState({ showEditModal: true })
+  }
+
+  closeEditModal() {
+    this.setState({ showEditModal: false })
+  }
+
+  handleEditModalSubmit({ entry }) {
+    const { dispatch } = this.props
+    dispatch(updateEntry({ entry }))
+    this.closeEditModal()
+  }
+
+  handleDeleteClick(e) {
+    e.preventDefault()
+    this.showDeleteModal()
+  }
+
+  showDeleteModal() {
+    this.setState({ showDeleteModal: true })
+  }
+
+  closeDeleteModal() {
+    this.setState({ showDeleteModal: false })
+  }
+
   fetchInitialDataIfNeeded() {
     const { dispatch } = this.props
     dispatch(fetchEntriesIfNeeded())
@@ -59,45 +101,76 @@ class Entries extends Component {
   }
 
   render() {
-    const { children, readyToShowUi, entries, selectedEntriesIds } = this.props
+    const styles = {
+      activeToolbarLink: { fontWeight: 'bold', color: '#337ab7', transition: 'all 0.3s ease' },
+      inactiveToolbarLink: { fontWeight: 'bold', color: '#ddd', transition: 'all 0.3s ease' },
+    }
+    const { children, readyToShowUi, entries, selectedEntries } = this.props
     if (!readyToShowUi) {
       return <Loader />
     }
-    const color = selectedEntriesIds.length > 0 ? '#337ab7' : '#ddd'
+    const editButtonEnabled = selectedEntries.length === 1
+    const removeButtonEnabled = selectedEntries.length > 0
     const editButton = (
-      <a href="#" style={{ fontWeight: 'bold', color, transition: 'all 0.3s ease' }} key="1">
+      <a
+        href="#"
+        onClick={editButtonEnabled ? this.handleEditClick : null}
+        style={editButtonEnabled ? styles.activeToolbarLink : styles.inactiveToolbarLink} key="1"
+      >
         <Glyphicon glyph="edit" />&nbsp;EDIT
       </a>
     )
     const deleteButton = (
       <a
         href="#"
+        onClick={editButtonEnabled ? this.handleDeleteClick : null}
         style={{
-          marginLeft: '15px', fontWeight: 'bold',
-          color, transition: 'all 0.3s ease',
+          ...(removeButtonEnabled ? styles.activeToolbarLink : styles.inactiveToolbarLink),
+          marginLeft: '15px',
         }}
         key="2"
       >
         <Glyphicon glyph="trash" />&nbsp;DELETE
       </a>
     )
-    console.log(selectedEntriesIds.length)
     const toolbarButtons = (
       <div>
-        <ReactCSSTransitionGroup
-          transitionName="entries"
-          transitionAppear transitionAppearTimeout={2000}
-          transitionEnterTimeout={2000} transitionLeaveTimeout={2000}
-        >
-          <div className="pull-right">
-            {editButton}{deleteButton}
-          </div>
-        </ReactCSSTransitionGroup>
+        <div className="pull-right">
+          {editButton}{deleteButton}
+        </div>
       </div>
+    )
+
+    const editModal = (
+      <Modal show={this.state.showEditModal} onHide={this.closeEditModal}>
+        <Modal.Body>
+          <h4>Edit entries</h4>
+        </Modal.Body>
+        <Modal.Footer>
+          <EditEntryForm
+            entry={_.isEmpty(selectedEntries) ? null : selectedEntries[0]}
+            onCancel={this.closeEditModal} onSubmit={this.handleEditModalSubmit}
+          />
+        </Modal.Footer>
+      </Modal>
+    )
+    const deleteModal = (
+      <Modal show={this.state.showDeleteModal} onHide={this.closeDeleteModal}>
+        <Modal.Body>
+          <h4>Are you sure?</h4>
+          This action is irreversible.
+        </Modal.Body>
+        <Modal.Footer>
+          <Button onClick={this.closeDeleteModal} autoFocus>No</Button>
+          <Button bsStyle="danger" onClick={this.deleteEntry}>Yes</Button>
+        </Modal.Footer>
+      </Modal>
     )
     return (
       <Row>
         <Col xs={12} sm={8} smOffset={2} lg={6} lgOffset={3}>
+          {editModal}
+          {deleteModal}
           <AddEntryForm onSubmit={this.handleAddEntry} />
           <div style={{ height: '40px', paddingTop: '15px' }}>
             {toolbarButtons}
@@ -114,7 +187,7 @@ class Entries extends Component {
 }
 
 const entriesViewSelector = createSelector(
-  [getEntries, getCategories, getSelectedEntries],
+  [getEntries, getCategories, getSelectedEntriesIds],
   (entries, categories, selectedEntriesIds) => {
     if (_.isNull(entries) || _.isNull(categories)) {
       return []
@@ -122,19 +195,27 @@ const entriesViewSelector = createSelector(
     const entriesSorted = _.sortBy(entries, (e) => -(new Date(e.date).getTime()))
     return entriesSorted.map(e => {
       const isSelected = _.includes(selectedEntriesIds, e.id)
-      const category = categories.find(c => c.id === e.categoryId)
+      const category = _.find(categories, c => c.id === e.categoryId)
       if (_.isUndefined(category)) {
         return { ...e, isSelected }
       }
-      return { ...e, isSelected, category: category.name }
+      return { ...e, isSelected, category }
     })
   },
+)
+
+const getSelectedEntries = createSelector(
+  [entriesViewSelector, getSelectedEntriesIds],
+  (entries, selectedEntriesIds) => (
+    _.map(selectedEntriesIds,
+      (id) => _.find(entries, (e) => e.id === id))
+  )
 )
 
 const mapStateToProps = (state) => ({
   readyToShowUi: !_.isNull(getCategories(state)) && !_.isNull(getEntries(state)),
   entries: entriesViewSelector(state),
-  selectedEntriesIds: getSelectedEntries(state),
+  selectedEntries: getSelectedEntries(state),
 })
 
 export default connect(mapStateToProps)(Entries)

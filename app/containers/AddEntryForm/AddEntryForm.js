@@ -23,8 +23,6 @@ import {
 
 import { getCategories } from '../../reducers/categories'
 
-import styles from './AddEntryForm.scss'
-
 export const fields = ['amount', 'category', 'isIncome']
 
 const validate = (values) => {
@@ -105,10 +103,6 @@ class AddEntry extends Component {
                   }}
                   switchStyles={{
                     width: 50,
-                  }}
-                  circleStyles={{
-                    diameter: 15,
-                    onColor: styles.infoColor,
                   }}
                 />
               </div>

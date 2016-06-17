@@ -36,7 +36,7 @@ const Entry = ({ date, amount, type, category, isSaving, isSelected, onClick }) 
                 <Label
                   bsStyle={'default'}
                 >
-                  {category}
+                  {category.name}
                 </Label>
               </span>)
             }
@@ -60,7 +60,7 @@ Entry.propTypes = {
   date: React.PropTypes.string.isRequired,
   amount: React.PropTypes.number.isRequired,
   type: React.PropTypes.string.isRequired,
-  category: React.PropTypes.string,
+  category: React.PropTypes.object,
   isSaving: React.PropTypes.bool,
   isSelected: React.PropTypes.bool,
   onClick: React.PropTypes.func.isRequired,

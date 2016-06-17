@@ -5,6 +5,8 @@ import React, { PropTypes } from 'react'
 import SwitchElement from 'react-flexible-switch'
 import FormField from './FormField'
 
+import globalStyles from '../../assets/app.scss'
+
 export default class SwitchField extends FormField {
   static propTypes = {
     field: PropTypes.object.isRequired,
@@ -45,6 +47,10 @@ export default class SwitchField extends FormField {
           <SwitchElement
             ref={(c) => { this.switch = c }}
             {...inputProps}
+            circleStyles={{
+              diameter: 15,
+              onColor: globalStyles.infoColor,
+            }}
             className="form-control"
             active={field.value}
             name={field.name}

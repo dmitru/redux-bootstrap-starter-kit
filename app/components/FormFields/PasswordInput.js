@@ -15,6 +15,7 @@ export default class PasswordInput extends FormField {
     return (
       <FormField field={field} help={help} inputProps={inputProps} label={label}>
         <input
+          value={field.value}
           type="password"
           {...inputProps}
           className="form-control"

@@ -29,6 +29,13 @@ export default function entriesUpdate(state = initialState, { type, payload }) {
         })
       return { ...state, items: newEntries }
     }
+    case constants.ENTRIES_UPDATE: {
+      const updatedEntry = payload.entry
+      const newEntries = _.map(state.items, (e) => (
+        e.id === updatedEntry.id ? updatedEntry : e
+      ))
+      return { ...state, items: newEntries }
+    }
     case constants.ENTRIES_TOGGLE_SELECTION: {
       const newSelectedItems =
         (_.includes(state.selectedItems, payload.id)) ?
@@ -44,4 +51,4 @@ export default function entriesUpdate(state = initialState, { type, payload }) {
 }
 
 export const getEntries = (state) => state.entries.items
-export const getSelectedEntries = (state) => state.entries.selectedItems
+export const getSelectedEntriesIds = (state) => state.entries.selectedItems

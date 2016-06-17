@@ -15,6 +15,7 @@ export default class TextInput extends FormField {
     return (
       <FormField field={field} help={help} inputProps={inputProps} label={label}>
         <input
+          value={field.value}
           {...inputProps}
           placeholder={placeholder}
           className="form-control"

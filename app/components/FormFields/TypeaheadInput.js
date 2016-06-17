@@ -40,6 +40,7 @@ export default class Select extends FormField {
       <div onKeyDown={this.handleKeydown}>
         <FormField field={field} help={help} inputProps={inputProps} label={label}>
           <Typeahead
+            selected={Array.isArray(field.value) ? field.value : []}
             {...inputProps}
             options={options}
             onBlur={this.handleBlur}
