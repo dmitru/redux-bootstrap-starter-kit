@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { createSelector } from 'reselect'
-import { Row, Col, Glyphicon, Modal, Button } from 'react-bootstrap'
+import { Row, Col, Modal, Button } from 'react-bootstrap'
 import _ from 'lodash'
 
 import { getEntries, getSelectedEntriesIds } from '../../reducers/entries'
@@ -16,6 +16,7 @@ import {
 import { fetchCategoriesIfNeeded } from '../../actions/categories'
 import Loader from '../../components/Loader'
 import EntryList from '../../components/EntryList'
+import EntryListToolbar from '../../components/EntryListToolbar'
 import AddEntryForm from '../AddEntryForm'
 import EditEntryForm from '../EditEntryForm'
 
@@ -32,13 +33,13 @@ class Entries extends Component {
 
     this.handleAddEntry = this.handleAddEntry.bind(this)
     this.handleEntryClick = this.handleEntryClick.bind(this)
-    this.handleEditClick = this.handleEditClick.bind(this)
-    this.handleDeleteClick = this.handleDeleteClick.bind(this)
     this.handleEditModalSubmit = this.handleEditModalSubmit.bind(this)
     this.deleteEntries = this.deleteEntries.bind(this)
     this.closeEditModal = this.closeEditModal.bind(this)
     this.closeDeleteModal = this.closeDeleteModal.bind(this)
     this.toggleSelection = this.toggleSelection.bind(this)
+    this.showDeleteModal = this.showDeleteModal.bind(this)
+    this.showEditModal = this.showEditModal.bind(this)
 
     this.state = {
       showEditModal: false,
@@ -70,11 +71,6 @@ class Entries extends Component {
     dispatch(toggleSelection({ id: entry.id }))
   }
 
-  handleEditClick(e) {
-    e.preventDefault()
-    this.showEditModal()
-  }
-
   showEditModal() {
     this.setState({ showEditModal: true })
   }
@@ -94,11 +90,6 @@ class Entries extends Component {
     const selectedEntriesIds = _.map(selectedEntries, (e) => e.id)
     dispatch(deleteEntries({ ids: selectedEntriesIds }))
     this.closeDeleteModal()
-  }
-
-  handleDeleteClick(e) {
-    e.preventDefault()
-    this.showDeleteModal()
   }
 
   showDeleteModal() {
@@ -129,56 +120,10 @@ class Entries extends Component {
   }
 
   render() {
-    const styles = {
-      activeToolbarLink: { fontWeight: 'bold', color: '#337ab7', transition: 'all 0.3s ease' },
-      inactiveToolbarLink: { fontWeight: 'bold', color: '#ccc', transition: 'all 0.3s ease' },
-    }
     const { children, readyToShowUi, entries, selectedEntries } = this.props
     if (!readyToShowUi) {
       return <Loader />
     }
-    const editButtonEnabled = selectedEntries.length === 1
-    const deleteButtonEnabled = selectedEntries.length > 0
-    const editButton = (
-      <a
-        href="#"
-        onClick={editButtonEnabled ? this.handleEditClick : null}
-        style={editButtonEnabled ? styles.activeToolbarLink : styles.inactiveToolbarLink} key="1"
-      >
-        <Glyphicon glyph="edit" />&nbsp;EDIT
-      </a>
-    )
-    const deleteButton = (
-      <a
-        href="#"
-        onClick={deleteButtonEnabled ? this.handleDeleteClick : null}
-        style={{
-          ...(deleteButtonEnabled ? styles.activeToolbarLink : styles.inactiveToolbarLink),
-          marginLeft: '15px',
-        }}
-        key="2"
-      >
-        <Glyphicon glyph="trash" />&nbsp;DELETE
-      </a>
-    )
-    const toggleSelectionButton = (
-      <a
-        href="#"
-        onClick={this.toggleSelection}
-        style={selectedEntries.length > 0 ? styles.activeToolbarLink : styles.inactiveToolbarLink}
-        key="3"
-      >
-        {selectedEntries.length > 0 ? 'CLEAR' : 'ALL'}
-      </a>
-    )
-    const toolbarButtons = (
-      <div>
-        {toggleSelectionButton}
-        <div className="pull-right">
-          {editButton}{deleteButton}
-        </div>
-      </div>
-    )
 
     const editModal = (
       <Modal show={this.state.showEditModal} onHide={this.closeEditModal}>
@@ -205,6 +150,7 @@ class Entries extends Component {
         </Modal.Footer>
       </Modal>
     )
+
     return (
       <Row>
         <Col xs={12} sm={8} smOffset={2} lg={6} lgOffset={3}>
@@ -212,7 +158,14 @@ class Entries extends Component {
           {deleteModal}
           <AddEntryForm onSubmit={this.handleAddEntry} />
           <div style={{ height: '40px', paddingTop: '15px' }}>
-            {toolbarButtons}
+            <EntryListToolbar
+              editButtonEnabled={selectedEntries.length === 1}
+              deleteButtonEnabled={selectedEntries.length > 0}
+              toggleSelectionEnabled={selectedEntries.length > 0}
+              onEditEntryClick={this.showEditModal}
+              onDeleteEntryClick={this.showDeleteModal}
+              onToggleSelectionClick={this.toggleSelection}
+            />
           </div>
           <div>
             <EntryList entries={entries} onEntryClick={this.handleEntryClick} />
