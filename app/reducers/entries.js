@@ -43,10 +43,10 @@ export default function entriesUpdate(state = initialState, { type, payload }) {
       return { ...state, items: newEntries, selectedItems: [] }
     }
     case constants.ENTRIES_TOGGLE_SELECTION: {
-      const newSelectedItems =
-        (_.includes(state.selectedItems, payload.id)) ?
-          _.filter(state.selectedItems, (id) => id !== payload.id)
-          : [...state.selectedItems, payload.id]
+      const selectedToToggle = _.intersection(state.selectedItems, payload.ids)
+      const unselectedToToggle = _.difference(payload.ids, selectedToToggle)
+      const newSelectedItems = _.union(unselectedToToggle,
+        _.difference(state.selectedItems, selectedToToggle))
       return { ...state, selectedItems: newSelectedItems }
     }
     case constants.AUTH_LOGGED_OUT:

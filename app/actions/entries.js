@@ -69,11 +69,19 @@ export function addEntry({ entry }) {
   }
 }
 
-export function toggleSelection({ id }) {
+export function toggleSelection({ id, ids }) {
+  if (!_.isUndefined(ids)) {
+    return {
+      type: constants.ENTRIES_TOGGLE_SELECTION,
+      payload: {
+        ids,
+      },
+    }
+  }
   return {
     type: constants.ENTRIES_TOGGLE_SELECTION,
     payload: {
-      id,
+      ids: [id],
     },
   }
 }

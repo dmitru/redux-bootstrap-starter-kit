@@ -38,6 +38,7 @@ class Entries extends Component {
     this.deleteEntries = this.deleteEntries.bind(this)
     this.closeEditModal = this.closeEditModal.bind(this)
     this.closeDeleteModal = this.closeDeleteModal.bind(this)
+    this.toggleSelection = this.toggleSelection.bind(this)
 
     this.state = {
       showEditModal: false,
@@ -108,6 +109,19 @@ class Entries extends Component {
     this.setState({ showDeleteModal: false })
   }
 
+  toggleSelection() {
+    const { entries, selectedEntries, dispatch } = this.props
+    if (_.isEmpty(selectedEntries)) {
+      const allIdsNotSaving = _.map(
+        _.filter(entries, (e) => !e.isSaving),
+        (e) => e.id
+      )
+      dispatch(toggleSelection({ ids: allIdsNotSaving }))
+    } else {
+      dispatch(toggleSelection({ ids: _.map(selectedEntries, (e) => e.id) }))
+    }
+  }
+
   fetchInitialDataIfNeeded() {
     const { dispatch } = this.props
     dispatch(fetchEntriesIfNeeded())
@@ -117,7 +131,7 @@ class Entries extends Component {
   render() {
     const styles = {
       activeToolbarLink: { fontWeight: 'bold', color: '#337ab7', transition: 'all 0.3s ease' },
-      inactiveToolbarLink: { fontWeight: 'bold', color: '#ddd', transition: 'all 0.3s ease' },
+      inactiveToolbarLink: { fontWeight: 'bold', color: '#ccc', transition: 'all 0.3s ease' },
     }
     const { children, readyToShowUi, entries, selectedEntries } = this.props
     if (!readyToShowUi) {
@@ -147,8 +161,19 @@ class Entries extends Component {
         <Glyphicon glyph="trash" />&nbsp;DELETE
       </a>
     )
+    const toggleSelectionButton = (
+      <a
+        href="#"
+        onClick={this.toggleSelection}
+        style={selectedEntries.length > 0 ? styles.activeToolbarLink : styles.inactiveToolbarLink}
+        key="3"
+      >
+        {selectedEntries.length > 0 ? 'CLEAR' : 'ALL'}
+      </a>
+    )
     const toolbarButtons = (
       <div>
+        {toggleSelectionButton}
         <div className="pull-right">
           {editButton}{deleteButton}
         </div>
