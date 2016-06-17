@@ -36,6 +36,12 @@ export default function entriesUpdate(state = initialState, { type, payload }) {
       ))
       return { ...state, items: newEntries }
     }
+    case constants.ENTRIES_DELETE: {
+      const newEntries = _.filter(state.items, (e) => (
+        !_.includes(payload.ids, e.id)
+      ))
+      return { ...state, items: newEntries, selectedItems: [] }
+    }
     case constants.ENTRIES_TOGGLE_SELECTION: {
       const newSelectedItems =
         (_.includes(state.selectedItems, payload.id)) ?

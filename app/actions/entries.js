@@ -101,3 +101,12 @@ export function updateEntry({ entry }) {
     }, 1000)
   }
 }
+
+export function deleteEntries({ ids }) {
+  return {
+    type: constants.ENTRIES_DELETE,
+    payload: {
+      ids,
+    },
+  }
+}

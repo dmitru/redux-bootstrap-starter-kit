@@ -6,7 +6,13 @@ import _ from 'lodash'
 
 import { getEntries, getSelectedEntriesIds } from '../../reducers/entries'
 import { getCategories } from '../../reducers/categories'
-import { fetchEntriesIfNeeded, addEntry, updateEntry, toggleSelection } from '../../actions/entries'
+import {
+  fetchEntriesIfNeeded,
+  addEntry,
+  updateEntry,
+  toggleSelection,
+  deleteEntries,
+} from '../../actions/entries'
 import { fetchCategoriesIfNeeded } from '../../actions/categories'
 import Loader from '../../components/Loader'
 import EntryList from '../../components/EntryList'
@@ -29,6 +35,7 @@ class Entries extends Component {
     this.handleEditClick = this.handleEditClick.bind(this)
     this.handleDeleteClick = this.handleDeleteClick.bind(this)
     this.handleEditModalSubmit = this.handleEditModalSubmit.bind(this)
+    this.deleteEntries = this.deleteEntries.bind(this)
     this.closeEditModal = this.closeEditModal.bind(this)
     this.closeDeleteModal = this.closeDeleteModal.bind(this)
 
@@ -81,6 +88,13 @@ class Entries extends Component {
     this.closeEditModal()
   }
 
+  deleteEntries() {
+    const { dispatch, selectedEntries } = this.props
+    const selectedEntriesIds = _.map(selectedEntries, (e) => e.id)
+    dispatch(deleteEntries({ ids: selectedEntriesIds }))
+    this.closeDeleteModal()
+  }
+
   handleDeleteClick(e) {
     e.preventDefault()
     this.showDeleteModal()
@@ -110,7 +124,7 @@ class Entries extends Component {
       return <Loader />
     }
     const editButtonEnabled = selectedEntries.length === 1
-    const removeButtonEnabled = selectedEntries.length > 0
+    const deleteButtonEnabled = selectedEntries.length > 0
     const editButton = (
       <a
         href="#"
@@ -123,9 +137,9 @@ class Entries extends Component {
     const deleteButton = (
       <a
         href="#"
-        onClick={editButtonEnabled ? this.handleDeleteClick : null}
+        onClick={deleteButtonEnabled ? this.handleDeleteClick : null}
         style={{
-          ...(removeButtonEnabled ? styles.activeToolbarLink : styles.inactiveToolbarLink),
+          ...(deleteButtonEnabled ? styles.activeToolbarLink : styles.inactiveToolbarLink),
           marginLeft: '15px',
         }}
         key="2"
@@ -162,7 +176,7 @@ class Entries extends Component {
         </Modal.Body>
         <Modal.Footer>
           <Button onClick={this.closeDeleteModal} autoFocus>No</Button>
-          <Button bsStyle="danger" onClick={this.deleteEntry}>Yes</Button>
+          <Button bsStyle="danger" onClick={this.deleteEntries}>Yes</Button>
         </Modal.Footer>
       </Modal>
     )
