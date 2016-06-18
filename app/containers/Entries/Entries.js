@@ -14,9 +14,10 @@ import {
   deleteEntries,
 } from '../../actions/entries'
 import { fetchCategoriesIfNeeded } from '../../actions/categories'
+import Entry from '../../components/Entry'
 import Loader from '../../components/Loader'
-import EntryList from '../../components/EntryList'
-import EntryListToolbar from '../../components/EntryListToolbar'
+import ScrolledList from '../../components/ScrolledList'
+import ListToolbar from '../../components/ListToolbar'
 import AddEntryForm from '../AddEntryForm'
 import EditEntryForm from '../EditEntryForm'
 
@@ -57,7 +58,7 @@ class Entries extends Component {
       entry: {
         amount: parseFloat(data.amount),
         type: data.isIncome ? 'i' : 'e',
-        categoryId: data.category[0].id,
+        categoryId: data.category ? data.category[0].id : null,
         date: new Date(),
       },
     }))
@@ -158,17 +159,25 @@ class Entries extends Component {
           {deleteModal}
           <AddEntryForm onSubmit={this.handleAddEntry} />
           <div style={{ height: '40px', paddingTop: '15px' }}>
-            <EntryListToolbar
+            <ListToolbar
               editButtonEnabled={selectedEntries.length === 1}
               deleteButtonEnabled={selectedEntries.length > 0}
               toggleSelectionEnabled={selectedEntries.length > 0}
-              onEditEntryClick={this.showEditModal}
-              onDeleteEntryClick={this.showDeleteModal}
+              onEditClick={this.showEditModal}
+              onDeleteClick={this.showDeleteModal}
               onToggleSelectionClick={this.toggleSelection}
             />
           </div>
           <div>
-            <EntryList entries={entries} onEntryClick={this.handleEntryClick} />
+            <ScrolledList
+              items={entries}
+              itemRenderer={({ item }) => (
+                <Entry
+                  {...item}
+                  onClick={() => this.handleEntryClick(item)}
+                />
+              )}
+            />
           </div>
           <div style={{ marginTop: '15px' }}>Number of entries: {entries.length}</div>
           <div> {children} </div>
@@ -189,7 +198,7 @@ const entriesViewSelector = createSelector(
       const isSelected = _.includes(selectedEntriesIds, e.id)
       const category = _.find(categories, c => c.id === e.categoryId)
       if (_.isUndefined(category)) {
-        return { ...e, isSelected }
+        return { ...e, isSelected, category: null }
       }
       return { ...e, isSelected, category }
     })

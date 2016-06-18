@@ -28,9 +28,7 @@ export const fields = ['amount', 'category', 'isIncome']
 
 const validate = (values) => {
   const errors = {}
-  if (!values.category) {
-    errors.category = 'Is required'
-  } else if (!Array.isArray(values.category)) {
+  if (values.category && !Array.isArray(values.category)) {
     errors.category = 'Unknown category'
   }
   if (!/^[-+]?\d+(,\d+)*(\.\d+(e\d+)?)?$/.test(values.amount)) {
@@ -82,6 +80,7 @@ class AddEntry extends Component {
             style={{ paddingLeft: '5px' }}
           >
             <TextInput
+              autoFocus
               autocomplete="off"
               placeholder="Amount"
               field={amount}

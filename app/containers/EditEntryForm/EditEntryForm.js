@@ -19,9 +19,7 @@ export const fields = ['amount', 'category', 'isIncome']
 
 const validate = (values) => {
   const errors = {}
-  if (!values.category) {
-    errors.category = 'Is required'
-  } else if (!Array.isArray(values.category)) {
+  if (values.category && !Array.isArray(values.category)) {
     errors.category = 'Unknown category'
   }
   if (!/^[-+]?\d+(,\d+)*(\.\d+(e\d+)?)?$/.test(values.amount)) {
@@ -108,7 +106,7 @@ class EditEntryFormWrapper extends Component {
     return {
       isIncome: entry.type === 'i',
       amount: entry.amount,
-      category: [entry.category],
+      category: entry.category ? [entry.category] : null,
     }
   }
 
@@ -119,7 +117,7 @@ class EditEntryFormWrapper extends Component {
         ...entry,
         amount: parseFloat(data.amount),
         type: data.isIncome ? 'i' : 'e',
-        categoryId: data.category[0].id,
+        categoryId: data.category ? data.category[0].id : null,
       },
     })
   }

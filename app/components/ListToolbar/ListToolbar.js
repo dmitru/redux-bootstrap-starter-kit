@@ -2,7 +2,7 @@
 import React from 'react'
 import { Glyphicon } from 'react-bootstrap'
 
-const EntryListToolbar = (props) => {
+const ListToolbar = (props) => {
   // TODO: move the styles to a SASS file
   const styles = {
     activeToolbarLink: { fontWeight: 'bold', color: '#337ab7', transition: 'all 0.3s ease' },
@@ -12,8 +12,8 @@ const EntryListToolbar = (props) => {
     editButtonEnabled,
     deleteButtonEnabled,
     toggleSelectionEnabled,
-    onEditEntryClick,
-    onDeleteEntryClick,
+    onEditClick,
+    onDeleteClick,
     onToggleSelectionClick,
   } = props
   const editButton = (
@@ -21,8 +21,8 @@ const EntryListToolbar = (props) => {
       href="#"
       onClick={(e) => {
         e.preventDefault()
-        if (editButtonEnabled && onEditEntryClick) {
-          onEditEntryClick()
+        if (editButtonEnabled && onEditClick) {
+          onEditClick()
         }
       }}
       style={editButtonEnabled ? styles.activeToolbarLink : styles.inactiveToolbarLink} key="1"
@@ -35,8 +35,8 @@ const EntryListToolbar = (props) => {
       href="#"
       onClick={(e) => {
         e.preventDefault()
-        if (deleteButtonEnabled && onDeleteEntryClick) {
-          onDeleteEntryClick()
+        if (deleteButtonEnabled && onDeleteClick) {
+          onDeleteClick()
         }
       }}
       style={{
@@ -78,13 +78,13 @@ const EntryListToolbar = (props) => {
   )
 }
 
-EntryListToolbar.propTypes = {
+ListToolbar.propTypes = {
   editButtonEnabled: React.PropTypes.bool.isRequired,
   deleteButtonEnabled: React.PropTypes.bool.isRequired,
   toggleSelectionEnabled: React.PropTypes.bool.isRequired,
-  onEditEntryClick: React.PropTypes.func,
-  onDeleteEntryClick: React.PropTypes.func,
+  onEditClick: React.PropTypes.func,
+  onDeleteClick: React.PropTypes.func,
   onToggleSelectionClick: React.PropTypes.func,
 }
 
-export default EntryListToolbar
+export default ListToolbar

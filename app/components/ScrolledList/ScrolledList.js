@@ -5,51 +5,43 @@
 import React from 'react'
 import { AutoSizer, VirtualScroll } from 'react-virtualized'
 
-import Entry from '../Entry'
-
-class EntryList extends React.Component {
+class ScrolledList extends React.Component {
 
   static propTypes = {
-    entries: React.PropTypes.array,
-    onEntryClick: React.PropTypes.func.isRequired,
+    items: React.PropTypes.array,
+    itemRenderer: React.PropTypes.func.isRequired,
   }
 
   constructor(props) {
     super(props)
     this.rowRenderer = this.rowRenderer.bind(this)
-    this.onEntryClick = props.onEntryClick.bind(this)
   }
 
   rowRenderer({ index, isScrolling }) {
     if (isScrolling) {
       return <span>Scrolling...</span>
     }
-    const { entries } = this.props
-    return (
-      <Entry
-        {...entries[index]}
-        onClick={() => this.onEntryClick(entries[index])}
-      />
-    )
+    const { items, itemRenderer } = this.props
+    return itemRenderer({ item: items[index], index })
   }
 
   render() {
-    const { entries } = this.props
-    const entriesNotEmpty = entries.length > 0
+    const { items } = this.props
+    const itemsNotEmpty = items.length > 0
 
     let content = []
-    if (entriesNotEmpty) {
+    if (itemsNotEmpty) {
       content = (
         <AutoSizer disableHeight>
           {({ width }) => (
             <VirtualScroll
               style={{ outlineWidth: '0px' }}
-              entries={entries}
+              entries={items}
               overscanRowCount={10}
               width={width}
               height={300}
               rowHeight={35}
-              rowCount={entries.length}
+              rowCount={items.length}
               rowRenderer={this.rowRenderer}
             />
           )}
@@ -58,10 +50,10 @@ class EntryList extends React.Component {
     }
     return (
       <div>
-        {entriesNotEmpty ? content : <span>No items to show.</span>}
+        {itemsNotEmpty ? content : <span>No items to show.</span>}
       </div>
     )
   }
 }
 
-export default EntryList
+export default ScrolledList
