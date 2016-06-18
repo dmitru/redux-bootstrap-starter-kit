@@ -19,7 +19,7 @@ import {
   PasswordInput,
 } from '../../components/FormFields'
 import { login } from '../../actions/auth/auth'
-import { getIsAuthenticated, getIsAuthenticating, getAuthErrorMessage } from '../../reducers/auth'
+import { getIsAuthenticated, getIsLoggingIn, getLoginErrorMessage } from '../../reducers/auth'
 
 import styles from './Login.css'
 
@@ -46,7 +46,7 @@ class LoginContainer extends Component {
     handleSubmit: React.PropTypes.func.isRequired,
     isAuthenticating: React.PropTypes.bool.isRequired,
     isAuthenticated: React.PropTypes.bool.isRequired,
-    authError: React.PropTypes.string,
+    loginError: React.PropTypes.string,
     redirect: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.func]),
   }
 
@@ -74,7 +74,7 @@ class LoginContainer extends Component {
   }
 
   render() {
-    const { fields: { email, password }, authError, isAuthenticating } = this.props
+    const { fields: { email, password }, loginError, isAuthenticating } = this.props
     const spinner = isAuthenticating ? <Loader /> : null
 
     return (
@@ -123,9 +123,9 @@ class LoginContainer extends Component {
             </Row>
 
             <Row style={{ marginTop: '15px' }}>
-              {authError ? (
+              {loginError ? (
                 <Alert bsStyle="danger">
-                  <strong>Can't login: </strong>{authError}
+                  <strong>Can't login: </strong>{loginError}
                 </Alert>) : null}
             </Row>
 
@@ -149,8 +149,8 @@ const mapStateToProps = (state, ownProps) => {
   const redirect = ownProps.location.query.redirect || '/'
   return {
     redirect,
-    authError: getAuthErrorMessage(state),
-    isAuthenticating: getIsAuthenticating(state),
+    loginError: getLoginErrorMessage(state),
+    isLoggingIn: getIsLoggingIn(state),
     isAuthenticated: getIsAuthenticated(state),
   }
 }

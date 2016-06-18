@@ -1,4 +1,3 @@
-/* eslint-env browser */
 
 const cookie = {
   set({ name, value = '', path = '/', domain = '', expires = '' }) {

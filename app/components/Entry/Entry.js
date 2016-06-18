@@ -7,6 +7,8 @@ import _ from 'lodash'
 import moment from 'moment'
 import { Label, Row, Col, Glyphicon } from 'react-bootstrap'
 
+import Spinner from '../Spinner'
+
 import styles from './Entry.scss'
 
 const Entry = ({ date, amount, type, category, isSaving, isSelected, onClick }) => {
@@ -29,17 +31,8 @@ const Entry = ({ date, amount, type, category, isSaving, isSelected, onClick }) 
 
         <Col xs={6} sm={4} lg={4} style={{ textAlign: 'right' }}>
           <span>
-            {!_.isNull(category) && (
-              <span>
-                {isSaving ? '(saving) ' : ''}
-
-                <Label
-                  bsStyle={'default'}
-                >
-                  {category.name}
-                </Label>
-              </span>)
-            }
+            {isSaving ? <span style={{ marginRight: '5px' }}><Spinner /></span> : null}
+            {!_.isNull(category) && <Label bsStyle={'default'}>{category.name}</Label>}
           </span>
         </Col>
 

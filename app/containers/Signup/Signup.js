@@ -22,7 +22,7 @@ import {
   PasswordInput,
 } from '../../components/FormFields'
 import { signup } from '../../actions/auth/auth'
-import { getIsSigningUp, getAuthErrorMessage, getIsAuthenticated } from '../../reducers/auth'
+import { getIsSigningUp, getSignupErrorMessage, getIsAuthenticated } from '../../reducers/auth'
 
 import styles from './Signup.css'
 
@@ -49,7 +49,7 @@ class SignupContainer extends Component {
     handleSubmit: React.PropTypes.func.isRequired,
     isSigningUp: React.PropTypes.bool.isRequired,
     isAuthenticated: React.PropTypes.bool.isRequired,
-    authError: React.PropTypes.string,
+    signupError: React.PropTypes.string,
     redirect: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.func]),
   }
 
@@ -92,7 +92,7 @@ class SignupContainer extends Component {
   }
 
   render() {
-    const { fields: { email, password }, authError, isSigningUp } = this.props
+    const { fields: { email, password }, signupError, isSigningUp } = this.props
     const spinner = isSigningUp ? <Loader /> : null
 
     return (
@@ -144,9 +144,9 @@ class SignupContainer extends Component {
             </Row>
 
             <Row style={{ marginTop: '15px' }}>
-              {authError ? (
+              {signupError ? (
                 <Alert bsStyle="danger">
-                  <strong>Can't sign up:</strong> {authError}
+                  <strong>Can't sign up:</strong> {signupError}
                 </Alert>) : null}
             </Row>
 
@@ -170,7 +170,7 @@ const mapStateToProps = (state, ownProps) => {
   const redirect = ownProps.location.query.redirect || '/'
   return {
     redirect,
-    authError: getAuthErrorMessage(state),
+    signupError: getSignupErrorMessage(state),
     isAuthenticated: getIsAuthenticated(state),
     isSigningUp: getIsSigningUp(state),
   }

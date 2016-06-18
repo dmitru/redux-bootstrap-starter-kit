@@ -5,10 +5,11 @@ import * as constants from '../constants'
 import cookie from '../utils/cookie'
 
 const initialState = {
-  isAuthenticating: false,
+  isLoggingIn: false,
   isSigningUp: false,
   token: null,
-  error: null,
+  errorLogin: null,
+  errorSignup: null,
 }
 
 const authToken = cookie.get('token')
@@ -17,8 +18,9 @@ if (authToken) {
 }
 
 export const getAuthToken = (state) => state.auth.token
-const getAuthError = (state) => state.auth.error
-export const getIsAuthenticating = (state) => state.auth.isAuthenticating
+const getLoginError = (state) => state.auth.errorLogin
+const getSignupError = (state) => state.auth.errorSignup
+export const getIsLoggingIn = (state) => state.auth.isLoggingIn
 export const getIsSigningUp = (state) => state.auth.isSigningUp
 
 export const getIsAuthenticated = createSelector(
@@ -26,25 +28,35 @@ export const getIsAuthenticated = createSelector(
   (token) => !_.isNull(token)
 )
 
-export const getAuthErrorMessage = createSelector(
-  [getAuthError],
+export const getSignupErrorMessage = createSelector(
+  [getSignupError],
+  (error) => ((error && error.message) ? error.message : null)
+)
+
+export const getLoginErrorMessage = createSelector(
+  [getLoginError],
   (error) => ((error && error.message) ? error.message : null)
 )
 
 export default function userUpdate(state = initialState, { type, payload }) {
   switch (type) {
     case constants.AUTH_LOGIN_REQUEST:
-      return { ...state, isAuthenticating: true }
+      return { ...state, isLoggingIn: true }
     case constants.AUTH_SIGNUP_REQUEST:
       return { ...state, isSigningUp: true }
     case constants.AUTH_LOGGED_IN:
-      return { ...state, token: payload.token, isAuthenticating: false, isSigningUp: false }
+      return {
+        ...state,
+        token: payload.token,
+        isLoggingIn: false, isSigningUp: false,
+        errorLogin: false, errorSignup: false,
+      }
     case constants.AUTH_LOGGED_OUT:
       return { ...initialState, token: null }
     case constants.AUTH_LOGIN_ERROR:
-      return { ...state, error: payload, isAuthenticating: false }
+      return { ...state, errorLogin: payload, isLoggingIn: false }
     case constants.AUTH_SIGNUP_ERROR:
-      return { ...state, error: payload, isSigningUp: false }
+      return { ...state, errorSignup: payload, isSigningUp: false }
     default:
       return state
   }
