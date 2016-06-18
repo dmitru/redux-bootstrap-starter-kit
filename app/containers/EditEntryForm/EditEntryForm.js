@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 import classNames from 'classnames'
 import {
   Button,
+  Label,
 } from 'react-bootstrap'
 import { reduxForm } from 'redux-form'
 
@@ -41,6 +42,9 @@ const EditEntryForm = ({
       placeholder="Category"
       labelKey="name"
       options={categories}
+      renderMenuItemChildren={(props, option) => (
+        <Label>{option.name}</Label>
+      )}
     />
     <TextInput
       autocomplete="off"

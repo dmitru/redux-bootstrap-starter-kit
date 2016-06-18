@@ -12,6 +12,7 @@ import {
   Row,
   Col,
   Button,
+  Label,
 } from 'react-bootstrap'
 import { reduxForm } from 'redux-form'
 
@@ -68,6 +69,9 @@ class AddEntry extends Component {
               placeholder="Category"
               labelKey="name"
               options={categories}
+              renderMenuItemChildren={(props, option) => (
+                <Label>{option.name}</Label>
+              )}
             />
           </Col>
           <Col
@@ -78,6 +82,7 @@ class AddEntry extends Component {
             style={{ paddingLeft: '5px' }}
           >
             <TextInput
+              autocomplete="off"
               placeholder="Amount"
               field={amount}
               id="amount"
