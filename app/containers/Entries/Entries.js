@@ -30,6 +30,10 @@ class Entries extends Component {
     selectedEntries: React.PropTypes.array.isRequired,
   }
 
+  static contextTypes = {
+    notificationCenter: React.PropTypes.object,
+  }
+
   constructor(props) {
     super(props)
 
@@ -54,21 +58,34 @@ class Entries extends Component {
   }
 
   handleAddEntry(values) {
+    const { notificationCenter } = this.context
     const { dispatch } = this.props
     const { amount, isIncome, category } = values
     return new Promise((resolve, reject) => {
-      if (_.isEmpty(amount)) {
+      if (_.isNull(amount)) {
         reject({ amount: 'Is required', _error: 'Failed to add entry' })
       } else {
+        const amountParsed = parseFloat(amount)
         dispatch(addEntry({
           entry: {
-            amount: parseFloat(amount),
+            amount: amountParsed,
             type: isIncome ? 'i' : 'e',
             categoryId: category ? category[0].id : null,
             date: new Date(),
           },
         }))
         dispatch(resetForm('add-entry'))
+
+        const notificationText = isIncome ?
+          `An income of $${amountParsed} added` :
+          `An expense of $${amountParsed} added`
+        notificationCenter.addNotification({
+          message: notificationText,
+          level: 'success',
+          autoDismiss: 2,
+          position: 'bl',
+          dismissible: false,
+        })
       }
     })
   }
@@ -100,6 +117,18 @@ class Entries extends Component {
     const selectedEntriesIds = _.map(selectedEntries, (e) => e.id)
     dispatch(deleteEntries({ ids: selectedEntriesIds }))
     this.closeDeleteModal()
+
+    const { notificationCenter } = this.context
+    const notificationText = selectedEntriesIds.length > 1 ?
+      `Deleted ${selectedEntriesIds.length} entries` :
+      'Deleted 1 entry'
+    notificationCenter.addNotification({
+      message: notificationText,
+      level: 'success',
+      autoDismiss: 2,
+      position: 'bl',
+      dismissible: false,
+    })
   }
 
   showDeleteModal() {

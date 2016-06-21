@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import _ from 'lodash'
+import NotificationSystem from 'react-notification-system'
+
 import 'react-virtualized/styles.css'
 import 'react-bootstrap-switch/dist/css/bootstrap3/react-bootstrap-switch.css'
 
@@ -17,6 +19,19 @@ class App extends Component {
     children: React.PropTypes.element,
     readyToShowUi: React.PropTypes.bool.isRequired,
     isAuthenticated: React.PropTypes.bool.isRequired,
+  }
+
+  static childContextTypes = {
+    notificationCenter: React.PropTypes.object,
+  }
+
+  constructor(props) {
+    super(props)
+    this.notificationCenter = null
+  }
+
+  getChildContext() {
+    return { notificationCenter: this.notificationCenter }
   }
 
   componentWillMount() {
@@ -41,6 +56,7 @@ class App extends Component {
     const { children, readyToShowUi } = this.props
     return (
       <Layout>
+        <NotificationSystem ref={(c) => { this.notificationCenter = c }} />
         <div> {readyToShowUi ? children : <Loader />} </div>
       </Layout>
     )

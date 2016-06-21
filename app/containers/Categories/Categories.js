@@ -28,6 +28,10 @@ class Categories extends Component {
     selectedCategories: React.PropTypes.array.isRequired,
   }
 
+  static contextTypes = {
+    notificationCenter: React.PropTypes.object,
+  }
+
   constructor(props) {
     super(props)
 
@@ -52,6 +56,7 @@ class Categories extends Component {
   }
 
   handleAddCategory(values) {
+    const { notificationCenter } = this.context
     const { dispatch } = this.props
     return new Promise((resolve, reject) => {
       const name = _.trim(values.name)
@@ -64,6 +69,14 @@ class Categories extends Component {
           },
         }))
         dispatch(resetForm('add-category'))
+
+        notificationCenter.addNotification({
+          message: `Created category ${name}`,
+          level: 'success',
+          autoDismiss: 2,
+          position: 'bl',
+          dismissible: false,
+        })
         resolve()
       }
     })
@@ -96,6 +109,18 @@ class Categories extends Component {
     const selectedCategoriesIds = _.map(selectedCategories, (e) => e.id)
     dispatch(deleteCategories({ ids: selectedCategoriesIds }))
     this.closeDeleteModal()
+
+    const { notificationCenter } = this.context
+    const notificationText = selectedCategoriesIds.length > 1 ?
+      `Deleted ${selectedCategoriesIds.length} categories` :
+      `Deleted category ${name}`
+    notificationCenter.addNotification({
+      message: notificationText,
+      level: 'success',
+      autoDismiss: 2,
+      position: 'bl',
+      dismissible: false,
+    })
   }
 
   showDeleteModal() {
