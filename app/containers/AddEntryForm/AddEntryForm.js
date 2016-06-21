@@ -8,6 +8,7 @@
 
 import React, { Component } from 'react'
 import classNames from 'classnames'
+import _ from 'lodash'
 import {
   Row,
   Col,
@@ -31,7 +32,7 @@ const validate = (values) => {
   if (values.category && !Array.isArray(values.category)) {
     errors.category = 'Unknown category'
   }
-  if (!/^[-+]?\d+(,\d+)*(\.\d+(e\d+)?)?$/.test(values.amount)) {
+  if (!_.isEmpty(values.amount) && !/^[-+]?\d+(,\d+)*(\.\d+(e\d+)?)?$/.test(values.amount)) {
     errors.amount = 'A number is required'
   }
   return errors

@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Row, Col, Modal, Button } from 'react-bootstrap'
+import { reset as resetForm } from 'redux-form'
 import _ from 'lodash'
+import { createSelector } from 'reselect'
 
 import { getCategories, getSelectedCategories } from '../../reducers/categories'
 import {
@@ -15,6 +17,8 @@ import Category from '../../components/Category'
 import Loader from '../../components/Loader'
 import ScrolledList from '../../components/ScrolledList'
 import ListToolbar from '../../components/ListToolbar'
+import EditCategoryForm from '../EditCategoryForm'
+import AddCategoryForm from '../AddCategoryForm'
 
 class Categories extends Component {
   static propTypes = {
@@ -47,16 +51,22 @@ class Categories extends Component {
     this.fetchInitialDataIfNeeded()
   }
 
-  handleAddCategory(data) {
+  handleAddCategory(values) {
     const { dispatch } = this.props
-    dispatch(addCategory({
-      entry: {
-        amount: parseFloat(data.amount),
-        type: data.isIncome ? 'i' : 'e',
-        categoryId: data.category[0].id,
-        date: new Date(),
-      },
-    }))
+    return new Promise((resolve, reject) => {
+      const name = _.trim(values.name)
+      if (_.isEmpty(name)) {
+        reject({ name: 'A name is required', _error: 'Failed to add category' })
+      } else {
+        dispatch(addCategory({
+          category: {
+            name,
+          },
+        }))
+        dispatch(resetForm('add-category'))
+        resolve()
+      }
+    })
   }
 
   handleCategoryClick(entry) {
@@ -75,9 +85,9 @@ class Categories extends Component {
     this.setState({ showEditModal: false })
   }
 
-  handleEditModalSubmit({ entry }) {
+  handleEditModalSubmit({ category }) {
     const { dispatch } = this.props
-    dispatch(updateCategory({ entry }))
+    dispatch(updateCategory({ category }))
     this.closeEditModal()
   }
 
@@ -89,7 +99,6 @@ class Categories extends Component {
   }
 
   showDeleteModal() {
-    console.log('delete modal')
     this.setState({ showDeleteModal: true })
   }
 
@@ -127,7 +136,11 @@ class Categories extends Component {
           <h4>Edit categories</h4>
         </Modal.Body>
         <Modal.Footer>
-          TODO
+          <EditCategoryForm
+            category={_.isEmpty(selectedCategories) ? null : selectedCategories[0]}
+            categories={categories}
+            onCancel={this.closeEditModal} onSubmit={this.handleEditModalSubmit}
+          />
         </Modal.Footer>
       </Modal>
     )
@@ -149,6 +162,7 @@ class Categories extends Component {
         <Col xs={12} sm={8} smOffset={2} lg={6} lgOffset={3}>
           {editModal}
           {deleteModal}
+          <AddCategoryForm onSubmit={this.handleAddCategory} />
           <div style={{ height: '40px', paddingTop: '15px' }}>
             <ListToolbar
               editButtonEnabled={selectedCategories.length === 1}
@@ -178,9 +192,16 @@ class Categories extends Component {
   }
 }
 
+const categoriesViewSelector = createSelector(
+  [getCategories],
+  (categories) => (
+    _.sortBy(categories, (c) => c.name.toLowerCase())
+  )
+)
+
 const mapStateToProps = (state) => ({
   readyToShowUi: !_.isNull(getCategories(state)),
-  categories: getCategories(state),
+  categories: categoriesViewSelector(state),
   selectedCategories: getSelectedCategories(state),
 })
 

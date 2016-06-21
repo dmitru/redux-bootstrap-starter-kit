@@ -55,7 +55,7 @@ export function addCategory({ category }) {
 
     // Simulate server-side delay
     setTimeout(() => {
-      const id = Math.random() * 100000000
+      const id = Math.round(Math.random() * 100000000)
       dispatch({
         type: constants.CATEGORIES_ADD_SUCCESS,
         payload: {

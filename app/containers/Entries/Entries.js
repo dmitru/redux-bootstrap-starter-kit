@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { createSelector } from 'reselect'
+import { reset as resetForm } from 'redux-form'
 import { Row, Col, Modal, Button } from 'react-bootstrap'
 import _ from 'lodash'
 
@@ -52,16 +53,24 @@ class Entries extends Component {
     this.fetchInitialDataIfNeeded()
   }
 
-  handleAddEntry(data) {
+  handleAddEntry(values) {
     const { dispatch } = this.props
-    dispatch(addEntry({
-      entry: {
-        amount: parseFloat(data.amount),
-        type: data.isIncome ? 'i' : 'e',
-        categoryId: data.category ? data.category[0].id : null,
-        date: new Date(),
-      },
-    }))
+    const { amount, isIncome, category } = values
+    return new Promise((resolve, reject) => {
+      if (_.isEmpty(amount)) {
+        reject({ amount: 'Is required', _error: 'Failed to add entry' })
+      } else {
+        dispatch(addEntry({
+          entry: {
+            amount: parseFloat(amount),
+            type: isIncome ? 'i' : 'e',
+            categoryId: category ? category[0].id : null,
+            date: new Date(),
+          },
+        }))
+        dispatch(resetForm('add-entry'))
+      }
+    })
   }
 
   handleEntryClick(entry) {

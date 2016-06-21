@@ -54,7 +54,7 @@ export function addEntry({ entry }) {
 
     // Simulate server-side delay
     setTimeout(() => {
-      const id = Math.random() * 100000000
+      const id = Math.round(Math.random() * 100000000)
       dispatch({
         type: constants.ENTRIES_ADD_SUCCESS,
         payload: {

@@ -87,6 +87,7 @@ export default class FormField extends React.Component {
 
   render() {
     const { field, help, inputClass, inputProps, label, loading } = this.props
+    console.log(field)
     const error = field.touched && field.error
     if (label) {
       return (

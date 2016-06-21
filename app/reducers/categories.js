@@ -67,7 +67,7 @@ export const getCategories = createSelector(
       if (_.includes(selectedIds, item.id)) {
         return { ...item, isSelected: true }
       }
-      return item
+      return { ...item, isSelected: false }
     })
   )
 )
