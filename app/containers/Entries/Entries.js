@@ -61,11 +61,11 @@ class Entries extends Component {
     const { notificationCenter } = this.context
     const { dispatch } = this.props
     const { amount, isIncome, category } = values
+    const amountParsed = parseFloat(_.replace(amount, ',', '.'))
     return new Promise((resolve, reject) => {
-      if (_.isNull(amount)) {
+      if (_.isNaN(amountParsed)) {
         reject({ amount: 'Is required', _error: 'Failed to add entry' })
       } else {
-        const amountParsed = parseFloat(amount)
         dispatch(addEntry({
           entry: {
             amount: amountParsed,
@@ -74,7 +74,7 @@ class Entries extends Component {
             date: new Date(),
           },
         }))
-        dispatch(resetForm('add-entry'))
+        dispatch(resetForm('addEntry'))
 
         const notificationText = isIncome ?
           `An income of $${amountParsed} added` :

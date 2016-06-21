@@ -52,7 +52,7 @@ EditCategoryForm.propTypes = {
 }
 
 const formConfig = {
-  form: 'edit-category',
+  form: 'editCategory',
   fields,
   validate,
 }

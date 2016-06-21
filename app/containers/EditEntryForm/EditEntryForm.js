@@ -75,7 +75,7 @@ EditEntryForm.propTypes = {
 }
 
 const formConfig = {
-  form: 'edit-entry',
+  form: 'editEntry',
   fields,
   validate,
 }

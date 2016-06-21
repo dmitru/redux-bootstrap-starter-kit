@@ -128,7 +128,7 @@ class AddEntry extends Component {
 }
 
 const formConfig = {
-  form: 'add-entry',
+  form: 'addEntry',
   fields,
   validate,
   initialValues: {

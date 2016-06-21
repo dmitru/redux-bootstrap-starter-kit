@@ -68,7 +68,7 @@ class Categories extends Component {
             name,
           },
         }))
-        dispatch(resetForm('add-category'))
+        dispatch(resetForm('addCategory'))
 
         notificationCenter.addNotification({
           message: `Created category ${name}`,

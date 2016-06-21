@@ -70,7 +70,7 @@ class AddCategory extends Component {
 }
 
 const formConfig = {
-  form: 'add-category',
+  form: 'addCategory',
   fields,
   validate,
 }
