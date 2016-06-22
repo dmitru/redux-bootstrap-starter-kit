@@ -104,6 +104,7 @@
     "react-addons-css-transition-group": "^15.1.0",
     "react-addons-shallow-compare": "^15.1.0",
     "react-addons-test-utils": "^15.1.0",
+    "react-bootstrap": "^0.29.5",
     "react-bootstrap-typeahead": "^0.5.2",
     "react-dom": "^15.1.0",
     "react-flexible-switch": "^0.3.3",
