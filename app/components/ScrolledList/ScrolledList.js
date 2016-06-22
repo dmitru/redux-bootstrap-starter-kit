@@ -3,7 +3,8 @@
  */
 
 import React from 'react'
-import { AutoSizer, VirtualScroll } from 'react-virtualized'
+import _ from 'lodash'
+import { Pagination } from 'react-bootstrap'
 
 class ScrolledList extends React.Component {
 
@@ -14,43 +15,68 @@ class ScrolledList extends React.Component {
 
   constructor(props) {
     super(props)
-    this.rowRenderer = this.rowRenderer.bind(this)
+    this.handlePaginationSelect = this.handlePaginationSelect.bind(this)
+    const { items } = props
+    const numPages = Math.floor((items.length - 1) / 10) + 1
+    this.state = {
+      itemsPerPage: 10,
+      curPage: Math.min(1, numPages),
+      pages: numPages,
+    }
   }
 
-  rowRenderer({ index, isScrolling }) {
-    if (isScrolling) {
-      return <span>Scrolling...</span>
-    }
-    const { items, itemRenderer } = this.props
-    return itemRenderer({ item: items[index], index })
+  componentWillReceiveProps(props) {
+    this.updatePaginationState(props)
+  }
+
+  updatePaginationState(props) {
+    const { items } = props
+    const { itemsPerPage, curPage } = this.state
+    const newNumPages = Math.floor((items.length - 1) / itemsPerPage) + 1
+    const newCurPage = Math.min(Math.max(1, curPage), newNumPages)
+    this.setState({
+      pages: newNumPages,
+      curPage: newCurPage,
+    })
+  }
+
+  handlePaginationSelect(eventKey) {
+    this.setState({
+      curPage: eventKey,
+    })
   }
 
   render() {
-    const { items } = this.props
+    const { items, itemRenderer } = this.props
+    const { pages, itemsPerPage, curPage } = this.state
     const itemsNotEmpty = items.length > 0
 
-    let content = []
-    if (itemsNotEmpty) {
-      content = (
-        <AutoSizer disableHeight>
-          {({ width }) => (
-            <VirtualScroll
-              style={{ outlineWidth: '0px' }}
-              entries={items}
-              overscanRowCount={10}
-              width={width}
-              height={300}
-              rowHeight={35}
-              rowCount={items.length}
-              rowRenderer={this.rowRenderer}
-            />
-          )}
-        </AutoSizer>
-      )
-    }
+    const visibleItems = _.slice(items,
+      itemsPerPage * (curPage - 1),
+      Math.min(items.length, itemsPerPage * curPage)
+    )
+    const content = _.map(visibleItems, (item, id) => (
+      <div key={id}>
+        {itemRenderer({ item })}
+      </div>
+    ))
     return (
-      <div>
+      <div style={{ textAlign: 'center' }}>
         {itemsNotEmpty ? content : <span>No items to show.</span>}
+        {pages > 1 ?
+          <Pagination
+            items={pages} activePage={curPage}
+            onSelect={this.handlePaginationSelect}
+            boundaryLinks
+            prev
+            next
+            first
+            last
+            ellipsis
+            boundaryLinks
+            maxButtons={4}
+          /> : null
+        }
       </div>
     )
   }
