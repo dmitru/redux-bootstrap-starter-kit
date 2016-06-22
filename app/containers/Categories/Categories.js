@@ -15,7 +15,7 @@ import {
 } from '../../actions/categories'
 import Category from '../../components/Category'
 import Loader from '../../components/Loader'
-import ScrolledList from '../../components/ScrolledList'
+import PaginatedList from '../../components/PaginatedList'
 import ListToolbar from '../../components/ListToolbar'
 import EditCategoryForm from '../EditCategoryForm'
 import AddCategoryForm from '../AddCategoryForm'
@@ -199,7 +199,7 @@ class Categories extends Component {
             />
           </div>
           <div>
-            <ScrolledList
+            <PaginatedList
               items={categories}
               itemRenderer={({ item }) => (
                 <Category

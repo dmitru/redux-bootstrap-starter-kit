@@ -17,7 +17,7 @@ import {
 import { fetchCategoriesIfNeeded } from '../../actions/categories'
 import Entry from '../../components/Entry'
 import Loader from '../../components/Loader'
-import ScrolledList from '../../components/ScrolledList'
+import PaginatedList from '../../components/PaginatedList'
 import ListToolbar from '../../components/ListToolbar'
 import AddEntryForm from '../AddEntryForm'
 import EditEntryForm from '../EditEntryForm'
@@ -207,7 +207,7 @@ class Entries extends Component {
             />
           </div>
           <div>
-            <ScrolledList
+            <PaginatedList
               items={entries}
               itemRenderer={({ item }) => (
                 <Entry
