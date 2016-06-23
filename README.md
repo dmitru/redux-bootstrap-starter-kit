@@ -6,7 +6,7 @@
 
 It is meant as a **reasonable starting point for new Redux projects**, with much of required boilerplate already in place. 
 
-In it's essense, it's a front-end part of a simple CRUD application for tracking personal incomes/expenses.
+In it's essense, it's a front-end part of a **simple CRUD application for tracking personal incomes/expenses**.
 
 You can **play with the DEMO** [here](http://redux-starter-kit.dmitru.me).
 
