@@ -89,7 +89,7 @@ class LoginContainer extends Component {
             <Row>
               <Alert bsStyle="info">
                 <strong>Hint</strong>: use the following email: <code>"test@user.com"</code> and
-                <strong>any password</strong>
+                <strong> any password</strong>
               </Alert>
             </Row>
 

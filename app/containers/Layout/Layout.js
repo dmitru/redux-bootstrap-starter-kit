@@ -5,8 +5,9 @@
 import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { Nav, Navbar, NavItem, Grid, Col, Row, Glyphicon } from 'react-bootstrap'
+import { Nav, Navbar, NavItem, Grid, Col, Row } from 'react-bootstrap'
 import { LinkContainer, IndexLinkContainer } from 'react-router-bootstrap'
+import Fontawesome from 'react-fontawesome'
 
 import { logout } from '../../actions/auth/auth'
 
@@ -35,37 +36,47 @@ class Layout extends Component {
   render() {
     const { onLogout, children, isAuthenticated, username } = this.props
 
-    const navbarLinks = isAuthenticated ? [
+    const navbarLinksLeft = isAuthenticated ? [
       <IndexLinkContainer to="/" key={1}>
-        <NavItem eventKey={1} index>Entries</NavItem>
+        <NavItem eventKey={1} index><Fontawesome name="list-ul" /> Entries</NavItem>
       </IndexLinkContainer >,
       <LinkContainer to="/categories" key={2}>
-        <NavItem eventKey={2}>Categories</NavItem>
+        <NavItem eventKey={2}><Fontawesome name="tags" /> Categories</NavItem>
       </LinkContainer >,
       <LinkContainer to="/about" key={3}>
-        <NavItem eventKey={3}>About</NavItem>
+        <NavItem eventKey={3}><Fontawesome name="question-circle-o" /> About</NavItem>
       </LinkContainer >,
+      <NavItem eventKey={4}>
+        <a href="https://github.com/dmitru/redux-bootstrap-starter-kit">
+          <Fontawesome name="github" /> Github
+        </a>
+      </NavItem>,
     ] : [
       <LinkContainer to="/about" key={1}>
-        <NavItem eventKey={1}>About</NavItem>
+        <NavItem eventKey={1}><Fontawesome name="question-circle-o" /> About</NavItem>
       </LinkContainer >,
-      <LinkContainer to="/login" key={2}>
-        <NavItem eventKey={2}><Glyphicon glyph="log-in" /> Login</NavItem>
-      </LinkContainer >,
-      <LinkContainer to="/signup" key={3}>
-        <NavItem eventKey={3}><Glyphicon glyph="user" /> Sign Up</NavItem>
-      </LinkContainer >,
+      <NavItem eventKey={4} href="https://github.com/dmitru/redux-bootstrap-starter-kit">
+        <Fontawesome name="github" /> Github
+      </NavItem>,
     ]
 
     const navbarLinksRight = isAuthenticated ? [
       username ? (
         <Navbar.Text eventKey={10} key={10}>
-          <span style={{ padding: '10px 15px' }} role="presentation">Logged in as {username}</span>
+          <span style={{ padding: '10px 15px' }} role="presentation">
+            <Fontawesome name="user" /> {username}
+          </span>
         </Navbar.Text>) : null,
       <NavItem eventKey={11} onClick={onLogout} key={11}>
-        <Glyphicon glyph="log-out" /> Logout
+        <Fontawesome name="sign-out" /> Logout
       </NavItem>,
     ] : [
+      <LinkContainer to="/login" key={2}>
+        <NavItem eventKey={2}><Fontawesome name="sign-in" /> Login</NavItem>
+      </LinkContainer >,
+      <LinkContainer to="/signup" key={3}>
+        <NavItem eventKey={3}><Fontawesome name="user" /> Sign Up</NavItem>
+      </LinkContainer >,
     ]
 
     return (
@@ -91,7 +102,7 @@ class Layout extends Component {
           </Navbar.Header>
           <div id="header-navbar" className="navbar-collapse collapse">
             <Nav navbar>
-              {navbarLinks.map((e) => e)}
+              {navbarLinksLeft.map((e) => e)}
             </Nav>
             <Nav pullRight>
               {navbarLinksRight.map((e) => e)}
