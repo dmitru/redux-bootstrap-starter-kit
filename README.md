@@ -1,5 +1,4 @@
-# (Yet Another) Redux Starter Kit 
-[![Dependency Status](https://david-dm.org/dmitru/redux-bootstrap-starter-kit.svg)](https://david-dm.org/dmitru/redux-bootstrap-starter-kit)
+# (Yet Another) Redux Starter Kit [![Dependency Status](https://david-dm.org/dmitru/redux-bootstrap-starter-kit.svg)](https://david-dm.org/dmitru/redux-bootstrap-starter-kit) [![Build Status](https://travis-ci.org/dmitru/redux-bootstrap-starter-kit.svg?branch=master)](https://travis-ci.org/dmitru/redux-bootstrap-starter-kit)
  
 
 ## What is it?
