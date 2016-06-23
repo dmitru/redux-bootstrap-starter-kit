@@ -1,5 +1,5 @@
 # (Yet Another) Redux Starter Kit 
-[![Dependency Status](https://david-dm.org/dmitru/redux-bootstrap-starter-kit)](https://david-dm.org/dmitru/redux-bootstrap-starter-kit)
+[![Dependency Status](https://david-dm.org/dmitru/redux-bootstrap-starter-kit.svg)](https://david-dm.org/dmitru/redux-bootstrap-starter-kit)
  
 
 ## What is it?
@@ -17,6 +17,7 @@ Among other things, it showcases:
 - client-side routing with [react-router-redux](https://github.com/reactjs/react-router-redux)
 - building with [webpack](https://webpack.github.io/) with hotreloading
 - [CSS modules](http://glenmaddern.com/articles/css-modules) with [SASS](http://sass-lang.com/)
+- ...and more!
 
 The backend is a mock: most of AJAX API calls are emulated on client and no real data is saved on the server.   
  
