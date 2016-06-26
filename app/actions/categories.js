@@ -12,7 +12,7 @@ export function fetchCategories() {
     })
     api.categories.getAll({ token })
       .then((res) => {
-        const data = res.data
+        const data = res.body
         dispatch({
           type: constants.CATEGORIES_FETCH_SUCCESS,
           payload: data,
@@ -53,20 +53,25 @@ export function addCategory({ category }) {
       },
     })
 
-    // Simulate server-side delay
-    setTimeout(() => {
-      const id = Math.round(Math.random() * 100000000)
-      dispatch({
-        type: constants.CATEGORIES_ADD_SUCCESS,
-        payload: {
-          temporaryId,
-          category: {
-            ...category,
-            id,
+    api.categories.create({ category })
+      .then((res) => {
+        dispatch({
+          type: constants.CATEGORIES_ADD_SUCCESS,
+          payload: {
+            temporaryId,
+            category: res.body,
           },
-        },
+        })
       })
-    }, 1000)
+      .catch((err) => {
+        dispatch({
+          type: constants.CATEGORIES_ADD_FAILURE,
+          payload: {
+            temporaryId,
+            category: err,
+          },
+        })
+      })
   }
 }
 
@@ -99,23 +104,34 @@ export function updateCategory({ category }) {
       },
     })
 
-    // Simulate server-side delay
-    setTimeout(() => {
-      dispatch({
-        type: constants.CATEGORIES_UPDATE,
-        payload: {
-          category,
-        },
+    api.categories.update({ category })
+      .then(() => {
+        dispatch({
+          type: constants.CATEGORIES_UPDATE,
+          payload: {
+            category,
+          },
+        })
       })
-    }, 1000)
+      .catch((err) => {
+        dispatch({
+          type: constants.CATEGORIES_UPDATE_FAILURE,
+          payload: {
+            error: err,
+          },
+        })
+      })
   }
 }
 
 export function deleteCategories({ ids }) {
-  return {
-    type: constants.CATEGORIES_DELETE,
-    payload: {
-      ids,
-    },
+  return (dispatch) => {
+    dispatch({
+      type: constants.CATEGORIES_DELETE,
+      payload: {
+        ids,
+      },
+    })
+    api.categories.del({ ids }).end()
   }
 }

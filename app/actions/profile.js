@@ -13,7 +13,7 @@ export function fetchUserProfile() {
     })
     api.profile.getProfile({ token })
       .then((res) => {
-        const data = res.data
+        const data = res.body
         dispatch({
           type: constants.PROFILE_FETCH_SUCCESS,
           payload: data,

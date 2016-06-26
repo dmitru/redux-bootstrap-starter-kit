@@ -5,12 +5,11 @@ import api from '../api'
 
 
 export function fetchEntries() {
-  return (dispatch, getState) => {
-    const { auth: { token } } = getState()
+  return (dispatch) => {
     dispatch({ type: constants.ENTRIES_FETCH_REQUEST })
-    api.entries.getAll({ token })
+    api.entries.getAll()
       .then((res) => {
-        const data = res.data
+        const data = res.body
         dispatch({
           type: constants.ENTRIES_FETCH_SUCCESS,
           payload: data,
@@ -19,7 +18,7 @@ export function fetchEntries() {
       .catch((err) => {
         dispatch({
           type: constants.ENTRIES_FETCH_FAILURE,
-          payload: err.data,
+          payload: err,
         })
       })
   }
@@ -52,20 +51,25 @@ export function addEntry({ entry }) {
       },
     })
 
-    // Simulate server-side delay
-    setTimeout(() => {
-      const id = Math.round(Math.random() * 100000000)
-      dispatch({
-        type: constants.ENTRIES_ADD_SUCCESS,
-        payload: {
-          temporaryId,
-          entry: {
-            ...entry,
-            id,
+    api.entries.create({ entry })
+      .then((res) => {
+        dispatch({
+          type: constants.ENTRIES_ADD_SUCCESS,
+          payload: {
+            temporaryId,
+            entry: res.body,
           },
-        },
+        })
       })
-    }, 1000)
+      .catch((err) => {
+        dispatch({
+          type: constants.ENTRIES_ADD_FAILURE,
+          payload: {
+            temporaryId,
+            error: err,
+          },
+        })
+      })
   }
 }
 
@@ -98,23 +102,34 @@ export function updateEntry({ entry }) {
       },
     })
 
-    // Simulate server-side delay
-    setTimeout(() => {
-      dispatch({
-        type: constants.ENTRIES_UPDATE,
-        payload: {
-          entry,
-        },
+    api.entries.update({ entry })
+      .then(() => {
+        dispatch({
+          type: constants.ENTRIES_UPDATE,
+          payload: {
+            entry,
+          },
+        })
       })
-    }, 1000)
+      .catch((err) => {
+        dispatch({
+          type: constants.ENTRIES_UPDATE_FAILURE,
+          payload: {
+            error: err,
+          },
+        })
+      })
   }
 }
 
 export function deleteEntries({ ids }) {
-  return {
-    type: constants.ENTRIES_DELETE,
-    payload: {
-      ids,
-    },
+  return (dispatch) => {
+    dispatch({
+      type: constants.ENTRIES_DELETE,
+      payload: {
+        ids,
+      },
+    })
+    api.entries.del({ ids }).end()
   }
 }

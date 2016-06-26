@@ -4,6 +4,7 @@ import * as constants from '../../constants'
 import api from '../../api'
 
 import cookie from '../../utils/cookie'
+import apiClient from '../../utils/apiClient'
 
 
 const saveAuthToken = (token) => {
@@ -23,7 +24,8 @@ export function login({ email, password, saveToken = true }) {
     })
     return api.auth.login({ email, password })
       .then((res) => {
-        const data = res.data
+        const data = res.body
+        apiClient.set('Authorization', data.token)
         if (saveToken) {
           saveAuthToken(data.token)
         }
@@ -34,18 +36,10 @@ export function login({ email, password, saveToken = true }) {
       })
       .catch((err) => {
         let errorData = undefined
-        if (err instanceof Error) {
-          console.log(err)
-          errorData = {
-            errorCode: constants.ERROR_CLIENT,
-            message: 'Error while making request to the server',
-          }
-        } else {
-          errorData = {
-            errorCode: err.data && err.data.errorCode ? err.data.errorCode : constants.ERROR_SERVER,
-            status: err.status ? err.status : 500,
-            message: err.data && err.data.message ? err.data.message : 'Server error',
-          }
+        errorData = {
+          errorCode: err.message ? err.message : constants.ERROR_SERVER,
+          status: err.status ? err.status : 500,
+          message: err.message ? err.message : 'Error while logging in',
         }
         dispatch({
           type: constants.AUTH_LOGIN_ERROR,
@@ -62,7 +56,7 @@ export function signup({ email, password, captchaResponse, saveToken = true }) {
     })
     return api.auth.signup({ email, password, captchaResponse })
       .then((res) => {
-        const data = res.data
+        const data = res.body
         if (saveToken) {
           saveAuthToken(data.token)
         }

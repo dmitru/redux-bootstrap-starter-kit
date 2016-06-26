@@ -10,7 +10,6 @@ import Login from './containers/Login'
 import Signup from './containers/Signup'
 import Entries from './containers/Entries'
 import Categories from './containers/Categories'
-import About from './components/About'
 import { logout } from './actions/auth/auth'
 
 const NoMatch = () => (
@@ -26,7 +25,6 @@ render(
         <IndexRoute component={UserIsAuthenticated(Entries)} />
         <Route path="login" component={Login} />
         <Route path="signup" component={Signup} />
-        <Route path="about" component={About} />
         <Route path="" component={UserIsAuthenticated(Entries)} />
         <Route path="categories" component={UserIsAuthenticated(Categories)} />
         <Route path="*" component={NoMatch} />

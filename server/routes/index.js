@@ -1,5 +1,5 @@
 
-const api = require('./api')
+const api = require('./auth')
 
 const routes = {
   api,

@@ -17,15 +17,15 @@
     "test": "karma start",
     "test:watch": "TEST_WATCH=true karma start",
     "start": "NODE_ENV=production node server/server.js",
+    "start:watch": "NODE_ENV=production nodemon server/server.js",
     "dev": "node server/server.js",
     "dev:watch": "nodemon server/server.js",
     "build": "rimraf dist && cross-env NODE_ENV=production webpack --config ./webpack.production.config.js --progress --profile --colors",
-    "build:watch": "webpack --config ./webpack.config.js --progress --profile --colors --watch --inline",
+    "build:watch": "webpack --config ./webpack.config.js --progress --profile --colors --watch",
     "eslint": "eslint ."
   },
   "devDependencies": {
     "autoprefixer": "^6.3.6",
-    "axios-mock-adapter": "^1.4.0",
     "babel-core": "^6.9.1",
     "babel-eslint": "^6.0.0",
     "babel-jscs": "^2.0.5",
@@ -89,7 +89,6 @@
     "webpack-validator": "^2.1.2"
   },
   "dependencies": {
-    "axios": "^0.12.0",
     "body-parser": "^1.15.1",
     "cookie-parser": "^1.4.3",
     "debug": "^2.2.0",

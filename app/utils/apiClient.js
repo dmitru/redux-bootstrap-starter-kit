@@ -2,6 +2,10 @@
  * Created by dmitriybor on 08.06.16.
  */
 
-import axios from 'axios'
+import superagentPromisePlugin from 'superagent-promise-plugin'
+import superagentDefaults from 'superagent-defaults'
+import superagent from 'superagent'
 
-export default axios.create()
+const superagent2 = superagentPromisePlugin.patch(superagent)
+const superagent3 = superagentDefaults(superagent2)
+export default superagent3

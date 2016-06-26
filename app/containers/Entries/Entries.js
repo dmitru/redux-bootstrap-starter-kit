@@ -6,6 +6,7 @@ import { Row, Col, Modal, Button } from 'react-bootstrap'
 import _ from 'lodash'
 
 import { getEntries, getSelectedEntriesIds } from '../../reducers/entries'
+import { getCurrencies } from '../../reducers/currencies'
 import { getCategories } from '../../reducers/categories'
 import {
   fetchEntriesIfNeeded,
@@ -15,6 +16,7 @@ import {
   deleteEntries,
 } from '../../actions/entries'
 import { fetchCategoriesIfNeeded } from '../../actions/categories'
+import { fetchCurrenciesIfNeeded } from '../../actions/currencies'
 import Entry from '../../components/Entry'
 import Loader from '../../components/Loader'
 import PaginatedList from '../../components/PaginatedList'
@@ -27,6 +29,7 @@ class Entries extends Component {
     children: React.PropTypes.element,
     readyToShowUi: React.PropTypes.bool.isRequired,
     entries: React.PropTypes.array,
+    currencies: React.PropTypes.array,
     selectedEntries: React.PropTypes.array.isRequired,
   }
 
@@ -59,7 +62,7 @@ class Entries extends Component {
 
   handleAddEntry(values) {
     const { notificationCenter } = this.context
-    const { dispatch } = this.props
+    const { dispatch, currencies } = this.props
     const { amount, isIncome, category } = values
     const amountParsed = parseFloat(_.replace(amount, ',', '.'))
     return new Promise((resolve, reject) => {
@@ -68,6 +71,8 @@ class Entries extends Component {
       } else {
         dispatch(addEntry({
           entry: {
+            // TODO: allow for selection of currencies
+            currencyId: currencies[0].id,
             amount: amountParsed,
             type: isIncome ? 'i' : 'e',
             categoryId: category ? category[0].id : null,
@@ -155,6 +160,7 @@ class Entries extends Component {
   fetchInitialDataIfNeeded() {
     const { dispatch } = this.props
     dispatch(fetchEntriesIfNeeded())
+    dispatch(fetchCurrenciesIfNeeded())
     dispatch(fetchCategoriesIfNeeded())
   }
 
@@ -252,8 +258,10 @@ const getSelectedEntries = createSelector(
 )
 
 const mapStateToProps = (state) => ({
-  readyToShowUi: !_.isNull(getCategories(state)) && !_.isNull(getEntries(state)),
+  readyToShowUi: !_.isNull(getCategories(state)) &&
+    !_.isNull(getEntries(state)) && !_.isNull(getCurrencies(state)),
   entries: entriesViewSelector(state),
+  currencies: getCurrencies(state),
   selectedEntries: getSelectedEntries(state),
 })
 

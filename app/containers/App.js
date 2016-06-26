@@ -6,6 +6,7 @@ import NotificationSystem from 'react-notification-system'
 import { getIsAuthenticated } from '../reducers/auth'
 import { getUserProfile } from '../reducers/profile'
 import { fetchUserProfileIfNeeded } from '../actions/profile'
+import { fetchCurrenciesIfNeeded } from '../actions/currencies'
 import { fetchEntriesIfNeeded } from '../actions/entries'
 import { fetchCategoriesIfNeeded } from '../actions/categories'
 import Layout from './Layout'
@@ -45,6 +46,7 @@ class App extends Component {
       return
     }
     dispatch(fetchUserProfileIfNeeded())
+    dispatch(fetchCurrenciesIfNeeded())
     dispatch(fetchEntriesIfNeeded())
     dispatch(fetchCategoriesIfNeeded())
   }

@@ -1,8 +1,6 @@
 
-import ajax from 'axios'
+import client from '../utils/apiClient'
 
 export const getProfile = ({ token }) => (
-  ajax.get('/api/profile', {
-    params: { token },
-  })
+  client.get('/auth/profile').set('Authorization', token)
 )

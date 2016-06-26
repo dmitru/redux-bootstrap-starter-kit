@@ -43,21 +43,10 @@ class Layout extends Component {
       <LinkContainer to="/categories" key={2}>
         <NavItem eventKey={2}><Fontawesome name="tags" /> Categories</NavItem>
       </LinkContainer >,
-      <LinkContainer to="/about" key={3}>
-        <NavItem eventKey={3}><Fontawesome name="question-circle-o" /> About</NavItem>
-      </LinkContainer >,
-      <NavItem eventKey={4}>
-        <a href="https://github.com/dmitru/redux-bootstrap-starter-kit">
-          <Fontawesome name="github" /> Github
-        </a>
-      </NavItem>,
     ] : [
       <LinkContainer to="/about" key={1}>
         <NavItem eventKey={1}><Fontawesome name="question-circle-o" /> About</NavItem>
       </LinkContainer >,
-      <NavItem eventKey={4} href="https://github.com/dmitru/redux-bootstrap-starter-kit">
-        <Fontawesome name="github" /> Github
-      </NavItem>,
     ]
 
     const navbarLinksRight = isAuthenticated ? [
