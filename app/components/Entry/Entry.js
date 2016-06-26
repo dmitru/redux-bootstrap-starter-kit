@@ -2,7 +2,7 @@
  * Created by dmitru on 6/5/16.
  */
 
-import React from 'react'
+import React, { PropTypes } from 'react'
 import _ from 'lodash'
 import moment from 'moment'
 import { Label, Row, Col, Glyphicon } from 'react-bootstrap'
@@ -50,13 +50,16 @@ const Entry = ({ date, amount, type, category, isSaving, isSelected, onClick }) 
 }
 
 Entry.propTypes = {
-  date: React.PropTypes.string.isRequired,
-  amount: React.PropTypes.number.isRequired,
-  type: React.PropTypes.string.isRequired,
-  category: React.PropTypes.object,
-  isSaving: React.PropTypes.bool,
-  isSelected: React.PropTypes.bool,
-  onClick: React.PropTypes.func.isRequired,
+  date: PropTypes.oneOfType([
+    PropTypes.string.isRequired,
+    PropTypes.object.isRequired,
+  ]),
+  amount: PropTypes.number.isRequired,
+  type: PropTypes.string.isRequired,
+  category: PropTypes.object,
+  isSaving: PropTypes.bool,
+  isSelected: PropTypes.bool,
+  onClick: PropTypes.func.isRequired,
 }
 
 export default Entry
