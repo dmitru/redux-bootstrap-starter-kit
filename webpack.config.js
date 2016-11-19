@@ -17,7 +17,6 @@ const config = {
   output: {
     path: path.join(__dirname, 'server', 'dist'),
     filename: '[name].js',
-    publicPath: '',
   },
   plugins: [
     new HtmlWebpackPlugin({

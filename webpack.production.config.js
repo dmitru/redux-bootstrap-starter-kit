@@ -16,7 +16,6 @@ module.exports = {
     path: path.join(__dirname, 'server', 'dist'),
     filename: '[name].[chunkhash].js',
     chunkFilename: '[chunkhash].js',
-    publicPath: '/',
   },
   plugins: [
     new webpack.optimize.OccurenceOrderPlugin(),
