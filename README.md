@@ -7,8 +7,6 @@ It is meant as a **reasonable starting point for new Redux projects**, with much
 
 In it's essense, it's a front-end part of a **simple CRUD application for tracking personal incomes/expenses**.
 
-You can **play with the DEMO** [here](http://redux-starter-kit.dmitru.me).
-
 Among other things, it showcases:
 
 - authentication (mocked on backend)
