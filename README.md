@@ -3,7 +3,7 @@
 
 ## What is it?
 
-It is meant as a **reasonable starting point for new Redux projects**, with much of required boilerplate already in place. 
+This is my try at creating a boilerplate project for React webapps. That said, **this boilerplate shouldn't probably be used in production - there are far better alternatives.** It's best to see it as my own educational adventure - I did learn a great deal about modern web tools while putting them all together in this project.
 
 In it's essense, it's a front-end part of a **simple CRUD application for tracking personal incomes/expenses**.
 
